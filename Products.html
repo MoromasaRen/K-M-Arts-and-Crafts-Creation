@@ -1,0 +1,234 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Products - K&amp;M Arts &amp; Crafts</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+    body {
+      margin: 0;
+      background-color: #d3e3ff;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+    }
+
+    .logo-font {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #0a1a3a;
+      line-height: 1;
+    }
+
+    .logo-text {
+      font-size: 0.625rem;
+      color: #0a1a3a;
+      letter-spacing: 0.15em;
+      line-height: 1.2;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #0a1a3a;
+      user-select: none;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #0a1a3a;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.25rem;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    nav a.active {
+      background-color: #a3b1d1;
+    }
+
+    .profile-circle {
+      width: 2.5rem;
+      height: 2.5rem;
+      background-color: #ccc;
+      border-radius: 50%;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    h2 {
+      background-color: #0a1a3a;
+      color: white;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.5rem 0;
+      margin-top: 0.5rem;
+      border-radius: 0.125rem;
+      user-select: none;
+    }
+
+    .category-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #0a1a3a;
+      margin-top: 0.75rem;
+      user-select: none;
+    }
+
+    .products-grid {
+      margin-top: 0.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .product-card {
+      background-color: #0a1a3a;
+      border-top-left-radius: 50% 50%;
+      border-bottom-right-radius: 50% 50%;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .product-image {
+      width: 5rem;
+      height: 5rem;
+      object-fit: cover;
+      border-top-left-radius: 50% 50%;
+      border-bottom-right-radius: 50% 50%;
+    }
+
+    .product-name {
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 0.25rem;
+      user-select: none;
+      text-align: center;
+    }
+
+    .product-price {
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      user-select: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <span class="logo-font">K&amp;M</span>
+      <div class="logo-text">
+        <div>ARTS &amp; CRAFTS</div>
+        <div>creation</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#" class="active">Products</a>
+      <a href="#">Cart</a>
+    </nav>
+    <div class="profile-circle"></div>
+  </header>
+  <main>
+    <h2>Our Products</h2>
+    <div class="category-label">Category: Flower</div>
+    <section class="products-grid">
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/369f01a7-4440-4cea-572a-3444c719f07c.jpg" alt="Flower bouquet with purple and yellow flowers in a blue wrapping" />
+        <p class="product-name">Merry Garden</p>
+        <p class="product-price">₱400</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/413b076a-fc9e-419f-fdd1-ce4adfb8af42.jpg" alt="Flower bouquet with blue and yellow flowers in a blue wrapping" />
+        <p class="product-name">Nature Joy Box</p>
+        <p class="product-price">₱445</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/33e2f199-111e-47c4-aad9-c38f11808676.jpg" alt="Flower bouquet with pink flowers in a blue wrapping" />
+        <p class="product-name">Floral</p>
+        <p class="product-price">₱520</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/907cd9dc-8515-42e9-c282-2b87119af802.jpg" alt="Flower bouquet with pink and white flowers in a blue wrapping" />
+        <p class="product-name">Corneal garden</p>
+        <p class="product-price">₱530</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/2d5b6a4e-e680-4ea0-0d7e-2dd9ac881365.jpg" alt="Flower bouquet with blue flowers in a blue wrapping" />
+        <p class="product-name">Blue Garden Bouquet</p>
+        <p class="product-price">₱165</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/0957bd66-7094-45ca-a8f2-dc20528792bf.jpg" alt="Flower bouquet with purple flowers in a blue wrapping" />
+        <p class="product-name">Pink</p>
+        <p class="product-price">₱85</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/00e11f03-8f09-4799-e0d1-ea3b94480226.jpg" alt="Flower bouquet with white flowers in a blue wrapping" />
+        <p class="product-name">Purple Lily Bouquet</p>
+        <p class="product-price">₱155</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/ae84b131-2884-4697-8a3b-b2049be75af1.jpg" alt="Flower bouquet with white and yellow flowers in a blue wrapping" />
+        <p class="product-name">Single Sunflower</p>
+        <p class="product-price">₱165</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/e8613865-c2d5-4092-ee0f-4d7daf3472c9.jpg" alt="Flower bouquet with red and yellow flowers in a blue wrapping" />
+        <p class="product-name">Lily Bouquet</p>
+        <p class="product-price">₱485</p>
+      </div>
+      <div class="product-card">
+        <img class="product-image" src="https://storage.googleapis.com/a1aa/image/0957bd66-7094-45ca-a8f2-dc20528792bf.jpg" alt="Flower bouquet with purple flowers in a blue wrapping" />
+        <p class="product-name">Baby Garden</p>
+        <p class="product-price">₱165</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
