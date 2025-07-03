@@ -1,0 +1,187 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Login Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #cce3ff;
+      font-family: 'Roboto Mono', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+    }
+    a.back-link {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      color: black;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      user-select: none;
+    }
+    a.back-link span.arrow {
+      font-size: 20px;
+      line-height: 1;
+      margin-right: 4px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      max-width: 320px;
+      padding: 0 12px;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+    form {
+      background-color: white;
+      border: 1px solid #d1d5db; /* gray-300 */
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    h2 {
+      color: #1e3a5f;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 0.05em;
+      margin: 0 0 16px 0;
+      text-align: center;
+    }
+    label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      color: black;
+      margin-bottom: 4px;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      border: 1px solid black;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+      outline: none;
+      transition: box-shadow 0.2s ease;
+    }
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      box-shadow: 0 0 0 2px #1e3a5f;
+      border-color: #1e3a5f;
+    }
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9px;
+      font-weight: 600;
+      color: black;
+      margin-bottom: 12px;
+    }
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .options input[type="checkbox"] {
+      width: 12px;
+      height: 12px;
+      border: 1px solid black;
+      margin: 0;
+      cursor: pointer;
+    }
+    .forgot-password {
+      color: #1e3a5f;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+    .create-account-text {
+      font-size: 9px;
+      font-weight: 600;
+      color: black;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .create-account-text a {
+      color: #1e3a5f;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .create-account-text a:hover {
+      text-decoration: underline;
+    }
+    button {
+      width: 100%;
+      background-color: #1e3a5f;
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 0;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    button:hover {
+      background-color: #16305a;
+    }
+    @media (max-width: 360px) {
+      .container {
+        max-width: 100%;
+        padding: 0 8px;
+      }
+      form {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#" class="back-link"><span class="arrow">←</span><span>Back</span></a>
+  <div class="container">
+    <img
+      src="https://storage.googleapis.com/a1aa/image/35baaae7-baad-41f5-f61c-fca3c0413e00.jpg"
+      alt="Logo with letters K and M decorated with leaves and a bird, text below says ARTS & CRAFTS CREATION in uppercase serif font, navy blue color"
+      class="logo"
+      width="80"
+      height="80"
+    />
+    <form autocomplete="off">
+      <h2>Login</h2>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" />
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" />
+      <div class="options">
+        <label><input type="checkbox" name="remember" />Remember me</label>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+      </div>
+      <p class="create-account-text">
+        Don't have an account? <a href="#">Create account</a>
+      </p>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</body>
+</html>

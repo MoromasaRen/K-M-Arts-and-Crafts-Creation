@@ -1,0 +1,228 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Inventory
+  </title>
+  <style>
+   @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+   body {
+     margin: 0;
+     font-family: 'Roboto Mono', monospace;
+     background-color: #d3e4fc;
+     display: flex;
+     min-height: 100vh;
+   }
+
+   /* Sidebar */
+   aside {
+     background-color: white;
+     width: 224px; /* 56 * 4 */
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     padding: 24px 0;
+     border-right: 1px solid rgba(0,0,0,0.125);
+     box-sizing: border-box;
+   }
+
+   aside img {
+     margin-bottom: 24px;
+     width: 100px;
+     height: 60px;
+     object-fit: contain;
+   }
+
+   .profile-pic {
+     width: 64px;
+     height: 64px;
+     border-radius: 50%;
+     background-color: #d1d5db; /* gray-300 */
+     margin-bottom: 8px;
+   }
+
+   .admin-username {
+     font-weight: 800;
+     font-size: 0.875rem; /* 14px */
+     line-height: 1.25rem; /* 20px */
+     text-align: center;
+     margin: 0;
+   }
+
+   .status {
+     font-size: 0.75rem; /* 12px */
+     color: black;
+     display: flex;
+     align-items: center;
+     gap: 4px;
+     margin-top: 4px;
+   }
+
+   .status-dot {
+     width: 8px;
+     height: 8px;
+     border-radius: 50%;
+     background-color: #16a34a; /* green-600 */
+     display: inline-block;
+   }
+
+   nav {
+     width: 100%;
+     padding: 0 24px;
+     box-sizing: border-box;
+   }
+
+   nav p.menu-title {
+     font-weight: 800;
+     font-size: 0.875rem;
+     margin-bottom: 12px;
+     color: #1e2a47;
+   }
+
+   nav ul {
+     list-style: none;
+     padding: 0;
+     margin: 0;
+     display: flex;
+     flex-direction: column;
+     gap: 8px;
+     font-weight: 800;
+     font-size: 0.875rem;
+     color: #1e2a47;
+   }
+
+   nav ul li a {
+     text-decoration: none;
+     color: #1e2a47;
+     display: block;
+   }
+
+   nav ul li:last-child a {
+     margin-top: 16px;
+   }
+
+   /* Main content */
+   main {
+     flex: 1;
+     padding: 24px;
+     box-sizing: border-box;
+   }
+
+   .menu-button {
+     margin-bottom: 16px;
+     font-size: 1.25rem;
+     color: black;
+     background: none;
+     border: none;
+     cursor: pointer;
+   }
+
+   h1 {
+     font-weight: 800;
+     font-size: 1.125rem; /* 18px */
+     margin: 0 0 16px 0;
+     color: #1e2a47;
+   }
+
+   .table-container {
+     overflow-x: auto;
+   }
+
+   table {
+     border-collapse: collapse;
+     border: 1px solid rgba(0,0,0,0.125);
+     width: 100%;
+     max-width: 640px;
+     background-color: #e6f0ff;
+     table-layout: fixed;
+   }
+
+   th, td {
+     border: 1px solid rgba(0,0,0,0.125);
+     padding: 4px 12px;
+     font-size: 0.75rem; /* 12px */
+     font-weight: 800;
+     color: #1e2a47;
+     text-align: center;
+     vertical-align: middle;
+   }
+
+   th {
+     background-color: #e6f0ff;
+   }
+
+   tbody tr td:first-child {
+     height: 192px; /* 48 * 4 */
+   }
+
+   /* Responsive */
+   @media (max-width: 640px) {
+     aside {
+       width: 160px;
+       padding: 16px 0;
+     }
+
+     nav {
+       padding: 0 16px;
+     }
+
+     main {
+       padding: 16px;
+     }
+
+     table {
+       max-width: 100%;
+     }
+   }
+  </style>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <!-- Sidebar -->
+  <aside>
+   <img alt="KM Arts & Crafts Creation logo in dark blue" src="https://storage.googleapis.com/a1aa/image/fc4dcbeb-d444-4948-587e-1aa554a3f890.jpg"/>
+   <div class="profile-pic"></div>
+   <p class="admin-username">Admin<br/>Username</p>
+   <p class="status"><span class="status-dot"></span>Status: Online</p>
+   <nav>
+    <p class="menu-title">Menu</p>
+    <ul>
+     <li><a href="#">Dashboard</a></li>
+     <li><a href="#">Orders</a></li>
+     <li><a href="#">Deliveries</a></li>
+     <li><a href="#">Inventory</a></li>
+     <li><a href="#" style="margin-top:16px;">Profile</a></li>
+    </ul>
+   </nav>
+  </aside>
+  <!-- Main content -->
+  <main>
+   <button aria-label="Menu" class="menu-button"><i class="fas fa-bars"></i></button>
+   <h1>Inventory</h1>
+   <div class="table-container">
+    <table>
+     <thead>
+      <tr>
+       <th>Product ID</th>
+       <th>Product Name</th>
+       <th>Status</th>
+       <th>Amount</th>
+       <th>Update</th>
+      </tr>
+     </thead>
+     <tbody>
+      <tr>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td></td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </main>
+ </body>
+</html>

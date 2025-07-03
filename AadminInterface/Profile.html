@@ -1,0 +1,333 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Profile Page</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+
+    body {
+      font-family: "Roboto Mono", monospace;
+      background-color: #d6e3fb;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    /* Sidebar */
+    aside {
+      background-color: white;
+      width: 224px;
+      min-height: 100vh;
+      border-right: 1px solid #e5e7eb;
+      padding-top: 24px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    aside img.logo {
+      margin-bottom: 24px;
+      width: 120px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .profile-pic {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: #d1d5db;
+      margin-bottom: 8px;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: #1e3a5f;
+      margin-bottom: 4px;
+      user-select: none;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #374151;
+      user-select: none;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      background-color: #16a34a;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    nav {
+      width: 100%;
+      padding: 0 24px;
+      box-sizing: border-box;
+    }
+
+    nav p.menu-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #1e3a5f;
+      margin-bottom: 16px;
+      user-select: none;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav ul li {
+      margin-bottom: 12px;
+    }
+
+    nav ul li a {
+      font-weight: 800;
+      font-size: 0.875rem;
+      color: #1e3a5f;
+      text-decoration: none;
+      user-select: none;
+      display: block;
+    }
+
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+
+    /* Main content */
+    main {
+      flex: 1;
+      padding: 24px;
+      box-sizing: border-box;
+      min-width: 0;
+      max-width: calc(100% - 224px);
+    }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #1e3a5f;
+      margin: 0 0 16px 0;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 2px;
+      user-select: none;
+    }
+
+    section.profile-summary {
+      background-color: #d9e2f9;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 16px;
+      margin-bottom: 24px;
+      max-width: 768px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-sizing: border-box;
+    }
+
+    section.profile-summary img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #d1d5db;
+      object-fit: cover;
+      user-select: none;
+    }
+
+    section.profile-summary .user-info p {
+      margin: 0;
+      color: #1e3a5f;
+      user-select: none;
+    }
+
+    section.profile-summary .user-info p.username {
+      font-weight: 800;
+      font-size: 1.125rem;
+      line-height: 1.25rem;
+    }
+
+    section.profile-summary .user-info p.role,
+    section.profile-summary .user-info p.email {
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
+
+    section.personal-info {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 16px;
+      max-width: 768px;
+      box-sizing: border-box;
+    }
+
+    section.personal-info h3 {
+      font-weight: 800;
+      font-size: 0.875rem;
+      color: #1e3a5f;
+      margin: 0 0 12px 0;
+      user-select: none;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 8px 24px;
+      font-size: 0.75rem;
+      color: #1e3a5f;
+      user-select: none;
+    }
+
+    .info-item p.label {
+      font-weight: 800;
+      margin: 0 0 4px 0;
+    }
+
+    .info-item p.label.underline {
+      text-decoration: underline;
+    }
+
+    .info-item p.value {
+      margin: 0;
+      word-break: break-word;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      aside {
+        width: 100%;
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 12px 0;
+      }
+
+      aside img.logo {
+        display: none;
+      }
+
+      nav {
+        padding: 0;
+      }
+
+      nav ul {
+        display: flex;
+        gap: 16px;
+      }
+
+      nav ul li {
+        margin-bottom: 0;
+      }
+
+      main {
+        max-width: 100%;
+        padding: 16px;
+      }
+
+      section.profile-summary,
+      section.personal-info {
+        max-width: 100%;
+      }
+
+      .info-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 8px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <img
+      src="https://placehold.co/120x60?text=KM+Logo&font=roboto+mono&bg=ffffff&fg=1e3a5f"
+      alt="KM Arts & Crafts Creation logo with letters K and M in navy blue and text Arts & Crafts Creation"
+      class="logo"
+      draggable="false"
+    />
+    <img
+      src="https://placehold.co/72x72/cccccc/cccccc?text=Profile+Image"
+      alt="Circular placeholder for user profile image in light gray"
+      class="profile-pic"
+      draggable="false"
+    />
+    <p class="profile-info">
+      Admin<br />
+      Username
+    </p>
+    <div class="status">
+      <span class="status-dot"></span>Status: Online
+    </div>
+    <nav>
+      <p class="menu-title">Menu</p>
+      <ul>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Orders</a></li>
+        <li><a href="#">Deliveries</a></li>
+        <li><a href="#">Inventory</a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
+    </nav>
+  </aside>
+  <main>
+    <h2>My Profile</h2>
+    <section class="profile-summary">
+      <img
+        src="https://placehold.co/64x64/cccccc/cccccc?text=Profile+Image"
+        alt="Circular placeholder for user profile image in light gray"
+        draggable="false"
+      />
+      <div class="user-info">
+        <p class="username">Username</p>
+        <p class="role">Admin</p>
+        <p class="email">Email</p>
+      </div>
+    </section>
+    <section class="personal-info">
+      <h3>Personal Information</h3>
+      <div class="info-grid">
+        <div class="info-item">
+          <p class="label">First Name</p>
+          <p class="value">Von</p>
+        </div>
+        <div class="info-item">
+          <p class="label">Last Name</p>
+          <p class="value">Malingin</p>
+        </div>
+        <div class="info-item">
+          <p class="label">Date Of Birth</p>
+          <p class="value">01 - 24 -2000</p>
+        </div>
+        <div class="info-item">
+          <p class="label underline">Email Address</p>
+          <p class="value">sample@gmail.com</p>
+        </div>
+        <div class="info-item">
+          <p class="label">User Role</p>
+          <p class="value">Admin</p>
+        </div>
+        <div class="info-item">
+          <p class="label">Phone</p>
+          <p class="value">099</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

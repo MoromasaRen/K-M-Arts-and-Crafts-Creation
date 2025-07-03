@@ -1,0 +1,327 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@700&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap");
+
+    body {
+      margin: 0;
+      background-color: #d1e3fb;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      min-height: 100vh;
+      color: #0f2a4a;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    /* Sidebar */
+    aside {
+      background-color: white;
+      width: 224px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    /* Logo */
+    .logo-container {
+      width: 100%;
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+    .logo-main {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Montserrat Alternates', serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: #0f2a4a;
+      letter-spacing: 0.1em;
+      line-height: 1;
+    }
+    .logo-main .m-letter {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .logo-sub {
+      font-family: 'Montserrat Alternates', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 12px;
+      color: #0f2a4a;
+      margin-left: 40px;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    /* Profile */
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .profile-pic {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #d1d5db;
+      margin-bottom: 8px;
+    }
+    .profile-text {
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1;
+      margin: 0;
+    }
+    .profile-status {
+      display: flex;
+      align-items: center;
+      font-weight: 400;
+      font-size: 12px;
+      margin-top: 4px;
+      color: #0f2a4a;
+    }
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    /* Menu */
+    nav {
+      width: 100%;
+      padding: 0 24px;
+      box-sizing: border-box;
+    }
+    nav > p {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 16px;
+      color: #0f2a4a;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      color: #0f2a4a;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+    }
+    nav ul li {
+      margin-bottom: 12px;
+    }
+    nav ul li:last-child {
+      margin-top: 24px;
+      margin-bottom: 0;
+    }
+    nav ul li a {
+      color: #0f2a4a;
+      text-decoration: none;
+      display: block;
+    }
+
+    /* Main content */
+    main {
+      flex-grow: 1;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+      color: #0f2a4a;
+    }
+    .menu-button {
+      font-size: 24px;
+      margin-right: 16px;
+      background: none;
+      border: none;
+      color: #0f2a4a;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .dashboard-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      border-bottom: 2px solid #0f2a4a;
+      padding-bottom: 4px;
+      margin: 0;
+    }
+
+    /* Cards container */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      max-width: 640px;
+    }
+    .card {
+      background-color: #e6ecf7;
+      padding: 24px;
+      box-shadow: 0 4px 6px rgb(0 0 0 / 0.1);
+      box-sizing: border-box;
+      color: #2f2a29;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      line-height: 1.2;
+    }
+    .card-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+      color: #2f2a29;
+    }
+    .card-number {
+      font-weight: 700;
+      font-size: 14px;
+      margin-left: 4px;
+    }
+    .card-info {
+      font-weight: 400;
+      font-size: 10px;
+      margin-top: 4px;
+      color: #2f2a29;
+    }
+    .card-deliveries,
+    .card-inventory {
+      letter-spacing: 0.1em;
+    }
+    .card-inventory {
+      white-space: pre-line;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      aside {
+        width: 160px;
+        padding: 16px 0;
+      }
+      .logo-main {
+        font-size: 18px;
+      }
+      .logo-main .m-letter {
+        font-size: 16px;
+      }
+      .logo-sub {
+        font-size: 10px;
+        margin-left: 32px;
+      }
+      .profile-pic {
+        width: 48px;
+        height: 48px;
+      }
+      nav {
+        padding: 0 16px;
+      }
+      nav > p {
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      nav ul {
+        font-size: 12px;
+      }
+      main {
+        padding: 16px;
+      }
+      .dashboard-title {
+        font-size: 16px;
+      }
+      .cards {
+        max-width: 100%;
+        gap: 16px;
+      }
+      .card {
+        padding: 16px;
+        font-size: 12px;
+      }
+      .card-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+      .card-info {
+        font-size: 8px;
+      }
+    }
+  </style>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
+</head>
+<body>
+  <aside>
+    <div class="logo-container">
+      <div class="logo-main">
+        <span>K</span>
+        <span>
+          <span class="m-letter">M</span>
+          <span style="font-style: italic; font-size: 12px; margin-left: 4px; letter-spacing: 0.1em;">ARTS &amp; CRAFTS</span>
+        </span>
+      </div>
+      <div class="logo-sub">creation</div>
+    </div>
+
+    <div class="profile">
+      <div class="profile-pic"></div>
+      <p class="profile-text">Admin</p>
+      <p class="profile-text">Username</p>
+      <p class="profile-status">
+        <span class="status-dot"></span>Status: Online
+      </p>
+    </div>
+
+    <nav>
+      <p>Menu</p>
+      <ul>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Orders</a></li>
+        <li><a href="#">Deliveries</a></li>
+        <li><a href="#">Inventory</a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="header">
+      <button class="menu-button" aria-label="Menu"><i class="fas fa-bars"></i></button>
+      <h1 class="dashboard-title">Dashboard</h1>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-box-open"></i></div>
+        <p>New Orders: <span class="card-number">10</span></p>
+        <p class="card-info">More Info</p>
+      </div>
+      <div class="card card-deliveries">
+        <p>Deliveries: <span class="card-number">10</span></p>
+        <p class="card-info">More Info</p>
+      </div>
+      <div class="card card-inventory">
+        Inventory<br />Status: Good
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Sidebar Menu</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      color: #1f2a44;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    aside {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .logo {
+      width: 130px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .profile-pic {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #d1d1d1;
+    }
+
+    .profile-info {
+      margin-top: 8px;
+    }
+
+    .admin {
+      font-weight: 700;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .username {
+      font-weight: 800;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .status {
+      font-weight: 600;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 0 0 0;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #16a34a; /* green */
+      display: inline-block;
+    }
+
+    nav {
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: #1f2a44;
+    }
+
+    nav > p {
+      font-weight: 700;
+      margin: 0 0 12px 0;
+    }
+
+    nav a {
+      display: block;
+      padding-left: 16px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      color: #1f2a44;
+    }
+
+    nav a:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <img
+      src="https://storage.googleapis.com/a1aa/image/5568a241-e142-4a35-dc41-802fa7f6a897.jpg"
+      alt="Logo text KM Arts and Crafts Creation in navy blue serif font"
+      class="logo"
+      width="130"
+      height="40"
+    />
+    <div class="profile-section">
+      <div class="profile-pic"></div>
+      <div class="profile-info">
+        <p class="admin">Admin</p>
+        <p class="username">Username</p>
+        <p class="status">
+          <span class="status-dot"></span>
+          <span>Status: Online</span>
+        </p>
+      </div>
+    </div>
+    <nav>
+      <p>Menu</p>
+      <a href="#">Dashboard</a>
+      <a href="#">Orders</a>
+      <a href="#">Deliveries</a>
+      <a href="#">Inventory</a>
+      <p style="margin-top: 24px;">Profile</p>
+    </nav>
+  </aside>
+</body>
+</html>
