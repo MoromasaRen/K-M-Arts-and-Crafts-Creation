@@ -52,11 +52,21 @@
         color: black;
         text-decoration: none;
         cursor: pointer;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: background-color 0.2s ease, color 0.2s ease;
       }
 
       nav a:hover {
-        text-decoration: underline;
+        background-color: #bfdbfe; /* light blue */
+        color: #1e40af; /* dark blue */
       }
+
+      nav a.active {
+        background-color: #bfdbfe; /* same as hover */
+        color: #1e40af;
+      }
+    
 
       /* Center content */
       .center-content {
