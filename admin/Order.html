@@ -1,206 +1,138 @@
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Orders Page</title>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Orders
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+   @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #d3e4fd;
-      display: flex;
-      min-height: 100vh;
-    }
-    aside {
-      background-color: white;
-      width: 224px; /* 56 * 4 */
-      padding: 24px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      user-select: none;
-      box-sizing: border-box;
-    }
-    aside img.logo {
-      width: 120px;
-      height: auto;
-    }
-    aside img.profile {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background-color: #d3d3d3;
-      object-fit: cover;
-    }
-    .profile-info {
-      text-align: center;
-      font-weight: 600;
-      font-size: 13px;
-      line-height: 1.2;
-      color: #1a1a1a;
-      margin-bottom: 8px;
-    }
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 9px;
-      font-weight: 400;
-      color: #1a1a1a;
-    }
-    .status .dot {
-      width: 12px;
-      height: 12px;
-      background-color: #059669; /* green-600 */
-      border-radius: 50%;
-    }
-    nav {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      font-weight: 600;
-      font-size: 13px;
-      color: #1a1a1a;
-      width: 100%;
-      padding-left: 24px;
-      box-sizing: border-box;
-    }
-    nav a {
-      text-decoration: none;
-      color: #1a1a1a;
-      cursor: pointer;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    main {
-      flex-grow: 1;
-      padding: 24px;
-      box-sizing: border-box;
-    }
-    h2 {
-      font-weight: 600;
-      font-size: 15px;
-      margin: 0 0 12px 0;
-      color: #1a1a1a;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11px;
-      color: #1a1a1a;
-      background-color: white;
-      border: 1px solid #d1d5db; /* gray-300 */
-      box-sizing: border-box;
-    }
-    thead tr {
-      background-color: white;
-      border-bottom: 1px solid #d1d5db;
-    }
-    thead th {
-      border: 1px solid #d1d5db;
-      padding: 4px 8px;
-      text-align: left;
-      font-weight: 600;
-    }
-    tbody tr {
-      height: 32px;
-      border-bottom: 1px solid #d1d5db;
-      background-color: white;
-    }
-    tbody td {
-      border: 1px solid #d1d5db;
-      padding: 0;
-    }
-    tbody tr td[colspan] {
-      border: none;
-    }
-    @media (max-width: 640px) {
-      body {
-        flex-direction: column;
-      }
-      aside {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 12px 0;
-      }
-      nav {
-        flex-direction: row;
-        gap: 16px;
-        padding-left: 0;
-        font-size: 11px;
-      }
-      main {
-        padding: 12px;
-      }
-      table {
-        font-size: 9px;
-      }
+      font-family: "Roboto Mono", monospace;
     }
   </style>
-</head>
-<body>
-  <aside>
-    <img
-      src="https://storage.googleapis.com/a1aa/image/a118a435-d7d6-41ab-dfa7-b02bc267193e.jpg"
-      alt="K and M Arts and Crafts Creation logo with serif style text in navy blue"
-      class="logo"
-      width="120"
-      height="60"
-    />
-    <div>
-      <img
-        src="https://storage.googleapis.com/a1aa/image/9fb78cf6-69ed-4732-0d05-41fa228cca3b.jpg"
-        alt="Round placeholder profile image with light gray background"
-        class="profile"
-        width="80"
-        height="80"
-      />
-      <div class="profile-info">
-        <p>Admin</p>
-        <p>Username</p>
-      </div>
-      <div class="status">
-        <div class="dot"></div>
-        <p>Status: <span style="font-weight: 600;">Online</span></p>
-      </div>
+ </head>
+ <body class="bg-[#d3e1f9] min-h-screen flex">
+  <!-- Sidebar -->
+  <aside class="bg-white w-300 flex flex-col items-center py-6 border-r border-gray-500">
+   <img alt="KM Arts &amp; Crafts Creation logo with text" class="mb-8" height="300" src="/assets/Logo.png" width="320"/>
+   <div class="flex flex-col items-center mb-6">
+    <div class="w-20 h-20 rounded-full bg-gray-600 mb-2">
     </div>
-    <nav>
-      <a href="#">Menu</a>
-      <a href="#">Dashboard</a>
-      <a href="#">Orders</a>
-      <a href="#">Deliveries</a>
-      <a href="#">Inventory</a>
-      <a href="#">Profile</a>
-    </nav>
+    <div class="text-center font-extrabold text-[#0f2e4d] text-base leading-tight">
+     Admin
+     <br/>
+     Username
+    </div>
+    <div class="flex items-center text-xs text-black mt-1">
+     <div class="w-3 h-3 rounded-full bg-lime-500 mr-1">
+     </div>
+     <span>
+      Status: Online
+     </span>
+    </div>
+    <div class="border-b border-gray-300 w-full mt-4">
+    </div>
+   </div>
+   <nav class="w-full px-6 text-[#0f2e4d] font-extrabold text-sm leading-5">
+    <ul class="space-y-3">
+     <li class="pl-1 cursor-pointer hover:underline">
+      Menu
+     </li>
+     <li class="pl-4 cursor-pointer hover:underline">
+      Dashboard
+     </li>
+     <li class="pl-4 cursor-pointer underline">
+      Orders
+     </li>
+     <li class="pl-4 cursor-pointer hover:underline">
+      Deliveries
+     </li>
+     <li class="pl-4 cursor-pointer hover:underline">
+      Inventory
+     </li>
+     <li class="mt-6 cursor-pointer hover:underline">
+      Profile
+     </li>
+    </ul>
+   </nav>
   </aside>
-  <main>
-    <h2>Orders</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Item ID</th>
-          <th>User ID</th>
-          <th>Order Details</th>
-          <th>Order Date</th>
-          <th>Total Amount</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="7"></td></tr>
-        <tr><td colspan="7"></td></tr>
-        <tr><td colspan="7"></td></tr>
-        <tr><td colspan="7"></td></tr>
-        <tr><td colspan="7"></td></tr>
-        <tr><td colspan="7"></td></tr>
-        <tr><td colspan="7"></td></tr>
-      </tbody>
-    </table>
+  <!-- Main content -->
+  <main class="flex-1 p-6">
+   <div class="flex items-center mb-4 text-[#0f2e4d]">
+    <button aria-label="Menu" class="text-2xl mr-3">
+     <i class="fas fa-bars">
+     </i>
+    </button>
+    <h2 class="font-extrabold text-sm leading-5 border-b border-[#0f2e4d] pb-1">
+     Orders
+    </h2>
+   </div>
+   <table class="w-full bg-white rounded-md shadow-md text-xs text-[#0f2e4d] border-separate border-spacing-0.5">
+    <thead>
+     <tr>
+      <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">
+       Order ID
+      </th>
+      <th class="text-left font-extrabold px-2 py-1">
+       Item ID
+      </th>
+      <th class="text-left font-extrabold px-2 py-1">
+       User ID
+      </th>
+      <th class="text-left font-extrabold px-2 py-1">
+       Order Details
+      </th>
+      <th class="text-left font-extrabold px-2 py-1">
+       Order Date
+      </th>
+      <th class="text-left font-extrabold px-2 py-1">
+       Total Amount
+      </th>
+      <th class="text-left font-extrabold px-2 py-1">
+       Status
+      </th>
+      <th class="rounded-tr-md">
+      </th>
+     </tr>
+    </thead>
+    <tbody>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+     <tr class="border-t border-gray-200 h-10">
+     </tr>
+    </tbody>
+   </table>
+   <div class="mt-4 space-x-3">
+    <button class="bg-lime-400 text-white font-extrabold text-xs rounded px-3  py-1 shadow-md">
+     Create
+    </button>
+    <button class="bg-amber-300 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">
+     Update
+    </button>
+    <button class="bg-rose-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">
+     Delete
+    </button>
+   </div>
   </main>
-</body>
+ </body>
 </html>
