@@ -5,7 +5,8 @@
   <title>
    Cart Page
   </title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&amp;family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+
   <style>
    /* Reset and base */
     * {
@@ -13,21 +14,18 @@
     }
     body {
       margin: 0;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       background-color: #1c2f4a;
       color: #1c2f4a;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-    }
+    } 
     a {
       text-decoration: none;
       color: #1c2f4a;
       font-weight: 700;
       font-size: 0.875rem;
-    }
-    a:hover {
-      text-decoration: underline;
     }
     button {
       cursor: pointer;
@@ -41,13 +39,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1rem 1.5rem;
+      padding: 16px 32px;
+      gap: 16px;
+      flex-wrap: wrap;
     }
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    .logo-container img {
+      width: 240px;
+      height: auto;
+      object-fit: contain;
     }
+
     .logo-font {
       font-family: 'Playfair Display', serif;
       font-weight: 700;
@@ -70,18 +71,22 @@
       user-select: none;
       margin-top: 0.1rem;
     }
-    nav {
-      display: none;
-      gap: 1.5rem;
-      font-weight: 700;
-      font-size: 0.875rem;
-      color: #1c2f4a;
+    nav a {
+      color: #1a2e4a;
+      text-decoration: none;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      transition: background-color 0.3s ease;
     }
+
+    nav a:hover,
     nav a.active {
-      background-color: #c7d9f7;
-      border-radius: 0.375rem;
-      padding: 0.25rem 0.75rem;
+      background-color: #c7d9f9;
+      color: #1a2e4a;
     }
+
     .profile-circle {
       width: 3rem;
       height: 3rem;
@@ -313,24 +318,19 @@
  <body>
   <header>
    <div class="logo-container" aria-label="Logo with letters K and M and flower">
-    <span class="logo-font" aria-hidden="true">K</span>
-    <img alt="Decorative flower logo with pink flower and leaves" height="40" src="https://storage.googleapis.com/a1aa/image/12b463b9-755a-466a-b131-1673a32c3b66.jpg" width="40"/>
-    <span class="logo-font" aria-hidden="true">M</span>
-    <div>
-     <div class="logo-subtext">ARTS &amp; CRAFTS</div>
-     <div class="logo-subtext logo-subtext-small">c r e a t i o n</div>
-    </div>
+    <img src="../../assets/Logo.png" alt="KM Logo" class="logo" />
    </div>
-   <nav aria-label="Primary navigation">
-    <li><a href="#" class="home">Home</a></li>
-    <li><a href="#">Shop</a></li>
-    <li><a href="#">Contact</a></li>
-    <li><a href="#">About Us</a></li>
-    <li><a href="#">Order Process</a></li>
-    <li><a href="#">Gallery & Reviews</a></li>
-    <li><a href="#">Cart</a></li>
-    <a class="active" aria-current="page" href="#">Cart</a>
-   </nav>
+      <nav aria-label="Primary navigation">
+        <ul style="display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0;">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Shop</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Order Process</a></li>
+          <li><a href="#">Gallery & Reviews</a></li>
+          <li><a href="#" class="active">Cart</a></li>
+        </ul>
+      </nav>
    <div class="profile-circle" aria-label="User profile placeholder circle"></div>
   </header>
   <section class="progress-bar" aria-label="Checkout progress">
