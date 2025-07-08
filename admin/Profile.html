@@ -1,333 +1,183 @@
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Profile Page</title>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Profile
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
-
+   @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
     body {
       font-family: "Roboto Mono", monospace;
-      background-color: #d6e3fb;
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    /* Sidebar */
-    aside {
-      background-color: white;
-      width: 224px;
-      min-height: 100vh;
-      border-right: 1px solid #e5e7eb;
-      padding-top: 24px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    aside img.logo {
-      margin-bottom: 24px;
-      width: 120px;
-      height: 60px;
-      object-fit: contain;
-    }
-
-    .profile-pic {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background-color: #d1d5db;
-      margin-bottom: 8px;
-      object-fit: cover;
-    }
-
-    .profile-info {
-      text-align: center;
-      font-weight: 800;
-      font-size: 0.875rem;
-      line-height: 1.25rem;
-      color: #1e3a5f;
-      margin-bottom: 4px;
-      user-select: none;
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      font-size: 0.75rem;
-      color: #374151;
-      user-select: none;
-    }
-
-    .status-dot {
-      width: 12px;
-      height: 12px;
-      background-color: #16a34a;
-      border-radius: 50%;
-      margin-right: 4px;
-    }
-
-    nav {
-      width: 100%;
-      padding: 0 24px;
-      box-sizing: border-box;
-    }
-
-    nav p.menu-title {
-      font-weight: 800;
-      font-size: 1rem;
-      color: #1e3a5f;
-      margin-bottom: 16px;
-      user-select: none;
-    }
-
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    nav ul li {
-      margin-bottom: 12px;
-    }
-
-    nav ul li a {
-      font-weight: 800;
-      font-size: 0.875rem;
-      color: #1e3a5f;
-      text-decoration: none;
-      user-select: none;
-      display: block;
-    }
-
-    nav ul li a:hover {
-      text-decoration: underline;
-    }
-
-    /* Main content */
-    main {
-      flex: 1;
-      padding: 24px;
-      box-sizing: border-box;
-      min-width: 0;
-      max-width: calc(100% - 224px);
-    }
-
-    h2 {
-      font-weight: 800;
-      font-size: 1rem;
-      color: #1e3a5f;
-      margin: 0 0 16px 0;
-      text-decoration: underline;
-      text-underline-offset: 4px;
-      text-decoration-thickness: 2px;
-      user-select: none;
-    }
-
-    section.profile-summary {
-      background-color: #d9e2f9;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      padding: 16px;
-      margin-bottom: 24px;
-      max-width: 768px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      box-sizing: border-box;
-    }
-
-    section.profile-summary img {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background-color: #d1d5db;
-      object-fit: cover;
-      user-select: none;
-    }
-
-    section.profile-summary .user-info p {
-      margin: 0;
-      color: #1e3a5f;
-      user-select: none;
-    }
-
-    section.profile-summary .user-info p.username {
-      font-weight: 800;
-      font-size: 1.125rem;
-      line-height: 1.25rem;
-    }
-
-    section.profile-summary .user-info p.role,
-    section.profile-summary .user-info p.email {
-      font-size: 0.75rem;
-      line-height: 1rem;
-    }
-
-    section.personal-info {
-      background-color: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      padding: 16px;
-      max-width: 768px;
-      box-sizing: border-box;
-    }
-
-    section.personal-info h3 {
-      font-weight: 800;
-      font-size: 0.875rem;
-      color: #1e3a5f;
-      margin: 0 0 12px 0;
-      user-select: none;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 8px 24px;
-      font-size: 0.75rem;
-      color: #1e3a5f;
-      user-select: none;
-    }
-
-    .info-item p.label {
-      font-weight: 800;
-      margin: 0 0 4px 0;
-    }
-
-    .info-item p.label.underline {
-      text-decoration: underline;
-    }
-
-    .info-item p.value {
-      margin: 0;
-      word-break: break-word;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      aside {
-        width: 100%;
-        min-height: auto;
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 12px 0;
-      }
-
-      aside img.logo {
-        display: none;
-      }
-
-      nav {
-        padding: 0;
-      }
-
-      nav ul {
-        display: flex;
-        gap: 16px;
-      }
-
-      nav ul li {
-        margin-bottom: 0;
-      }
-
-      main {
-        max-width: 100%;
-        padding: 16px;
-      }
-
-      section.profile-summary,
-      section.personal-info {
-        max-width: 100%;
-      }
-
-      .info-grid {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 8px 12px;
-      }
     }
   </style>
-</head>
-<body>
-  <aside>
-    <img
-      src="https://placehold.co/120x60?text=KM+Logo&font=roboto+mono&bg=ffffff&fg=1e3a5f"
-      alt="KM Arts & Crafts Creation logo with letters K and M in navy blue and text Arts & Crafts Creation"
-      class="logo"
-      draggable="false"
-    />
-    <img
-      src="https://placehold.co/72x72/cccccc/cccccc?text=Profile+Image"
-      alt="Circular placeholder for user profile image in light gray"
-      class="profile-pic"
-      draggable="false"
-    />
-    <p class="profile-info">
-      Admin<br />
-      Username
-    </p>
-    <div class="status">
-      <span class="status-dot"></span>Status: Online
+ </head>
+ <body class="bg-[#d3e1f9] min-h-screen flex">
+  <!-- Sidebar -->
+  <aside class="bg-white w-[350px] flex flex-col p-6">
+    <div class="mb-6">
+     <img alt="Logo K and M Arts and Crafts" class="w-[300px] h-[100px] object-contain" height="50" src="/assets/Logo.png" width="150"/>
     </div>
-    <nav>
-      <p class="menu-title">Menu</p>
-      <ul>
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Orders</a></li>
-        <li><a href="#">Deliveries</a></li>
-        <li><a href="#">Inventory</a></li>
-        <li><a href="#">Profile</a></li>
-      </ul>
-    </nav>
+    <div class="flex items-center space-x-4 mb-4">
+     <img alt="Circular placeholder for user profile picture in light gray" class="w-20 h-20 rounded-full" height="64" src="/assets/pfp.jpg" width="64"/>
+     <div class="text-lg font-bold leading-tight">
+      <p class="text-[#0f2e4d]">
+       Admin
+      </p>
+      <p class="text-[#0f2e4d]">
+       Username
+      </p>
+      <div class="flex items-center space-x-1 text-xs font-normal">
+       <span class="w-3 h-3 rounded-full bg-lime-500 inline-block">
+       </span>
+       <span class="text-[#0f2e4d]">
+        Status:
+        <span class="font-normal">
+         Online
+        </span>
+       </span>
+      </div>
+     </div>
+    </div>
+    <hr class="border-gray-500 mb-6"/>
+    <nav class="flex flex-col space-y-3 text-lg font-bold text-[#0f2e4d] tracking-wide">
+      <a class="pl-1 cursor-pointer hover:underline" href="/admin/menu.html">Menu</a>
+      <a class="pl-4 cursor-pointer hover:underline" href="/admin/Dashboard.html">Dashboard</a>
+      <a class="pl-4 cursor-pointer hover:underline" href="/admin/Order.html">Orders</a>
+      <a class="pl-4 cursor-pointer hover:underline" href="/admin/Delivery.html">Deliveries</a>
+      <a class="pl-4 cursor-pointer hover:underline" href="/admin/Inventory.html">Inventory</a>
+      <a class="mt-6 cursor-pointer underline" href="/admin/Profile.html">Profile</a>
+    </ul>
+   </nav>
   </aside>
-  <main>
-    <h2>My Profile</h2>
-    <section class="profile-summary">
-      <img
-        src="https://placehold.co/64x64/cccccc/cccccc?text=Profile+Image"
-        alt="Circular placeholder for user profile image in light gray"
-        draggable="false"
-      />
-      <div class="user-info">
-        <p class="username">Username</p>
-        <p class="role">Admin</p>
-        <p class="email">Email</p>
+  <!-- Main content -->
+  <main class="flex-1 p-6 text-[#1a1a1a]">
+    <header class="mb-6">
+     <button aria-label="Menu" class="text-[#1a1a1a] text-xl">
+      <i class="fas fa-bars">
+      </i>
+     </button>
+    </header>
+    <section>
+     <h2 class="font-bold text-base tracking-widest mb-2 border-b border-[#1a1a1a] pb-1">
+      My Profile
+     </h2>
+     <div class="space-y-4">
+      <!-- User Info -->
+      <div class="bg-[#e3ebf9] rounded-md p-4 shadow-md flex items-center space-x-6">
+       <img alt="Circular placeholder for user profile picture in light gray" class="w-16 h-16 rounded-full" height="64" src="https://storage.googleapis.com/a1aa/image/5aef4e14-56b1-4cff-217b-674273c485a0.jpg" width="64"/>
+       <div>
+        <p class="font-bold text-lg tracking-wide">
+         Username
+        </p>
+        <p class="text-xs font-normal">
+         Admin
+        </p>
+        <p class="text-xs font-normal">
+         Address
+        </p>
+       </div>
       </div>
-    </section>
-    <section class="personal-info">
-      <h3>Personal Information</h3>
-      <div class="info-grid">
-        <div class="info-item">
-          <p class="label">First Name</p>
-          <p class="value">Von</p>
-        </div>
-        <div class="info-item">
-          <p class="label">Last Name</p>
-          <p class="value">Malingin</p>
-        </div>
-        <div class="info-item">
-          <p class="label">Date Of Birth</p>
-          <p class="value">01 - 24 -2000</p>
-        </div>
-        <div class="info-item">
-          <p class="label underline">Email Address</p>
-          <p class="value">sample@gmail.com</p>
-        </div>
-        <div class="info-item">
-          <p class="label">User Role</p>
-          <p class="value">Admin</p>
-        </div>
-        <div class="info-item">
-          <p class="label">Phone</p>
-          <p class="value">099</p>
-        </div>
+      <!-- Personal Information -->
+      <div class="bg-[#e3ebf9] rounded-md p-4 shadow-md relative grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
+       <div class="col-span-full flex justify-between items-center mb-2">
+        <p class="font-bold text-sm tracking-widest">
+         Personal Information
+        </p>
+        <button class="bg-[#f4c7c7] text-[#a94442] text-xs font-semibold px-3 py-1 rounded-md">
+         Edit
+        </button>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         First Name
+        </p>
+        <p class="font-bold text-sm">
+         Von
+        </p>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         Last Name
+        </p>
+        <p class="font-bold text-sm">
+         Malingin
+        </p>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         Date Of Birth
+        </p>
+        <p class="font-bold text-sm">
+         01 - 24 -2000
+        </p>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         Phone
+        </p>
+        <p class="font-bold text-sm">
+         099
+        </p>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         Email Address
+        </p>
+        <p class="font-bold text-sm underline">
+         sample@gmail.com
+        </p>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         User Role
+        </p>
+        <p class="font-bold text-sm">
+         Admin
+        </p>
+       </div>
       </div>
+      <!-- Address -->
+      <div class="bg-[#e3ebf9] rounded-md p-4 shadow-md relative grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
+       <div class="col-span-full flex justify-between items-center mb-2">
+        <p class="font-bold text-sm tracking-widest">
+         Address
+        </p>
+        <button class="bg-[#f4c7c7] text-[#a94442] text-xs font-semibold px-3 py-1 rounded-md">
+         Edit
+        </button>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         Country
+        </p>
+        <p class="font-bold text-sm">
+         Philippines
+        </p>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         City
+        </p>
+        <p class="font-bold text-sm">
+         Cebu
+        </p>
+       </div>
+       <div>
+        <p class="text-xs font-semibold tracking-widest">
+         Postal Code
+        </p>
+        <p class="font-bold text-sm">
+         6000
+        </p>
+       </div>
+      </div>
+     </div>
     </section>
-  </main>
-</body>
+   </main>
+  </div>
+ </body>
 </html>
