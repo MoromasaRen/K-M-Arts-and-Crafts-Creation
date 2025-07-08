@@ -1,187 +1,94 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Login Page</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      margin: 0;
-      background-color: #cce3ff;
-      font-family: 'Roboto Mono', monospace;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      position: relative;
-    }
-    a.back-link {
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      color: black;
-      font-weight: 600;
-      font-size: 14px;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      user-select: none;
-    }
-    a.back-link span.arrow {
-      font-size: 20px;
-      line-height: 1;
-      margin-right: 4px;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      width: 100%;
-      max-width: 320px;
-      padding: 0 12px;
-    }
-    .logo {
-      width: 500px;
-      height: 100px;
-      object-fit: contain;
-    }
-    form {
-      background-color: white;
-      border: 1px solid #d1d5db; /* gray-300 */
-      border-radius: 12px;
-      padding: 24px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    h2 {
-      color: #1e3a5f;
-      font-weight: 600;
-      font-size: 18px;
-      letter-spacing: 0.05em;
-      margin: 0 0 16px 0;
-      text-align: center;
-    }
-    label {
-      display: block;
-      font-size: 10px;
-      font-weight: 600;
-      color: black;
-      margin-bottom: 4px;
-    }
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      border: 1px solid black;
-      border-radius: 6px;
-      padding: 6px 8px;
-      font-size: 14px;
-      box-sizing: border-box;
-      margin-bottom: 12px;
-      outline: none;
-      transition: box-shadow 0.2s ease;
-    }
-    input[type="email"]:focus,
-    input[type="password"]:focus {
-      box-shadow: 0 0 0 2px #1e3a5f;
-      border-color: #1e3a5f;
-    }
-    .options {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9px;
-      font-weight: 600;
-      color: black;
-      margin-bottom: 12px;
-    }
-    .options label {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-    }
-    .options input[type="checkbox"] {
-      width: 12px;
-      height: 12px;
-      border: 1px solid black;
-      margin: 0;
-      cursor: pointer;
-    }
-    .forgot-password {
-      color: #1e3a5f;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .forgot-password:hover {
-      text-decoration: underline;
-    }
-    .create-account-text {
-      font-size: 9px;
-      font-weight: 600;
-      color: black;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-    .create-account-text a {
-      color: #1e3a5f;
-      font-weight: 600;
-      text-decoration: none;
-    }
-    .create-account-text a:hover {
-      text-decoration: underline;
-    }
-    button {
-      width: 100%;
-      background-color: #1e3a5f;
-      color: white;
-      font-size: 11px;
-      font-weight: 600;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 0;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-    button:hover {
-      background-color: #16305a;
-    }
-    @media (max-width: 360px) {
-      .container {
-        max-width: 100%;
-        padding: 0 8px;
-      }
-      form {
-        padding: 20px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <a href="#" class="back-link"><span class="arrow">←</span><span>Back</span></a>
-  <div class="container">
-    <img
-      src="/assets/Logo.png"
-      alt="Logo with letters K and M decorated with leaves and a bird, text below says ARTS & CRAFTS CREATION in uppercase serif font, navy blue color"
-      class="logo"
-      width="200"
-      height="200"
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Page</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"
+      rel="stylesheet"
     />
-    <form autocomplete="off">
-      <h2>Login</h2>
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" />
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" />
-      <div class="options">
-        <label><input type="checkbox" name="remember" />Remember me</label>
-        <a href="#" class="forgot-password">Forgot Password?</a>
-      </div>
-      <p class="create-account-text">
-        Don't have an account? <a href="#">Create account</a>
-      </p>
-      <button type="submit">Login</button>
-    </form>
-  </div>
-</body>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "Roboto Mono", monospace;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-[#D5E7FF] min-h-screen flex items-center justify-center relative px-4"
+  >
+    <a
+      href="#"
+      class="absolute top-6 left-6 text-black font-semibold text-sm flex items-center select-none"
+    >
+      <span class="text-lg mr-1">←</span>
+      <span>Back</span>
+    </a>
+
+    <div class="flex flex-col items-center gap-6 w-full max-w-xs">
+      <img
+        src="/assets/Logo2.png"
+        alt="Logo with letters K and M decorated with leaves and a bird, text below says ARTS & CRAFTS CREATION"
+        class="w-[550px] h-[110px] object-contain"
+      />
+
+      <form
+        autocomplete="off"
+        class="bg-white border border-gray-300 rounded-xl p-6 w-full"
+      >
+        <h2
+          class="text-[#1e3a5f] text-lg font-bold tracking-wide text-center mb-4"
+        >
+          Login
+        </h2>
+
+        <label for="email" class="text-xs font-semibold text-black mb-1 block"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="w-full border border-black rounded-md px-2 py-1.5 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]"
+        />
+
+        <label
+          for="password"
+          class="text-xs font-semibold text-black mb-1 block"
+          >Password</label
+        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="w-full border border-black rounded-md px-2 py-1.5 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]"
+        />
+
+        <div
+          class="flex justify-between items-center text-[10px] font-semibold text-black mb-3"
+        >
+          <label class="flex items-center gap-1 cursor-pointer">
+            <input type="checkbox" class="w-3 h-3 border border-black" />
+            Remember me
+          </label>
+          <a href="#" class="text-[#1e3a5f] hover:underline"
+            >Forgot Password?</a
+          >
+        </div>
+
+        <p class="text-[10px] font-semibold text-black text-center mb-3">
+          Don't have an account?
+          <a href="#" class="text-[#1e3a5f] hover:underline">Create account</a>
+        </p>
+
+        <button
+          type="submit"
+          class="w-full bg-[#1e3a5f] text-white text-xs font-semibold py-2 rounded-md hover:bg-[#16305a] transition-colors"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </body>
 </html>
