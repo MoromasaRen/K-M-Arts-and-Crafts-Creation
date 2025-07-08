@@ -33,7 +33,10 @@
       align-items: center;
       padding: 24px;
       gap: 24px;
+      /* height: ; */
     }
+
+    
 
     /* Left nav */
     nav {
@@ -74,8 +77,9 @@
     }
 
     .logo-img {
-      width: 60px;
-      height: 40px;
+      width: 240px;
+      height: 100px;
+      
       object-fit: contain;
     }
 
@@ -181,6 +185,7 @@
 <body>
   <div class="container" role="main">
     <nav aria-label="Main navigation">
+      <a href="#">Menu</a>
       <a href="#">Dashboard</a>
       <a href="#">Orders</a>
       <a href="#">Deliveries</a>
@@ -190,16 +195,13 @@
     <div class="center-content">
       <div class="logo-container" aria-label="Company logo">
         <img
-          src="https://placehold.co/60x40?text=KM+Logo&bg=2c3e50&fg=ffffff"
+          src="/assets/Logo.png"
           alt="Logo with letters K and M in dark blue with arts & crafts creation text"
           class="logo-img"
-          width="60"
-          height="40"
+          width="120"
+          height="80"
           />
-        <div class="logo-text">
-          <div>ARTS &amp; CRAFTS</div>
-          <div class="line2">c r e a t i o n</div>
-        </div>
+    
       </div>
       <img
         src="https://placehold.co/112x112/cccccc/cccccc"
@@ -217,6 +219,7 @@
     <div class="right-buttons">
       <button type="button" class="btn">Generate Report</button>
       <button type="button" class="btn">Schedule a delivery</button>
+      <button type="button" class="btn">Add to Inventory</button>
     </div>
   </div>
 </body>
