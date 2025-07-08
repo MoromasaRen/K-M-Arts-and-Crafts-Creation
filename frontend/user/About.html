@@ -60,14 +60,19 @@
       flex-wrap: wrap;
     }
 
-    nav a {
-      color: #1a2e4a;
-      text-decoration: none;
-    }
+      nav a {
+        color: #1a2e4a;
+        text-decoration: none;
+        padding: 4px 12px; /* ⬅️ consistent with hover */
+        border-radius: 6px; /* optional for rounder corners */
+        transition: background-color 0.3s ease;
+      }
 
-    nav a:hover {
-      text-decoration: underline;
-    }
+
+      nav a:hover {
+        background-color: #c7d9f9;
+        color: #1a2e4a;
+      }
     nav a.active {
       background-color: #c7d9f9;
       border-radius: 6px;
