@@ -1,148 +1,107 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>Create Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
       body {
-        margin: 0;
-        background-color: #d5e7ff;
-        font-family: "Poppins", sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        padding: 1.5rem;
-      }
-      a.back-link {
-        align-self: flex-start;
-        margin-bottom: 1.5rem;
-        color: black;
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        user-select: none;
-      }
-      a.back-link span.arrow {
-        font-weight: 700;
-        font-size: 1.125rem;
-        margin-right: 0.25rem;
-        line-height: 1;
-      }
-      img.logo {
-        margin-bottom: 1.5rem;
-        width: 500px;
-        height: 100px;
-        object-fit: contain;
-      }
-      form {
-        background-color: white;
-        border: 1px solid #9ca3af; /* gray-400 */
-        border-radius: 0.375rem;
-        padding: 1.5rem;
-        width: 100%;
-        max-width: 20rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-      h2 {
-        text-align: center;
-        color: #1a2a4a;
-        font-weight: 600;
-        font-size: 1.125rem;
-        margin-bottom: 1rem;
-        letter-spacing: 0.05em;
-        text-shadow: 0 1px 0 rgba(26, 42, 74, 0.7);
-      }
-      label {
-        display: block;
-        font-weight: 600;
-        font-size: 0.625rem;
-        color: #1a2a4a;
-        margin-bottom: 0.25rem;
-      }
-      input[type="text"],
-      input[type="email"],
-      input[type="password"] {
-        width: 100%;
-        border: 1px solid #9ca3af;
-        border-radius: 0.25rem;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        margin-bottom: 0.75rem;
-        outline: none;
-        box-sizing: border-box;
-        transition: box-shadow 0.2s ease;
-      }
-      input[type="text"]:focus,
-      input[type="email"]:focus,
-      input[type="password"]:focus {
-        box-shadow: 0 0 0 2px #1a2a4a;
-        border-color: #1a2a4a;
-      }
-      p.already-registered {
-        font-size: 0.5625rem;
-        color: #1a2a4a;
-        text-align: center;
-        margin-bottom: 0.5rem;
-      }
-      p.already-registered a {
-        color: #2563eb; /* blue-600 */
-        text-decoration: none;
-      }
-      p.already-registered a:hover {
-        text-decoration: underline;
-      }
-      button {
-        width: 100%;
-        background-color: #1a2a4a;
-        color: white;
-        font-weight: 600;
-        font-size: 0.625rem;
-        border: none;
-        border-radius: 0.25rem;
-        padding: 0.25rem 0;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-      }
-      button:hover {
-        background-color: #16243b;
+        font-family: "League Spartan", sans-serif;
       }
     </style>
   </head>
-  <body>
-    <a class="back-link" href="#">
-      <span class="arrow">←</span>
-      <span>Back</span>
+  <body
+    class="bg-[#d5e7ff] min-h-screen flex flex-col items-center justify-center p-6"
+  >
+
+    <a
+      href="/frontend/user/Home.html"
+      class="absolute top-6 left-6 text-black font-bold text-lg flex items-center gap-2 select-none"
+    >
+      <span class="text-2xl">←</span>
+      <span class="text-lg">Back</span>
     </a>
+
     <img
-      class="logo"
-      src="/assets/Logo2.png"
-      alt="K and M Arts and Crafts Creation logo with decorative serif style text in dark blue"
-      width="150"
-      height="80"
+      src="/assets/Logo2(Transparent).png"
+      alt="K and M Arts and Crafts Creation logo"
+      class="mb-2 w-full max-w-[600px] h-auto object-contain"
     />
-    <form autocomplete="off">
-      <h2>Create Your Account</h2>
-      <label for="firstName">First Name</label>
-      <input id="firstName" type="text" />
-      <label for="lastName">Last Name</label>
-      <input id="lastName" type="text" />
-      <label for="email">Email</label>
-      <input id="email" type="email" />
-      <label for="password">Password</label>
-      <input id="password" type="password" />
-      <p class="already-registered">
+
+    <form
+      autocomplete="off"
+      class="bg-white border border-gray-400 rounded-md p-8 w-full max-w-md shadow-lg"
+    >
+      <h2
+        class="text-center text-[#1a2a4a] text-3xl font-bold tracking-wide mb-1 drop-shadow-sm"
+      >
+        Create Your Account
+      </h2>
+
+      <label
+        for="firstName"
+        class="block text-[16px] font-semibold text-[#1a2a4a] mb-1"
+        >First Name</label
+      >
+      <input
+        id="firstName"
+        type="text"
+        class="w-full border border-gray-400 rounded px-2 py-1 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-[#1a2a4a]"
+      />
+
+      <label
+        for="lastName"
+        class="block text-[16px] font-semibold text-[#1a2a4a] mb-1"
+        >Last Name</label
+      >
+      <input
+        id="lastName"
+        type="text"
+        class="w-full border border-gray-400 rounded px-2 py-1 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-[#1a2a4a]"
+      />
+
+      <label
+        for="email"
+        class="block text-[16px] font-semibold text-[#1a2a4a] mb-1"
+        >Email</label
+      >
+      <input
+        id="email"
+        type="email"
+        class="w-full border border-gray-400 rounded px-2 py-1 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-[#1a2a4a]"
+      />
+
+      <label
+        for="password"
+        class="block text-[16px] font-semibold text-[#1a2a4a] mb-1"
+        >Password</label
+      >
+      <input
+        id="password"
+        type="password"
+        class="w-full border border-gray-400 rounded px-2 py-1 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-[#1a2a4a]"
+      />
+
+      <p class="text-[14px] font-semibold text-black text-center mb-4">
         Already Registered?
-        <a href="#">Login instead</a>
+        <a href="Login.html" class="text-[#1e3a5f] hover:underline"
+          >Login instead</a
+        >
       </p>
-      <button type="submit">Create Account</button>
+
+      <button
+        type="submit"
+        class="w-full bg-[#1a2a4a] text-white font-semibold text-[16px] py-2 rounded hover:bg-[#16243b] transition-colors"
+      >
+        Create Account
+      </button>
     </form>
   </body>
 </html>
