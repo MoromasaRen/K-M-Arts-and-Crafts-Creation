@@ -86,11 +86,11 @@
       </tbody>
      </table>
   
-     <div class="mt-4 space-x-3">
+     <div class="fixed bottom-4 left-[375px] z-50 space-x-3">
       <button id="showFormBtn" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create</button>
       <button id="updateFormBtn" class="bg-amber-300 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Update</button>
       <button id="deleteFormBtn" class="bg-rose-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Delete</button>
-     </div>
+    </div>
 
      <!-- Modal backdrop + form -->
      <div id="manageModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
@@ -120,43 +120,44 @@
            </label>
          </div>
          <div class="mt-4 space-x-3">
-           <button type="button" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create</button>
-           <button type="button" class="bg-amber-300 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Update</button>
-           <button type="button" class="bg-rose-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Delete</button>
-         </div>
-       </form>
+          <button type="button" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create</button>
+          <button type="button" class="bg-amber-300 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Update</button>
+          <button type="button" class="bg-rose-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Delete</button>
+        </div>
+      </form>
      </div>
+     
+<!-- Toggle modal script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const showFormBtn = document.getElementById("showFormBtn");
+    const updateFormBtn = document.getElementById("updateFormBtn");
+    const deleteFormBtn = document.getElementById("deleteFormBtn");
+    const manageModal = document.getElementById("manageModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
 
-     <!-- Toggle modal script -->
-     <script>
-       document.addEventListener("DOMContentLoaded", function () {
-         const showFormBtn = document.getElementById("showFormBtn");
-         const updateFormBtn = document.getElementById("updateFormBtn");
-         const deleteFormBtn = document.getElementById("deleteFormBtn");
-         const manageModal = document.getElementById("manageModal");
-         const closeModalBtn = document.getElementById("closeModalBtn");
+    // Open modal on any button click
+    [showFormBtn, updateFormBtn, deleteFormBtn].forEach(button => {
+      button.addEventListener("click", function (event) {
+        event.stopPropagation();
+        manageModal.classList.remove("hidden");
+      });
+    });
 
-         // Open modal on any button click
-         [showFormBtn, updateFormBtn, deleteFormBtn].forEach(button => {
-           button.addEventListener("click", function (event) {
-             event.stopPropagation();
-             manageModal.classList.remove("hidden");
-           });
-         });
+    // Close modal on close button click
+    closeModalBtn.addEventListener("click", function () {
+      manageModal.classList.add("hidden");
+    });
 
-         // Close modal on close button click
-         closeModalBtn.addEventListener("click", function () {
-           manageModal.classList.add("hidden");
-         });
+    // Close modal when clicking outside the form
+    manageModal.addEventListener("click", function (event) {
+      if (event.target === manageModal) {
+        manageModal.classList.add("hidden");
+      }
+    });
+  });
+</script>
 
-         // Close modal when clicking outside the form
-         manageModal.addEventListener("click", function (event) {
-           if (event.target === manageModal) {
-             manageModal.classList.add("hidden");
-           }
-         });
-       });
-     </script>
 
    </main>
  </body>

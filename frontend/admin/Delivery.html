@@ -86,11 +86,11 @@
     </tbody>
    </table>
 
-   <div class="mt-4 space-x-3">
+   <div class="fixed bottom-4 left-[375px] z-50 space-x-3">
     <button id="showFormBtn" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create</button>
     <button id="updateFormBtn" class="bg-amber-300 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Update</button>
     <button id="deleteFormBtn" class="bg-rose-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Delete</button>
-   </div>
+  </div>
 
   <!-- Modal backdrop + form -->
 <div id="manageModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
@@ -100,31 +100,31 @@
     <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
       <!-- Form fields to be customized per page -->
       <label class="flex flex-col gap-1">
-        ID
+        Delivery ID
         <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
       </label>
       <label class="flex flex-col gap-1">
-        Field 1
+        Order ID
         <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
       </label>
       <label class="flex flex-col gap-1">
-        Field 2
+        Staff ID
         <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
       </label>
       <label class="flex flex-col gap-1">
-        Field 3
+        Scheduled Time
         <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
       </label>
       <label class="flex flex-col gap-1">
-        Field 4
+        Delivery Status
         <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
       </label>
       <label class="flex flex-col gap-1">
-        Field 5
+        Courier Type
         <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
       </label>
       <label class="flex flex-col gap-1 col-span-2">
-        Field 6
+        Plate Number
         <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal w-full max-w-[180px]" type="text"/>
       </label>
     </div>
