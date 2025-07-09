@@ -17,6 +17,48 @@
       }
     </style>
   </head>
+
+  <script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+      e.preventDefault();
+    
+      const payload = {
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      };
+    
+      fetch("http://localhost/km-arts-backend/auth/login.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            // Save user info to localStorage or session
+            localStorage.setItem("user_id", data.user_id);
+            localStorage.setItem("user_type", data.user_type);
+    
+            // Redirect to appropriate dashboard
+            if (data.user_type === "admin") {
+              window.location.href = "/admin/Dashboard.html";
+            } else {
+              window.location.href = "/user/Home.html";
+            }
+          } else {
+            alert("Login failed: Invalid credentials.");
+          }
+        })
+        .catch(err => {
+          console.error("Error:", err);
+          alert("Something went wrong.");
+        });
+    });
+    </script>
+
+
   <body
     class="bg-[#D5E7FF] min-h-screen flex items-center justify-center relative px-4"
   >

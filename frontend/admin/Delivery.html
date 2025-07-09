@@ -86,64 +86,80 @@
     </tbody>
    </table>
 
-   <div class="mt-4 space-x-3">
-    <button id="showFormBtn" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create</button>
-    <button class="bg-amber-300 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Update</button>
-    <button class="bg-rose-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Delete</button>
-   </div>
+   <div class="fixed bottom-4 left-[375px] z-50">
+    <button id="editFormBtn" class="bg-blue-500 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">
+      Edit
+    </button>
+  </div>
 
-   <!-- Manage Delivery form (initially hidden) -->
-   <form id="manageForm" aria-label="Manage Delivery" class="absolute bottom-6 left-6 bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[360px] hidden">
-    <h3 class="bg-[#a9c5ff] rounded-md px-3 py-1 font-extrabold text-[15px] mb-4 inline-block">Manage Delivery</h3>
+  <!-- Modal backdrop + form -->
+<div id="manageModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+  <form aria-label="Manage Item" class="bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[360px] relative">
+    <button id="closeModalBtn" type="button" class="absolute top-2 right-2 text-[#0f2e4d] hover:text-gray-700 text-xl font-bold">&times;</button>
+    <h3 class="bg-[#a9c5ff] rounded-md px-3 py-1 font-extrabold text-[15px] mb-4 inline-block">Manage Item</h3>
     <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
-     <label class="flex flex-col gap-1">
-      Delivery ID
-      <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
-     </label>
-     <label class="flex flex-col gap-1">
-      Courier Type
-      <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
-     </label>
-     <label class="flex flex-col gap-1">
-      Order ID
-      <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
-     </label>
-     <label class="flex flex-col gap-1">
-      Plate Number
-      <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
-     </label>
-     <label class="flex flex-col gap-1">
-      Staff ID
-      <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
-     </label>
-     <label class="flex flex-col gap-1">
-      Delivery Status
-      <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
-     </label>
-     <label class="flex flex-col gap-1 col-span-2">
-      Scheduled Time
-      <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal w-full max-w-[180px]" type="text"/>
-     </label>
+      <!-- Form fields to be customized per page -->
+      <label class="flex flex-col gap-1">
+        Delivery ID
+        <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
+      </label>
+      <label class="flex flex-col gap-1">
+        Order ID
+        <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
+      </label>
+      <label class="flex flex-col gap-1">
+        Staff ID
+        <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
+      </label>
+      <label class="flex flex-col gap-1">
+        Scheduled Time
+        <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
+      </label>
+      <label class="flex flex-col gap-1">
+        Delivery Status
+        <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
+      </label>
+      <label class="flex flex-col gap-1">
+        Courier Type
+        <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
+      </label>
+      <label class="flex flex-col gap-1 col-span-2">
+        Plate Number
+        <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal w-full max-w-[180px]" type="text"/>
+      </label>
     </div>
-    <div class="mt-4 flex gap-3">
-     <button class="bg-[#a6e77b] text-[#1e2f4a] font-extrabold rounded-md px-4 py-1 tracking-widest" type="button">Create</button>
-     <button class="bg-[#f7c25a] text-[#1e2f4a] font-extrabold rounded-md px-4 py-1 tracking-widest" type="button">Update</button>
-     <button class="bg-[#e18a8a] text-[#1e2f4a] font-extrabold rounded-md px-4 py-1 tracking-widest" type="button">Delete</button>
+    <div class="mt-4 space-x-3">
+      <button type="button" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create</button>
+      <button type="button" class="bg-amber-300 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Update</button>
+      <button type="button" class="bg-rose-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Delete</button>
     </div>
-   </form>
 
-   <!-- Toggle form script -->
-   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-     const showFormBtn = document.getElementById("showFormBtn");
-     const manageForm = document.getElementById("manageForm");
+<!-- Toggle modal script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const editFormBtn = document.getElementById("editFormBtn");
+    const manageModal = document.getElementById("manageModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
 
-     showFormBtn.addEventListener("click", function () {
-      manageForm.classList.toggle("hidden");
-     });
+    // Open modal on Edit button click
+    editFormBtn.addEventListener("click", function (event) {
+      event.stopPropagation();
+      manageModal.classList.remove("hidden");
     });
-   </script>
 
+    // Close modal on close button click
+    closeModalBtn.addEventListener("click", function () {
+      manageModal.classList.add("hidden");
+    });
+
+    // Close modal when clicking outside the form
+    manageModal.addEventListener("click", function (event) {
+      if (event.target === manageModal) {
+        manageModal.classList.add("hidden");
+      }
+    });
+  });
+</script>
   </main>
  </body>
 </html>
