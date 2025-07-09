@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgot Password</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: "League Spartan", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-[#D5E7FF] min-h-screen flex items-center justify-center relative px-4"
+  >
+    <a
+      href="/frontend/user/Home.html"
+      class="absolute top-6 left-6 text-black font-bold text-lg flex items-center gap-2 select-none"
+    >
+      <span class="text-2xl">←</span>
+      <span class="text-lg">Back</span>
+    </a>
+
+    <img
+      src="/assets/Logo2(Transparent).png"
+      alt="K and M Arts and Crafts Creation logo"
+      class="mb-2 w-full max-w-[600px] h-auto object-contain"
+    />
+
+    <form
+      autocomplete="off"
+      class="bg-white border border-gray-400 rounded-md p-8 w-full max-w-md shadow-lg"
+    >
+      <h2
+        class="text-[#1e3a5f] text-3xl font-extrabold tracking-wide text-center mb-4"
+      >
+        Forgot Password
+      </h2>
+
+      <p class="text-sm text-gray-700 text-center mb-4">
+        Enter your email and we’ll send you a link to reset your password.
+      </p>
+
+      <label
+        for="email"
+        class="block text-[16px] font-semibold text-[#1a2a4a] mb-1"
+        >Email</label
+      >
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        class="w-full border border-black rounded-md px-2 py-1.5 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-[#1e3a5f]"
+      />
+
+      <button
+        type="submit"
+        class="w-full bg-[#1a2a4a] text-white font-semibold text-[20px] py-2 rounded hover:bg-[#16243b] transition-colors"
+      >
+        Send Reset Link
+      </button>
+
+      <p class="text-sm text-center text-black mt-4">
+        Remember your password?
+        <a href="Login.html" class="text-[#1e3a5f] hover:underline"
+          >Go back to Login</a
+        >
+      </p>
+    </form>
+  </body>
+</html>
