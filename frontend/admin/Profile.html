@@ -55,11 +55,11 @@
       <div class="space-y-4">
         <!-- User Summary Card -->
         <div class="bg-[#e3ebf9] rounded-md p-4 shadow-md flex items-center space-x-6">
-          <img src="https://storage.googleapis.com/a1aa/image/5aef4e14-56b1-4cff-217b-674273c485a0.jpg" alt="User" class="w-16 h-16 rounded-full"/>
+          <img src="/assets/pfp.jpg" alt="User" class="w-16 h-16 rounded-full"/>
           <div>
-            <p class="font-bold text-lg tracking-wide">Username</p>
+            <p id="summary-username" class="font-bold text-lg tracking-wide">Von Malingin</p>
             <p class="text-xs font-normal">Admin</p>
-            <p class="text-xs font-normal">Address</p>
+            <p id="summary-address" class="text-xs font-normal">Philippines, Cebu 6000</p>
           </div>
         </div>
 
@@ -161,24 +161,29 @@
     }
 
     function saveChanges(sectionId) {
-      const section = document.getElementById(sectionId);
-      const textFields = section.querySelectorAll('[id$="-text"]');
-      const inputFields = section.querySelectorAll('[id$="-input"]');
-      inputFields.forEach((input, i) => {
-        if (textFields[i]) textFields[i].textContent = input.value;
-      });
-      toggleEdit(sectionId, false);
-    }
+        const section = document.getElementById(sectionId);
+        const textFields = section.querySelectorAll('[id$="-text"]');
+        const inputFields = section.querySelectorAll('[id$="-input"]');
+        inputFields.forEach((input, i) => {
+          if (textFields[i]) textFields[i].textContent = input.value;
+        });
 
-    function cancelChanges(sectionId) {
-      const section = document.getElementById(sectionId);
-      const textFields = section.querySelectorAll('[id$="-text"]');
-      const inputFields = section.querySelectorAll('[id$="-input"]');
-      inputFields.forEach((input, i) => {
-        if (textFields[i]) input.value = textFields[i].textContent;
-      });
-      toggleEdit(sectionId, false);
-    }
+        // Also update summary card if it's personal-info or address-info
+        if (sectionId === 'personal-info' || sectionId === 'address-info') {
+          const firstName = document.getElementById('first-name-input').value;
+          const lastName = document.getElementById('last-name-input').value;
+          const fullName = `${firstName} ${lastName}`;
+          document.getElementById('summary-username').textContent = fullName;
+
+          const country = document.getElementById('country-input').value;
+          const city = document.getElementById('city-input').value;
+          const postal = document.getElementById('postal-code-input').value;
+          const fullAddress = `${country}, ${city} ${postal}`;
+          document.getElementById('summary-address').textContent = fullAddress;
+        }
+
+        toggleEdit(sectionId, false);
+      }
 
     document.getElementById('edit-personal-info').addEventListener('click', () => toggleEdit('personal-info', true));
     document.getElementById('save-personal-info').addEventListener('click', () => saveChanges('personal-info'));

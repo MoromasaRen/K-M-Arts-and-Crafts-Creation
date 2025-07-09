@@ -1,234 +1,68 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans&display=swap");
-
-      * {
-        box-sizing: border-box;
-      }
-
       body {
-        margin: 0;
-        background-color: white;
-        font-family: "Open Sans", sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        padding: 16px;
-      }
-
-      .container {
-        height: 100vh; /* full viewport height */
-        width: 100%; /* or 100vw for full width */
-        box-sizing: border-box; /* include padding in height/width */
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        padding: 24px;
-        gap: 24px;
-      }
-
-      /* Left nav */
-      nav {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-        font-family: monospace;
-        font-weight: 600;
-        font-size: 20px;
-        letter-spacing: 0.1em;
-        min-width: 120px;
-      }
-
-      nav a {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-        padding: 6px 12px;
-        border-radius: 6px;
-        transition: background-color 0.2s ease, color 0.2s ease;
-      }
-
-      nav a:hover {
-        background-color: #bfdbfe; /* light blue */
-        color: #1e40af; /* dark blue */
-      }
-
-      nav a.active {
-        background-color: #bfdbfe; /* same as hover */
-        color: #1e40af;
-      }
-    
-
-      /* Center content */
-      .center-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-        flex: 1 1 300px;
-        min-width: 280px;
-      }
-
-      .logo-container {
-        position: absolute;
-        top: 16px;
-        left: center;
-        z-index: 10;
-      }
-
-      .logo-img {
-        width: 500px;
-        height: 200px;
-
-        object-fit: contain;
-      }
-
-      .logo-text {
-        font-family: serif;
-        font-size: 10px;
-        color: #4a4a4a;
-        line-height: 1;
-        user-select: none;
-      }
-
-      .logo-text .line2 {
-        letter-spacing: 0.3em;
-      }
-
-      .profile-pic {
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        background-color: #d1d1d1;
-        object-fit: cover;
-      }
-
-      .welcome-text {
-        text-align: center;
-      }
-
-      .welcome-text h1 {
-        font-weight: 700;
-        font-size: 25px;
-        letter-spacing: 0.15em;
-        margin: 0;
-        color: black;
-      }
-
-      .welcome-text p {
-        margin: 4px 0 0 0;
-        font-family: monospace;
-        letter-spacing: 0.15em;
-      }
-
-      .welcome-text .username {
-        font-weight: 600;
-        font-size: 15px;
-      }
-
-      .welcome-text .date {
-        font-weight: 400;
-        font-size: 11px;
-      }
-
-      /* Right buttons */
-      .right-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-        min-width: 160px;
-      }
-
-      .btn {
-        background-color: #bfdbfe;
-        color: #1e40af;
-        font-weight: 600;
-        font-size: 12px;
-        letter-spacing: 0.15em;
-        border: none;
-        border-radius: 9999px;
-        padding: 25px 24px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        cursor: pointer;
-        transition: box-shadow 0.2s ease;
-        user-select: none;
-      }
-
-      .btn:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-      }
-
-      /* Responsive */
-      @media (max-width: 640px) {
-        .container {
-          flex-direction: column;
-          align-items: center;
-        }
-
-        nav {
-          flex-direction: row;
-          gap: 24px;
-          min-width: auto;
-          flex-wrap: wrap;
-          justify-content: center;
-        }
-
-        .right-buttons {
-          flex-direction: row;
-          gap: 12px;
-          min-width: auto;
-          justify-content: center;
-        }
+        font-family: "League Spartan", sans-serif;
       }
     </style>
   </head>
-  <body>
-    <div class="container" role="main">
-      <nav aria-label="Main navigation">
-        <a href="/frontend/admin/menu.html">Menu</a>
-        <a href="/frontend/admin/Dashboard.html">Dashboard</a>
-        <a href="/frontend/admin/Order.html">Orders</a>
-        <a href="/frontend/admin/Delivery.html">Deliveries</a>
-        <a href="/frontend/admin/Inventory.html">Inventory</a>
-        <a href="/frontend/admin/Profile.html">Profile</a>
-      </nav>
-      <div class="center-content">
-        <div class="logo-container" aria-label="Company logo">
-          <img
-            src="/assets/Logo.png"
-            alt="Logo with letters K and M in dark blue with arts & crafts creation text"
-            class="logo-img"
-            width="120"
-            height="80"
-          />
+  <body class="bg-white w-screen h-screen flex flex-col items-center justify-center overflow-hidden">
+
+    <!-- Logo at the Top Center -->
+    <header class="w-full flex justify-center py-6">
+      <img src="/assets/Logo.png" alt="Company Logo" class="w-[400px] object-contain mr-16" />
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <main class="flex items-center justify-center flex-grow w-full max-w-[1920px] px-16">
+      <!-- The container holding nav, center-content, and buttons -->
+      <div class="flex justify-between items-start w-full max-w-[1920px]">
+        
+        <!-- Left Navigation -->
+        <nav class="flex flex-col gap-2 text-xl font-mono font-semibold tracking-wider w-[160px] -mt-11">
+          <a href="/frontend/admin/menu.html" class="hover:bg-blue-200 hover:text-blue-900 px-3 py-2 rounded transition">Menu</a>
+          <a href="/frontend/admin/Dashboard.html" class="hover:bg-blue-200 hover:text-blue-900 px-3 py-2 rounded transition">Dashboard</a>
+          <a href="/frontend/admin/Order.html" class="hover:bg-blue-200 hover:text-blue-900 px-3 py-2 rounded transition">Orders</a>
+          <a href="/frontend/admin/Delivery.html" class="hover:bg-blue-200 hover:text-blue-900 px-3 py-2 rounded transition">Deliveries</a>
+          <a href="/frontend/admin/Inventory.html" class="hover:bg-blue-200 hover:text-blue-900 px-3 py-2 rounded transition">Inventory</a>
+          <a href="/frontend/admin/Profile.html" class="hover:bg-blue-200 hover:text-blue-900 px-3 py-2 rounded transition">Profile</a>
+        </nav>
+
+        <!-- Center Content -->
+        <div class="flex flex-col items-center gap-6 text-center w-[960px] ml-10">
+          <img src="/assets/pfp.jpg" alt="Profile" class="w-52 h-52 rounded-full object-cover bg-gray-300" />
+          <div>
+            <h1 class="text-3xl font-bold tracking-wide">WELCOME BACK!</h1>
+            <p class="mt-2 text-lg font-mono tracking-wider">Good Day! Von Malingin</p>
+            <p class="text-sm text-gray-500">July 9, 2025</p>
+          </div>
         </div>
-        <img
-          src="https://placehold.co/112x112/cccccc/cccccc"
-          alt="Circular placeholder for profile image in light gray"
-          class="profile-pic"
-          width="112"
-          height="112"
-        />
-        <div class="welcome-text text-center">
-          <h1>WELCOME BACK!</h1>
-          <p class="username">Good Day! Username</p>
-          <p class="date">Date Today</p>
+
+        <!-- Right Buttons -->
+        <div class="flex flex-col gap-6 w-[240px] mt-1">
+          <a href="/frontend/admin/Order.html" class="bg-blue-200 text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition text-center block">
+            Generate Report
+          </a>
+          <a href="/frontend/admin/Delivery.html" class="bg-blue-200 text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition text-center block">
+            Schedule a Delivery
+          </a>
+          <a href="/frontend/admin/Inventory.html" class="bg-blue-200 text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition text-center block">
+            Add to Inventory
+          </a>
         </div>
+
       </div>
-      <div class="right-buttons">
-        <button type="button" class="btn">Generate Report</button>
-        <button type="button" class="btn">Schedule a delivery</button>
-        <button type="button" class="btn">Add to Inventory</button>
-      </div>
-    </div>
+    </main>
   </body>
 </html>

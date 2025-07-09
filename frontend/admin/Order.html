@@ -93,10 +93,10 @@
        </tbody>
       </table>
 
-      <div class="fixed bottom-4 left-[375px] z-50 space-x-3">
-        <button id="showFormBtn" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create</button>
-        <button id="updateFormBtn" class="bg-amber-300 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Update</button>
-        <button id="deleteFormBtn" class="bg-rose-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Delete</button>
+      <div class="fixed bottom-4 left-[375px] z-50">
+        <button id="editFormBtn" class="bg-blue-500 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">
+          Edit
+        </button>
       </div>
       
 
@@ -130,7 +130,7 @@
           Total Amount
           <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal" type="text"/>
         </label>
-        <label class="flex flex-col gap-1 col-span-2">
+        <label class="flex flex-col gap-1">
           Status
           <input class="rounded-md border border-gray-300 px-2 py-1 text-[13px] font-normal w-full max-w-[180px]" type="text"/>
         </label>
@@ -146,25 +146,21 @@
    <!-- Toggle modal script -->
    <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const showFormBtn = document.getElementById("showFormBtn");
-      const updateFormBtn = document.getElementById("updateFormBtn");
-      const deleteFormBtn = document.getElementById("deleteFormBtn");
+      const editFormBtn = document.getElementById("editFormBtn");
       const manageModal = document.getElementById("manageModal");
       const closeModalBtn = document.getElementById("closeModalBtn");
-
-      // Open modal on any button click
-      [showFormBtn, updateFormBtn, deleteFormBtn].forEach(button => {
-        button.addEventListener("click", function (event) {
-          event.stopPropagation();
-          manageModal.classList.remove("hidden");
-        });
+  
+      // Open modal on Edit button click
+      editFormBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+        manageModal.classList.remove("hidden");
       });
-
+  
       // Close modal on close button click
       closeModalBtn.addEventListener("click", function () {
         manageModal.classList.add("hidden");
       });
-
+  
       // Close modal when clicking outside the form
       manageModal.addEventListener("click", function (event) {
         if (event.target === manageModal) {
@@ -172,8 +168,7 @@
         }
       });
     });
-   </script>
-
+  </script>
   </main>
  </body>
 </html>
