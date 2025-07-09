@@ -1,315 +1,77 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>K&amp;M Arts &amp; Crafts Creation</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
-
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    color: #1a3550;
-  }
-
-  nav {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  nav .logo img {
-    width: 80px;
-    height: auto;
-  }
-
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: none;
-  }
-
-  nav ul li {
-    display: inline-block;
-    margin-left: 24px;
-  }
-
-  nav ul li a {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: #1a3550;
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-  }
-
-  nav ul li a.home {
-    background-color: #1a3550;
-    color: white;
-  }
-
-  nav ul li a:hover {
-    text-decoration: underline;
-  }
-
-  nav button {
-    display: none;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: #1a3550;
-    background: none;
-    border: 1px solid #1a3550;
-    border-radius: 9999px;
-    padding: 6px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  nav button:hover {
-    background-color: #1a3550;
-    color: white;
-  }
-
-  .border-line {
-    max-width: 1120px;
-    margin: 0 auto;
-    border-bottom: 1px solid #1a3550;
-  }
-
-  .top-section {
-    max-width: 1120px;
-    margin: 40px auto 48px;
-    padding: 0 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .top-section img {
-    width: 160px;
-    height: auto;
-  }
-
-  .top-section p {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    max-width: 200px;
-    line-height: 1.2;
-    margin: 0;
-  }
-
-  .bottom-section {
-    background-color: #d3e4fb;
-    border-top: 4px solid #1a3550;
-    border-bottom: 4px solid #1a3550;
-    padding: 40px 24px;
-  }
-
-  .bottom-container {
-    max-width: 1120px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-  }
-
-  .left-side {
-    flex: 1 1 320px;
-    max-width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .left-side h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    font-size: 36px;
-    line-height: 1.1;
-    letter-spacing: 0.05em;
-    margin: 0;
-  }
-
-  .left-side p {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    max-width: 200px;
-    line-height: 1.2;
-    margin: 0;
-  }
-
-  .left-side img {
-    width: 160px;
-    height: auto;
-  }
-
-  .right-side {
-    flex: 1 1 600px;
-    max-width: 720px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .product {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .product img {
-    border-radius: 6px;
-    display: block;
-  }
-
-  .product.small img {
-    width: 80px;
-    height: auto;
-  }
-
-  .product.medium img {
-    width: 100px;
-    height: auto;
-  }
-
-  .price-tag {
-    position: absolute;
-    bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #1a3550;
-    color: white;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 4px 8px;
-    border-radius: 6px;
-    white-space: nowrap;
-  }
-
-  /* Responsive */
-
-  @media (min-width: 768px) {
-    nav ul {
-      display: flex;
-    }
-
-    nav button {
-      display: inline-block;
-    }
-
-    .top-section {
-      margin: 48px auto 64px;
-      padding: 0 24px;
-    }
-
-    .bottom-container {
-      flex-wrap: nowrap;
-      gap: 48px;
-    }
-
-    .left-side {
-      max-width: 320px;
-    }
-
-    .right-side {
-      max-width: 720px;
-      justify-content: flex-start;
-    }
-
-    .product.medium {
-      width: 120px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .top-section img {
-      width: 120px;
-    }
-
-    .left-side h2 {
-      font-size: 28px;
-    }
-
-    .left-side img {
-      width: 120px;
-    }
-
-    .product.small img {
-      width: 60px;
-    }
-
-    .product.medium img {
-      width: 80px;
-    }
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>K&amp;M Arts &amp; Crafts Creation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<nav>
-  <div class="logo">
-    <img src="..assets/Logo.png">
-  </div>
-  <ul>
-    <li><a href="#" class="home">Home</a></li>
-    <li><a href="#">Shop</a></li>
-    <li><a href="#">Contact</a></li>
-    <li><a href="#">About Us</a></li>
-    <li><a href="#">Order Process</a></li>
-    <li><a href="#">Gallery & Reviews</a></li>
-    <li><a href="#">Cart</a></li>
-  </ul>
-  <button>Login/Register</button>
-</nav>
-<div class="border-line"></div>
-<section class="top-section">
-  <img src="https://storage.googleapis.com/a1aa/image/829a64fd-b4ba-4c2e-721b-f3b9460eaa1c.jpg" alt="Large K and M logo with decorative leaves and arts & crafts creation text below" />
-  <p>A PERFECT GIFT FOR YOUR<br />LOVED ONES</p>
-</section>
-<section class="bottom-section">
-  <div class="bottom-container">
-    <div class="left-side">
-      <h2>Best<br />Sellers</h2>
-      <p>A PERFECT GIFT FOR YOUR<br />LOVED ONES</p>
-      <img src="https://storage.googleapis.com/a1aa/image/c2d08195-46a8-41ca-76c7-f0a40deecc1e.jpg" alt="K and M logo with decorative leaves and arts & crafts creation text below" />
+<body class="bg-white text-[#1a3550]">
+  <nav class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="logo">
+      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[240px] h-auto object-contain" />
     </div>
-    <div class="right-side">
-      <div class="product small">
-        <img src="https://storage.googleapis.com/a1aa/image/37b057af-bcad-4921-8218-30f2425ac665.jpg" alt="Blue Orchid Bouquet wrapped in blue paper with blue ribbon" />
-        <div class="price-tag">P385</div>
+    <ul class="hidden md:flex space-x-6">
+      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Home</a></li>
+      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Shop</a></li>
+      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Contact</a></li>
+      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">About Us</a></li>
+      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Order Process</a></li>
+      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Gallery & Reviews</a></li>
+      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Cart</a></li>
+    </ul>
+    <button class="hidden md:inline-block text-sm font-semibold tracking-wide text-[#1a3550] border border-[#1a3550] rounded-full py-2 px-6 hover:bg-[#1a3550] hover:text-white transition">Login/Register</button>
+  </nav>
+
+  <div class="border-b-2 border-[#1a3550] max-w-screen-xl mx-auto"></div>
+
+  <section class="max-w-screen-xl mx-auto px-6 py-16 flex flex-col items-start gap-6">
+    <img src="../../assets/Logo2(Transparent).png" alt="KM Logo" class="w-[240px] h-auto object-contain" />
+    <p class="text-xs font-semibold tracking-wide text-[#1a3550] uppercase">A PERFECT GIFT FOR YOUR<br />LOVED ONES</p>
+  </section>
+
+  <section class="bg-[#d3e4fb] border-t-4 border-b-4 border-[#1a3550] py-16">
+    <div class="max-w-screen-xl mx-auto flex flex-wrap gap-6">
+      <!-- Left Side -->
+      <div class="flex flex-col gap-6 w-full sm:w-1/3">
+        <h2 class="text-3xl font-extrabold text-[#1a3550]">Best<br />Sellers</h2>
+        <p class="text-xs font-semibold tracking-wide text-[#1a3550] uppercase">A PERFECT GIFT FOR YOUR<br />LOVED ONES</p>
+        <img src="https://storage.googleapis.com/a1aa/image/c2d08195-46a8-41ca-76c7-f0a40deecc1e.jpg" alt="K and M logo with decorative leaves and arts & crafts creation text below" class="w-full" />
       </div>
-      <div class="product small">
-        <img src="https://storage.googleapis.com/a1aa/image/0a334575-5bd1-42e0-ca52-87c811a0933e.jpg" alt="Blue Tulips bouquet wrapped in cream paper with blue ribbon" />
-        <div class="price-tag">P155</div>
-      </div>
-      <div class="product medium">
-        <img src="https://storage.googleapis.com/a1aa/image/40d0b1fe-ca3b-4dd5-34bb-ecb9d45e3b88.jpg" alt="Lily Bouquet wrapped in pink paper with pink ribbon" />
-        <div class="price-tag">P155</div>
-      </div>
-      <div class="product small">
-        <img src="https://storage.googleapis.com/a1aa/image/2b586563-8e5c-4de7-9d6f-6e9fd3dbd6a0.jpg" alt="Pink bouquet wrapped in pink paper with pink ribbon" />
-        <div class="price-tag">P155</div>
-      </div>
-      <div class="product small">
-        <img src="https://storage.googleapis.com/a1aa/image/056cdb1f-b33a-4192-2806-a10135160b61.jpg" alt="Blue Garden Bouquet wrapped in blue paper with blue ribbon" />
-        <div class="price-tag">P165</div>
+
+      <!-- Right Side -->
+      <div class="flex flex-wrap gap-6 items-center justify-center sm:w-2/3">
+        <!-- Product 1 -->
+        <div class="relative flex flex-col items-center">
+          <img src="https://storage.googleapis.com/a1aa/image/37b057af-bcad-4921-8218-30f2425ac665.jpg" alt="Blue Orchid Bouquet" class="rounded-lg w-32 h-auto object-cover" />
+          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P385</div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="relative flex flex-col items-center">
+          <img src="https://storage.googleapis.com/a1aa/image/0a334575-5bd1-42e0-ca52-87c811a0933e.jpg" alt="Blue Tulips Bouquet" class="rounded-lg w-32 h-auto object-cover" />
+          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="relative flex flex-col items-center">
+          <img src="https://storage.googleapis.com/a1aa/image/40d0b1fe-ca3b-4dd5-34bb-ecb9d45e3b88.jpg" alt="Lily Bouquet" class="rounded-lg w-32 h-auto object-cover" />
+          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="relative flex flex-col items-center">
+          <img src="https://storage.googleapis.com/a1aa/image/2b586563-8e5c-4de7-9d6f-6e9fd3dbd6a0.jpg" alt="Pink Bouquet" class="rounded-lg w-32 h-auto object-cover" />
+          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="relative flex flex-col items-center">
+          <img src="https://storage.googleapis.com/a1aa/image/056cdb1f-b33a-4192-2806-a10135160b61.jpg" alt="Blue Garden Bouquet" class="rounded-lg w-32 h-auto object-cover" />
+          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P165</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </body>
-</html> 
+</html>

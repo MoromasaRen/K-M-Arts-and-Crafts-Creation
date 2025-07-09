@@ -1,419 +1,83 @@
 <html lang="en">
- <head>
+<head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Cart Page
-  </title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
-
+  <title>Cart Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-   /* Reset and base */
-    * {
-      box-sizing: border-box;
-    }
     body {
-      margin: 0;
       font-family: 'Montserrat', sans-serif;
-      background-color: #1c2f4a;
-      color: #1c2f4a;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    } 
-    a {
-      text-decoration: none;
-      color: #1c2f4a;
-      font-weight: 700;
-      font-size: 0.875rem;
-    }
-    button {
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
-    }
-    /* Header */
-    header {
-      background-color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 32px;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .logo-container img {
-      width: 240px;
-      height: auto;
-      object-fit: contain;
-    }
-
-    .logo-font {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 2.5rem;
-      line-height: 1;
-      user-select: none;
-      color: #1c2f4a;
-    }
-    .logo-subtext {
-      font-size: 0.625rem;
-      letter-spacing: 0.1em;
-      user-select: none;
-      color: #1c2f4a;
-      line-height: 1;
-    }
-    .logo-subtext-small {
-      font-size: 0.5rem;
-      font-weight: 300;
-      letter-spacing: 0.2em;
-      user-select: none;
-      margin-top: 0.1rem;
-    }
-    nav a {
-      color: #1a2e4a;
-      text-decoration: none;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 13px;
-      transition: background-color 0.3s ease;
-    }
-
-    nav a:hover,
-    nav a.active {
-      background-color: #c7d9f9;
-      color: #1a2e4a;
-    }
-
-    .profile-circle {
-      width: 3rem;
-      height: 3rem;
-      background-color: #d1d5db;
-      border-radius: 9999px;
-    }
-    /* Show nav on medium+ screens */
-    @media (min-width: 768px) {
-      nav {
-        display: flex;
-      }
-    }
-    /* Progress bar */
-    .progress-bar {
-      background-color: #1c2f4a;
-      color: white;
-      display: flex;
-      justify-content: center;
-      padding: 0.75rem 0;
-      user-select: none;
-      font-weight: 700;
-      font-size: 0.75rem;
-      gap: 1.5rem;
-    }
-    .step {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-    .step-number {
-      width: 1.25rem;
-      height: 1.25rem;
-      border-radius: 0.375rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-    }
-    .step-active {
-      background-color: white;
-      color: #1c2f4a;
-    }
-    .step-inactive {
-      border: 1px solid white;
-      color: white;
-    }
-    /* Main content */
-    main {
-      background-color: #c7d9f7;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      padding: 1.5rem;
-      flex-grow: 1;
-    }
-    @media (min-width: 768px) {
-      main {
-        flex-direction: row;
-        justify-content: center;
-      }
-    }
-    /* Items section */
-    .items-section {
-      background-color: white;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      padding: 1rem;
-      width: 100%;
-      max-width: 40rem;
-    }
-    .items-section h2 {
-      font-weight: 700;
-      font-size: 0.875rem;
-      margin-bottom: 0.75rem;
-      color: #1c2f4a;
-    }
-    .item-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .item {
-      display: flex;
-      align-items: center;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      padding: 0.5rem;
-      gap: 0.75rem;
-      color: #4b5563;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-    .item img {
-      width: 3.5rem;
-      height: 3.5rem;
-      object-fit: cover;
-      border-radius: 0.125rem;
-      flex-shrink: 0;
-    }
-    .item-info {
-      flex-grow: 1;
-    }
-    .item-name {
-      font-weight: 700;
-      font-size: 0.875rem;
-      color: #1c2f4a;
-      margin-bottom: 0.125rem;
-    }
-    .item-price {
-      font-weight: 400;
-      font-size: 0.75rem;
-      color: #4b5563;
-    }
-    .remove-button {
-      font-weight: 700;
-      font-size: 0.75rem;
-      color: #4b5563;
-      background: none;
-      border: none;
-      cursor: pointer;
-      user-select: none;
-      padding: 0 0.25rem;
-      line-height: 1;
-    }
-    .remove-button:hover {
-      color: black;
-    }
-    .quantity-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-weight: 700;
-      font-size: 0.75rem;
-      color: #4b5563;
-      user-select: none;
-      flex-shrink: 0;
-    }
-    .quantity-controls button {
-      padding: 0 0.25rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.75rem;
-      color: #4b5563;
-    }
-    /* Coupons and Price Details */
-    .side-section {
-      width: 100%;
-      max-width: 20rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    .coupon-box, .price-details-box {
-      background-color: white;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      padding: 1rem;
-      color: #1c2f4a;
-    }
-    .coupon-box h3, .price-details-box h3 {
-      font-weight: 700;
-      font-size: 0.75rem;
-      margin-bottom: 0.5rem;
-    }
-    .coupon-input {
-      width: 100%;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.875rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      outline-offset: 2px;
-      outline-color: transparent;
-      transition: outline-color 0.2s ease-in-out;
-    }
-    .coupon-input:focus {
-      outline-color: #1c2f4a;
-    }
-    /* Price details content */
-    .price-item {
-      font-size: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-    .price-item .title {
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      color: #1c2f4a;
-    }
-    .price-item .subtitle {
-      font-weight: 400;
-      font-size: 0.625rem;
-      color: #6b7280;
-      margin-left: 0.25rem;
-      margin-top: 0.125rem;
-    }
-    hr {
-      border: none;
-      border-top: 1px solid #d1d5db;
-      margin: 0.75rem 0;
-    }
-    .total-amount {
-      font-weight: 700;
-      font-size: 0.875rem;
-      display: flex;
-      justify-content: space-between;
-      color: #1c2f4a;
-    }
-    .place-order-btn {
-      width: 100%;
-      background-color: white;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      padding: 0.25rem 0;
-      font-weight: 700;
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-    }
-    .place-order-btn:hover {
-      background-color: #f3f4f6;
     }
   </style>
- </head>
- <body>
-  <header>
-   <div class="logo-container" aria-label="Logo with letters K and M and flower">
-    <img src="../../assets/Logo.png" alt="KM Logo" class="logo" />
-   </div>
-      <nav aria-label="Primary navigation">
-        <ul style="display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0;">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Shop</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Order Process</a></li>
-          <li><a href="#">Gallery & Reviews</a></li>
-          <li><a href="#" class="active">Cart</a></li>
-        </ul>
-      </nav>
-   <div class="profile-circle" aria-label="User profile placeholder circle"></div>
+</head>
+<body class="bg-[#1c2f4a] text-[#1c2f4a] min-h-screen flex flex-col">
+
+  <!-- Header (Updated) -->
+  <header class="relative flex items-center justify-between p-4 sm:p-8 bg-white max-w-10xl mx-auto flex-wrap gap-4">
+    <!-- Logo (Centered in About Us, now aligned properly) -->
+    <div class="flex items-center justify-center w-full sm:w-auto">
+      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain"/>
+    </div>
+
+    <!-- Navigation Menu (Centered) -->
+    <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow order-2">
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Cart</a>
+    </nav>
+
+    <!-- Login Button (Optional - Use if you want) -->
+    <a href="/frontend/admin/Login.html" class="ml-auto flex-shrink-0">
+      <button class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap">
+        Login/Register
+      </button>
+    </a>
   </header>
-  <section class="progress-bar" aria-label="Checkout progress">
-   <div class="step">
-    <div class="step-number step-active">1</div>
-    <span>Cart</span>
-   </div>
-   <div class="step">
-    <div class="step-number step-inactive">2</div>
-    <span>Address</span>
-   </div>
-   <div class="step">
-    <div class="step-number step-inactive">3</div>
-    <span>Payment</span>
-   </div>
+
+  <!-- Progress Bar -->
+  <section class="bg-[#1c2f4a] text-white flex justify-center p-3 font-bold text-sm">
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center">1</div>
+      <span>Cart</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center">2</div>
+      <span>Address</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center">3</div>
+      <span>Payment</span>
+    </div>
   </section>
-  <main>
-   <section class="items-section" aria-label="Items in cart">
-    <h2>Items</h2>
-    <ul class="item-list">
-     <li class="item" aria-label="Cart item Flower no.1 priced at 250 Philippine pesos">
-      <img alt="Flower no.1 with pink background, hand holding flower bouquet" height="60" src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" width="60"/>
-      <div class="item-info">
-       <div class="item-name">Flower no.1</div>
-       <div class="item-price">₱250</div>
-      </div>
-      <button class="remove-button" aria-label="Remove Flower no.1 from cart">×</button>
-      <div class="quantity-controls" aria-label="Quantity controls for Flower no.1">
-       <button aria-label="Decrease quantity of Flower no.1">-</button>
-       <span>1</span>
-       <button aria-label="Increase quantity of Flower no.1">+</button>
-      </div>
-     </li>
-     <li class="item" aria-label="Cart item Flower no.2 priced at 150 Philippine pesos">
-      <img alt="Flower no.2 with pink background, hand holding flower bouquet" height="60" src="https://storage.googleapis.com/a1aa/image/c1ca6351-8ade-42ba-d6c9-bd775481dd2e.jpg" width="60"/>
-      <div class="item-info">
-       <div class="item-name">Flower no.2</div>
-       <div class="item-price">₱150</div>
-      </div>
-      <button class="remove-button" aria-label="Remove Flower no.2 from cart">×</button>
-      <div class="quantity-controls" aria-label="Quantity controls for Flower no.2">
-       <button aria-label="Decrease quantity of Flower no.2">-</button>
-       <span>1</span>
-       <button aria-label="Increase quantity of Flower no.2">+</button>
-      </div>
-     </li>
-     <li class="item" aria-label="Cart item Flower no.3 priced at 100 Philippine pesos">
-      <img alt="Flower no.3 with pink background, hand holding flower bouquet" height="60" src="https://storage.googleapis.com/a1aa/image/56e1ac38-697b-4652-8d70-d29e27107061.jpg" width="60"/>
-      <div class="item-info">
-       <div class="item-name">Flower no.3</div>
-       <div class="item-price">₱100</div>
-      </div>
-      <button class="remove-button" aria-label="Remove Flower no.3 from cart">×</button>
-      <div class="quantity-controls" aria-label="Quantity controls for Flower no.3">
-       <button aria-label="Decrease quantity of Flower no.3">-</button>
-       <span>1</span>
-       <button aria-label="Increase quantity of Flower no.3">+</button>
-      </div>
-     </li>
-    </ul>
-   </section>
-   <section class="side-section">
-    <div class="coupon-box">
-     <h3>Coupons</h3>
-     <input aria-label="Enter Gift Code" class="coupon-input" placeholder="Enter Gift Code" type="text"/>
-    </div>
-    <div class="price-details-box" aria-label="Price Details">
-     <h3>Price Details</h3>
-     <div class="price-item">
-      <div class="title">
-       <span>1 Item</span>
-       <span>₱100</span>
-      </div>
-      <div class="subtitle">Flower no. 1</div>
-     </div>
-     <hr/>
-     <div class="total-amount">
-      <span>Total Amount</span>
-      <span>₱100</span>
-     </div>
-     <button class="place-order-btn" type="button">Place Order</button>
-    </div>
-   </section>
-  </main>
- </body>
-</html>
+
+  <!-- Main Content -->
+  <main class="flex flex-col gap-6 p-6 flex-grow bg-[#c7d9f7] md:flex-row md:justify-center">
+    <!-- Items Section -->
+    <section class="bg-white border border-gray-300 rounded-lg p-4 w-full max-w-[40rem]">
+      <h2 class="font-bold text-sm mb-3 text-[#1c2f4a]">Items</h2>
+      <ul class="list-none p-0 m-0 space-y-3">
+        <!-- Cart Item 1 -->
+        <li class="flex items-center border border-gray-300 rounded-lg p-2 gap-3 text-gray-700 font-bold text-sm">
+          <img src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" alt="Flower no.1" class="w-14 h-14 object-cover rounded-md"/>
+          <div class="flex-grow">
+            <div class="font-bold text-[#1c2f4a]">Flower no.1</div>
+            <div class="text-sm text-gray-500">₱250</div>
+          </div>
+          <button class="text-gray-700 font-bold text-sm p-0.5 hover:text-black">×</button>
+          <div class="flex items-center gap-1 font-bold text-sm text-gray-700">
+            <button class="p-1">-</button>
+            <span>1</span>
+            <button class="p-1">+</button>
+          </div>
+        </li>
+        <!-- Cart Item 2 -->
+        <li class="flex items-center border border-gray-300 rounded-lg p-2 gap-3 text-gray-700 font-bold text-sm">
+          <img src="https://storage.googleapis.com/a1aa/image/c1ca6351-8ade-42ba-d6c9-bd775481dd2e.jpg" alt="Flower no.2" class="w-14 h-14 object-cover rounded-md"/>
+          <div class="flex-grow">
+            <div class="font-bold text-[#1c2f4a]">Flower no.2</div>
+            <d
