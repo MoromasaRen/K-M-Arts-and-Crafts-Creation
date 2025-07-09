@@ -13,23 +13,30 @@
 </head>
 <body class="bg-[#1c2f4a] text-[#1c2f4a] min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header class="bg-white flex items-center justify-between p-4 gap-4 flex-wrap">
-    <div class="logo-container">
-      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[240px] h-auto object-contain"/>
+  <!-- Header (Updated) -->
+  <header class="relative flex items-center justify-between p-4 sm:p-8 bg-white max-w-10xl mx-auto flex-wrap gap-4">
+    <!-- Logo (Centered in About Us, now aligned properly) -->
+    <div class="flex items-center justify-center w-full sm:w-auto">
+      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain"/>
     </div>
-    <nav>
-      <ul class="flex gap-6 list-none m-0 p-0">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Shop</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Order Process</a></li>
-        <li><a href="#">Gallery & Reviews</a></li>
-        <li><a href="#" class="active">Cart</a></li>
-      </ul>
+
+    <!-- Navigation Menu (Centered) -->
+    <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow order-2">
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Cart</a>
     </nav>
-    <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+
+    <!-- Login Button (Optional - Use if you want) -->
+    <a href="/frontend/admin/Login.html" class="ml-auto flex-shrink-0">
+      <button class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap">
+        Login/Register
+      </button>
+    </a>
   </header>
 
   <!-- Progress Bar -->
@@ -50,7 +57,6 @@
 
   <!-- Main Content -->
   <main class="flex flex-col gap-6 p-6 flex-grow bg-[#c7d9f7] md:flex-row md:justify-center">
-
     <!-- Items Section -->
     <section class="bg-white border border-gray-300 rounded-lg p-4 w-full max-w-[40rem]">
       <h2 class="font-bold text-sm mb-3 text-[#1c2f4a]">Items</h2>
@@ -74,57 +80,4 @@
           <img src="https://storage.googleapis.com/a1aa/image/c1ca6351-8ade-42ba-d6c9-bd775481dd2e.jpg" alt="Flower no.2" class="w-14 h-14 object-cover rounded-md"/>
           <div class="flex-grow">
             <div class="font-bold text-[#1c2f4a]">Flower no.2</div>
-            <div class="text-sm text-gray-500">₱150</div>
-          </div>
-          <button class="text-gray-700 font-bold text-sm p-0.5 hover:text-black">×</button>
-          <div class="flex items-center gap-1 font-bold text-sm text-gray-700">
-            <button class="p-1">-</button>
-            <span>1</span>
-            <button class="p-1">+</button>
-          </div>
-        </li>
-        <!-- Cart Item 3 -->
-        <li class="flex items-center border border-gray-300 rounded-lg p-2 gap-3 text-gray-700 font-bold text-sm">
-          <img src="https://storage.googleapis.com/a1aa/image/56e1ac38-697b-4652-8d70-d29e27107061.jpg" alt="Flower no.3" class="w-14 h-14 object-cover rounded-md"/>
-          <div class="flex-grow">
-            <div class="font-bold text-[#1c2f4a]">Flower no.3</div>
-            <div class="text-sm text-gray-500">₱100</div>
-          </div>
-          <button class="text-gray-700 font-bold text-sm p-0.5 hover:text-black">×</button>
-          <div class="flex items-center gap-1 font-bold text-sm text-gray-700">
-            <button class="p-1">-</button>
-            <span>1</span>
-            <button class="p-1">+</button>
-          </div>
-        </li>
-      </ul>
-    </section>
-
-    <!-- Side Section -->
-    <section class="w-full max-w-[20rem] flex flex-col gap-6">
-      <!-- Coupons Section -->
-      <div class="bg-white border border-gray-300 rounded-lg p-4 text-[#1c2f4a]">
-        <h3 class="font-bold text-xs mb-2">Coupons</h3>
-        <input class="w-full p-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1c2f4a]" placeholder="Enter Gift Code" type="text"/>
-      </div>
-
-      <!-- Price Details Section -->
-      <div class="bg-white border border-gray-300 rounded-lg p-4 text-[#1c2f4a]">
-        <h3 class="font-bold text-xs mb-2">Price Details</h3>
-        <div class="text-sm font-bold text-[#1c2f4a] mb-3 flex justify-between">
-          <span>1 Item</span>
-          <span>₱100</span>
-        </div>
-        <hr class="border-t border-gray-300 my-3"/>
-        <div class="font-bold text-xs flex justify-between text-[#1c2f4a]">
-          <span>Total Amount</span>
-          <span>₱100</span>
-        </div>
-        <button class="w-full mt-4 p-3 bg-white border border-gray-300 rounded-lg font-bold text-sm hover:bg-gray-100">Place Order</button>
-      </div>
-    </section>
-
-  </main>
-
-</body>
-</html>
+            <d
