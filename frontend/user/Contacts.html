@@ -13,32 +13,42 @@
     }
   </style>
 </head>
-<body class="font-mono bg-white text-[#1e2a4a]">
-
-  <header class="flex items-center justify-between p-4 border-b border-[#a3b1c6] flex-wrap">
-    <div class="flex items-center gap-2">
-      <img src="https://storage.googleapis.com/a1aa/image/0368cfbb-0e71-410d-38c6-797a9727be58.jpg" alt="K and M logo with leaves and text Arts & Crafts creation" class="w-20 h-15" />
-      <div class="hidden md:flex flex-col text-xs text-[#4a5a7a] tracking-wide leading-3">
-        <div>ARTS &amp; CRAFTS</div>
-        <div>creation</div>
-      </div>
+  <body class="bg-white text-[#1a2e4a] m-0 p-0">
+  <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
+    <!-- Logo (Aligned left) -->
+    <div class="flex items-center">
+      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain" />
     </div>
-    <nav>
-      <ul class="flex gap-6 list-none m-0 p-0 font-semibold text-sm text-[#4a5a7a] flex-wrap">
-        <li><a href="#" class="hover:text-[#1e2a4a]">Home</a></li>
-        <li><a href="#" class="hover:text-[#1e2a4a]">Shop</a></li>
-        <li><a href="#" class="hover:text-[#1e2a4a]">Contact</a></li>
-        <li><a href="#" class="hover:text-[#1e2a4a]">About Us</a></li>
-        <li><a href="#" class="hover:text-[#1e2a4a]">Order Process</a></li>
-        <li><a href="#" class="hover:text-[#1e2a4a]">Gallery & Reviews</a></li>
-        <li><a href="#" class="bg-[#dbe4f3] text-[#1e2a4a] border border-[#a3b1c6] rounded-full px-4 py-1 hover:bg-[#c3d0e8]">Cart</a></li>
-      </ul>
+
+    <!-- Navigation in the center -->
+    <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Home</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Shop</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Contact</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">About Us</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Order Process</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Gallery & Reviews</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Cart</a>
     </nav>
-    <button class="text-sm text-[#1e2a4a] border border-[#a3b1c6] rounded-full px-4 py-1 hover:bg-[#dbe4f3]">Login/Register</button>
+
+    <!-- Login button on the right -->
+    <a href="/frontend/admin/Login.html" class="ml-auto flex-shrink-0">
+      <button
+        class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
+      >
+        Login/Register
+      </button>
+    </a>
   </header>
 
-  <main class="max-w-2xl mx-auto my-12 p-6 flex flex-col items-center gap-12 text-center md:flex-row md:text-left md:items-start">
-    <img src="https://storage.googleapis.com/a1aa/image/675da37f-2c4c-4f80-d984-d40f90cce5b5.jpg" alt="Large K and M logo with leaves and text Arts & Crafts creation" class="w-40 h-auto flex-shrink-0" />
+  <div class="w-[60%] mx-auto border-t-2 border-slate-800 my-2"></div>
+
+  <main class="max-w-xl mx-auto mt-12 px-6 text-center">
+    <img
+      src="https://storage.googleapis.com/a1aa/image/675da37f-2c4c-4f80-d984-d40f90cce5b5.jpg"
+      alt="Large K and M logo with leaves and text Arts & Crafts creation"
+      class="mb-8 w-full max-w-[600px] h-auto object-contain"
+    />
     <div class="max-w-xs font-semibold text-sm leading-6 text-[#1e2a4a]">
       <p>Got any questions?</p>
       <p class="flex items-center gap-2"><i class="fas fa-phone-alt"></i>Phone: +63 999999999</p>
@@ -48,6 +58,5 @@
       <p class="flex items-center gap-2"><i class="far fa-clock"></i>Sun - Sat<br />10 am - 10 pm</p>
     </div>
   </main>
-
 </body>
 </html>

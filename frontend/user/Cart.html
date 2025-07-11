@@ -11,29 +11,31 @@
     }
   </style>
 </head>
-<body class="bg-[#1c2f4a] text-[#1c2f4a] min-h-screen flex flex-col">
+  <body class="bg-[#1c2f4a] text-[#1c2f4a] min-h-screen flex flex-col">
 
   <!-- Header (Updated) -->
-  <header class="relative flex items-center justify-between p-4 sm:p-8 bg-white max-w-10xl mx-auto flex-wrap gap-4">
-    <!-- Logo (Centered in About Us, now aligned properly) -->
-    <div class="flex items-center justify-center w-full sm:w-auto">
-      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain"/>
+  <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
+    <!-- Logo (Aligned left) -->
+    <div class="flex items-center">
+      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain" />
     </div>
 
-    <!-- Navigation Menu (Centered) -->
-    <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow order-2">
+    <!-- Navigation in the center -->
+    <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
       <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
       <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
       <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
       <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
       <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
       <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
-      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded text-[#1a2e4a]">Cart</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
     </nav>
 
-    <!-- Login Button (Optional - Use if you want) -->
+    <!-- Login button on the right -->
     <a href="/frontend/admin/Login.html" class="ml-auto flex-shrink-0">
-      <button class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap">
+      <button
+        class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
+      >
         Login/Register
       </button>
     </a>
