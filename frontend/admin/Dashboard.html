@@ -1,198 +1,302 @@
+<!DOCTYPE html>
 <html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>Dashboard</title>
-  <script src="https://cdn.tailwindcss.com">
-  </script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-  <style>
-   @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
-    body {
-      font-family: "Roboto Mono", monospace;
-    }
-  </style>
- </head>
- <body class="bg-[#d3e1f9] min-h-screen flex">
-  <!-- Sidebar -->
-  <aside class="bg-white w-[350px] flex flex-col p-6">
-    <div class="mb-6">
-     <img alt="Logo K and M Arts and Crafts" class="w-[300px] h-[100px] object-contain" height="50" src="/assets/Logo.png" width="150"/>
-    </div>
-    <div class="flex items-center space-x-4 mb-4">
-     <img alt="Circular placeholder for user profile picture in light gray" class="w-20 h-20 rounded-full" height="64" src="/assets/pfp.jpg" width="64"/>
-     <div class="text-lg font-bold leading-tight">
-      <p class="text-[#0f2e4d]">
-       Admin
-      </p>
-      <p class="text-[#0f2e4d]">
-       Username
-      </p>
-      <div class="flex items-center space-x-1 text-xs font-normal">
-       <span class="w-3 h-3 rounded-full bg-lime-500 inline-block">
-       </span>
-       <span class="text-[#0f2e4d]">
-        Status:
-        <span class="font-normal">
-         Online
-        </span>
-       </span>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+      body {
+        font-family: "Roboto Mono", monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-[#d3e1f9] min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="bg-white w-[350px] flex flex-col p-6">
+      <div class="mb-6">
+        <img
+          src="/assets/Logo.png"
+          alt="Logo K and M Arts and Crafts"
+          class="w-[300px] h-[100px] object-contain"
+        />
       </div>
-     </div>
-    </div>
-    <hr class="border-gray-500 mb-6"/>
-      <nav class="flex flex-col space-y-3 text-lg font-bold text-[#0f2e4d] tracking-wide">
-        <a class="pl-1 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/frontend/admin/menu.html">Menu</a>
-        <a class="pl-4 py-1 px-2 rounded bg-blue-100" href="/frontend/admin/Dashboard.html">Dashboard</a> <!-- current page -->
-        <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/frontend/admin/Order.html">Orders</a>
-        <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/frontend/admin/Delivery.html">Deliveries</a>
-        <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/frontend/admin/Inventory.html">Inventory</a>
-        <a class="mt-6 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/frontend/admin/Profile.html">Profile</a>
+      <div class="flex items-center space-x-4 mb-4">
+        <img
+          src="/assets/pfp.jpg"
+          alt="User profile picture"
+          class="w-20 h-20 rounded-full"
+        />
+        <div class="text-lg font-bold leading-tight">
+          <p class="text-[#0f2e4d]">Admin</p>
+          <p class="text-[#0f2e4d]">Username</p>
+          <div class="flex items-center space-x-1 text-xs font-normal">
+            <span class="w-3 h-3 rounded-full bg-lime-500 inline-block"></span>
+            <span class="text-[#0f2e4d]"
+              >Status: <span class="font-normal">Online</span></span
+            >
+          </div>
+        </div>
+      </div>
+      <hr class="border-gray-500 mb-6" />
+      <nav
+        class="flex flex-col space-y-3 text-lg font-bold text-[#0f2e4d] tracking-wide"
+      >
+        <a
+          href="/frontend/admin/menu.html"
+          class="pl-1 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
+          >Menu</a
+        >
+        <a
+          href="/frontend/admin/Dashboard.html"
+          class="pl-4 py-1 px-2 rounded bg-blue-100"
+          >Dashboard</a
+        >
+        <a
+          href="/frontend/admin/Order.html"
+          class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
+          >Orders</a
+        >
+        <a
+          href="/frontend/admin/Delivery.html"
+          class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
+          >Deliveries</a
+        >
+        <a
+          href="/frontend/admin/Inventory.html"
+          class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
+          >Inventory</a
+        >
+        <a
+          href="/frontend/admin/Profile.html"
+          class="mt-6 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
+          >Profile</a
+        >
       </nav>
-  </aside>
-   <!-- Main content -->
-  <main class="flex-1 p-4">
-   <!-- Top bar with hamburger and title -->
-   <div class="flex items-center gap-3 mb-4">
-    <button aria-label="Menu" class="text-gray-900 text-xl">
-     <i class="fas fa-bars">
-     </i>
-    </button>
-    <h1 class="font-bold text-gray-900 text-lg">
-     Dashboard
-    </h1>
-   </div>
-   <!-- Cards row -->
-   <div class="flex flex-col sm:flex-row gap-4 mb-6">
-    <div class="bg-white shadow-md rounded p-4 flex-1 min-w-[180px]">
-     <div class="text-3xl text-gray-900 mb-2">
-      <i class="fas fa-box-open">
-      </i>
-     </div>
-     <p class="font-semibold text-gray-900 mb-1">
-      New Orders:
-      <span class="font-normal">
-       10
-      </span>
-     </p>
-     <p class="text-xs text-gray-600 cursor-pointer hover:underline">
-      More info
-     </p>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 p-4">
+      <!-- Top bar -->
+      <div class="flex items-center gap-3 mb-4">
+        <button aria-label="Menu" class="text-gray-900 text-xl">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="font-bold text-gray-900 text-lg">Dashboard</h1>
+      </div>
+
+      <!-- Cards row -->
+      <div class="flex flex-col sm:flex-row gap-4 mb-6">
+        <!-- Orders Card -->
+        <div class="bg-white shadow-md rounded p-4 flex-1 min-w-[180px]">
+          <div class="text-3xl text-gray-900 mb-2">
+            <i class="fas fa-box-open"></i>
+          </div>
+          <p class="font-semibold text-gray-900 mb-1">
+            New Orders: <span class="font-normal">10</span>
+          </p>
+          <p
+            onclick="openModal('orders')"
+            class="text-xs text-gray-600 cursor-pointer hover:underline"
+          >
+            More info
+          </p>
+        </div>
+
+        <!-- Deliveries Card -->
+        <div class="bg-white shadow-md rounded p-4 flex-1 min-w-[180px]">
+          <p class="font-semibold text-gray-900 mb-1">
+            Deliveries: <span class="font-normal">10</span>
+          </p>
+          <p
+            onclick="openModal('deliveries')"
+            class="text-xs text-gray-600 cursor-pointer hover:underline"
+          >
+            More info
+          </p>
+        </div>
+
+        <!-- Inventory Card -->
+        <div class="bg-white shadow-md rounded p-4 flex-1 min-w-[180px]">
+          <p class="font-semibold text-gray-900 mb-1">
+            Inventory Status: <span class="font-normal">Good</span>
+          </p>
+          <p
+            onclick="openModal('inventory')"
+            class="text-xs text-gray-600 cursor-pointer hover:underline"
+          >
+            More info
+          </p>
+        </div>
+      </div>
+
+      <!-- Statistics card -->
+      <div
+        class="bg-white shadow-md rounded p-4 relative w-full max-w-6xl mx-auto"
+      >
+        <div class="flex justify-between items-center mb-3">
+          <p class="font-semibold text-gray-900">Statistics</p>
+          <button aria-label="Statistics menu" class="text-gray-900 text-lg">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <!-- Bar chart -->
+        <div class="w-full overflow-x-auto">
+          <div class="flex justify-center">
+            <div class="flex items-end gap-4 sm:gap-6 h-56">
+              <!-- Month bars -->
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
+                ></div>
+                <span class="text-[12px] text-gray-400">Jan</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
+                ></div>
+                <span class="text-[12px] text-gray-400">Feb</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
+                ></div>
+                <span class="text-[12px] text-gray-400">Mar</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-40"
+                ></div>
+                <span class="text-[12px] text-gray-400">Apr</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-32"
+                ></div>
+                <span class="text-[12px] text-gray-400">May</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
+                ></div>
+                <span class="text-[12px] text-gray-400">Jun</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-28"
+                ></div>
+                <span class="text-[12px] text-gray-400">Jul</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-32"
+                ></div>
+                <span class="text-[12px] text-gray-400">Aug</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"
+                ></div>
+                <span class="text-[12px] text-gray-400">Sep</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
+                ></div>
+                <span class="text-[12px] text-gray-400">Oct</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"
+                ></div>
+                <span class="text-[12px] text-gray-400">Nov</span>
+              </div>
+              <div class="flex flex-col items-center gap-1">
+                <div
+                  class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"
+                ></div>
+                <span class="text-[12px] text-gray-400">Dec</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal -->
+    <div
+      id="infoModal"
+      class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden justify-center items-center"
+    >
+      <div class="bg-white rounded-lg p-6 max-w-md w-full shadow-lg relative">
+        <button
+          onclick="closeModal()"
+          class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+        <h2 id="modalTitle" class="text-lg font-bold mb-2 text-[#0f2e4d]">
+          More Info
+        </h2>
+        <p id="modalContent" class="text-gray-700 text-sm mb-4">Loading...</p>
+        <a
+          id="modalLink"
+          href="#"
+          class="inline-block px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition"
+        >
+          Go to Page
+        </a>
+      </div>
     </div>
-    <div class="bg-white shadow-md rounded p-4 flex-1 min-w-[180px]">
-     <p class="font-semibold text-gray-900 mb-1">
-      Deliveries:
-      <span class="font-normal">
-       10
-      </span>
-     </p>
-     <p class="text-xs text-gray-600 cursor-pointer hover:underline">
-      More info
-     </p>
-    </div>
-    <div class="bg-white shadow-md rounded p-4 flex-1 min-w-[180px]">
-     <p class="font-semibold text-gray-900 mb-1">
-      Inventory Status:
-      <span class="font-normal">
-       Good
-      </span>
-      <p class="text-xs text-gray-600 cursor-pointer hover:underline">
-      More info
-     </p>
-    </div>
-   </div>
-<!-- Statistics card -->
-<div class="bg-white shadow-md rounded p-4 relative w-full max-w-6xl mx-auto">
-  <div class="flex justify-between items-center mb-3">
-    <p class="font-semibold text-gray-900">
-      Statistics
-    </p>
-    <button aria-label="Statistics menu" class="text-gray-900 text-lg">
-      <i class="fas fa-bars"></i>
-    </button>
-  </div>
 
-<!-- Responsive Bar Chart Centered -->
-<div class="w-full overflow-x-auto">
-  <div class="flex justify-center">
-    <div class="flex items-end gap-4 sm:gap-6 h-56">
-      
-      <!-- Jan -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"></div>
-        <span class="text-[12px] text-gray-400">Jan</span>
-      </div>
+    <!-- Modal Script -->
+    <script>
+      function openModal(type) {
+        const modal = document.getElementById("infoModal");
+        const title = document.getElementById("modalTitle");
+        const content = document.getElementById("modalContent");
+        const link = document.getElementById("modalLink");
 
-      <!-- Feb -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"></div>
-        <span class="text-[12px] text-gray-400">Feb</span>
-      </div>
+        switch (type) {
+          case "orders":
+            title.textContent = "Order Details";
+            content.textContent =
+              "You currently have 10 new orders. Click below to manage them.";
+            link.href = "/frontend/admin/Order.html";
+            break;
+          case "deliveries":
+            title.textContent = "Delivery Info";
+            content.textContent =
+              "You have 10 deliveries scheduled. Click below to view delivery progress.";
+            link.href = "/frontend/admin/Delivery.html";
+            break;
+          case "inventory":
+            title.textContent = "Inventory Status";
+            content.textContent =
+              "Your inventory is in good condition. Click below to manage stock.";
+            link.href = "/frontend/admin/Inventory.html";
+            break;
+          default:
+            title.textContent = "More Info";
+            content.textContent = "No additional information available.";
+            link.href = "#";
+        }
 
-      <!-- Mar -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"></div>
-        <span class="text-[12px] text-gray-400">Mar</span>
-      </div>
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
 
-      <!-- Apr -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-40"></div>
-        <span class="text-[12px] text-gray-400">Apr</span>
-      </div>
-
-      <!-- May -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-32"></div>
-        <span class="text-[12px] text-gray-400">May</span>
-      </div>
-
-      <!-- Jun -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"></div>
-        <span class="text-[12px] text-gray-400">Jun</span>
-      </div>
-
-      <!-- Jul -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-28"></div>
-        <span class="text-[12px] text-gray-400">Jul</span>
-      </div>
-
-      <!-- Aug -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-32"></div>
-        <span class="text-[12px] text-gray-400">Aug</span>
-      </div>
-
-      <!-- Sep -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"></div>
-        <span class="text-[12px] text-gray-400">Sep</span>
-      </div>
-
-      <!-- Oct -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"></div>
-        <span class="text-[12px] text-gray-400">Oct</span>
-      </div>
-
-      <!-- Nov -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"></div>
-        <span class="text-[12px] text-gray-400">Nov</span>
-      </div>
-
-      <!-- Dec -->
-      <div class="flex flex-col items-center gap-1">
-        <div class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"></div>
-        <span class="text-[12px] text-gray-400">Dec</span>
-      </div>
-
-    </div>
-    </div>
-    </div>
-    </div>  
-  </main>
- </body>
+      function closeModal() {
+        const modal = document.getElementById("infoModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+    </script>
+  </body>
 </html>
