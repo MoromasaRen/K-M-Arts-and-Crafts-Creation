@@ -4,26 +4,44 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>K&amp;M Arts &amp; Crafts Creation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: "Roboto Mono", monospace;
+    }
+  </style>
 </head>
 <body class="bg-white text-[#1a3550]">
-  <nav class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
-    <div class="logo">
-      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[240px] h-auto object-contain" />
+  <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
+    <!-- Logo (Aligned left) -->
+    <div class="flex items-center">
+      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain" />
     </div>
-    <ul class="hidden md:flex space-x-6">
-      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Home</a></li>
-      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Shop</a></li>
-      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Contact</a></li>
-      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">About Us</a></li>
-      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Order Process</a></li>
-      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Gallery & Reviews</a></li>
-      <li><a href="#" class="text-sm font-semibold tracking-wide text-[#1a3550] py-1 px-3 rounded hover:bg-[#1a3550] hover:text-white">Cart</a></li>
-    </ul>
-    <button class="hidden md:inline-block text-sm font-semibold tracking-wide text-[#1a3550] border border-[#1a3550] rounded-full py-2 px-6 hover:bg-[#1a3550] hover:text-white transition">Login/Register</button>
-  </nav>
 
-  <div class="border-b-2 border-[#1a3550] max-w-screen-xl mx-auto"></div>
+    <!-- Navigation in the center -->
+    <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
+    </nav>
+
+    <!-- Login button on the right -->
+    <a href="/frontend/admin/Login.html" class="ml-auto flex-shrink-0">
+      <button
+        class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
+      >
+        Login/Register
+      </button>
+    </a>
+  </header>
+
+  <!-- Responsive divider under header -->
+  <div class="w-[60%] mx-auto border-t-2 border-slate-800 my-2"></div>
 
   <section class="max-w-screen-xl mx-auto px-6 py-16 flex flex-col items-start gap-6">
     <img src="../../assets/Logo2(Transparent).png" alt="KM Logo" class="w-[240px] h-auto object-contain" />
