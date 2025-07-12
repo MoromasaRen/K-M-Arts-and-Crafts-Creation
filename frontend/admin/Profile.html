@@ -47,11 +47,7 @@
       <nav
         class="flex flex-col space-y-3 text-lg font-bold text-[#0f2e4d] tracking-wide"
       >
-        <a
-          class="pl-1 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
-          href="/frontend/admin/menu.html"
-          >Menu</a
-        >
+        <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
         <a
           class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
           href="/frontend/admin/Dashboard.html"
@@ -122,7 +118,7 @@
             class="bg-[#e3ebf9] rounded-md p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6"
           >
             <div class="col-span-full flex justify-between items-center mb-2">
-              <p class="font-bold text-sm tracking-widest">
+              <p class="font-bold text-sm tracking-widest border-b border-[#0f2e4d] pb-1">
                 Personal Information
               </p>
               <div id="personal-info-buttons">
@@ -205,65 +201,71 @@
           </div>
 
           <!-- Address Section -->
-          <div
-            id="address-info"
-            class="bg-[#e3ebf9] rounded-md p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6"
-          >
-            <div class="col-span-full flex justify-between items-center mb-2">
-              <p class="font-bold text-sm tracking-widest">Address</p>
-              <div id="address-info-buttons">
-                <button
-                  id="edit-address-info"
-                  class="bg-[#f4c7c7] text-[#a94442] text-xs font-semibold px-3 py-1 rounded-md"
-                >
-                  Edit
-                </button>
-                <button
-                  id="save-address-info"
-                  class="hidden bg-[#4caf50] text-white text-xs font-semibold px-3 py-1 rounded-md mr-2"
-                >
-                  Save
-                </button>
-                <button
-                  id="cancel-address-info"
-                  class="hidden bg-[#f44336] text-white text-xs font-semibold px-3 py-1 rounded-md"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-            <div>
-              <p class="text-xs font-semibold tracking-widest">Country</p>
-              <p id="country-text" class="font-bold text-sm">Philippines</p>
-              <input
-                id="country-input"
-                type="text"
-                class="hidden font-bold text-sm rounded-md p-1 w-full"
-                value="Philippines"
-              />
-            </div>
-            <div>
-              <p class="text-xs font-semibold tracking-widest">City</p>
-              <p id="city-text" class="font-bold text-sm">Cebu</p>
-              <input
-                id="city-input"
-                type="text"
-                class="hidden font-bold text-sm rounded-md p-1 w-full"
-                value="Cebu"
-              />
-            </div>
-            <div>
-              <p class="text-xs font-semibold tracking-widest">Postal Code</p>
-              <p id="postal-code-text" class="font-bold text-sm">6000</p>
-              <input
-                id="postal-code-input"
-                type="text"
-                class="hidden font-bold text-sm rounded-md p-1 w-full"
-                value="6000"
-              />
-            </div>
-          </div>
-        </div>
+<!-- Address Section -->
+<div
+  id="address-info"
+  class="bg-[#e3ebf9] rounded-md p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6"
+>
+  <!-- Header Row: Title + Buttons -->
+  <div class="col-span-full flex justify-between items-center mb-2">
+    <p class="font-bold text-sm tracking-widest border-b border-[#0f2e4d] pb-1">
+      Address
+    </p>
+    <div id="address-info-buttons">
+      <button
+        id="edit-address-info"
+        class="bg-[#f4c7c7] text-[#a94442] text-xs font-semibold px-3 py-1 rounded-md"
+      >
+        Edit
+      </button>
+      <button
+        id="save-address-info"
+        class="hidden bg-[#4caf50] text-white text-xs font-semibold px-3 py-1 rounded-md mr-2"
+      >
+        Save
+      </button>
+      <button
+        id="cancel-address-info"
+        class="hidden bg-[#f44336] text-white text-xs font-semibold px-3 py-1 rounded-md"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- Fields -->
+  <div>
+    <p class="text-xs font-semibold tracking-widest">Country</p>
+    <p id="country-text" class="font-bold text-sm">Philippines</p>
+    <input
+      id="country-input"
+      type="text"
+      class="hidden font-bold text-sm rounded-md p-1 w-full"
+      value="Philippines"
+    />
+  </div>
+  <div>
+    <p class="text-xs font-semibold tracking-widest">City</p>
+    <p id="city-text" class="font-bold text-sm">Cebu</p>
+    <input
+      id="city-input"
+      type="text"
+      class="hidden font-bold text-sm rounded-md p-1 w-full"
+      value="Cebu"
+    />
+  </div>
+  <div>
+    <p class="text-xs font-semibold tracking-widest">Postal Code</p>
+    <p id="postal-code-text" class="font-bold text-sm">6000</p>
+    <input
+      id="postal-code-input"
+      type="text"
+      class="hidden font-bold text-sm rounded-md p-1 w-full"
+      value="6000"
+    />
+  </div>
+</div>
+
       </section>
     </main>
 
