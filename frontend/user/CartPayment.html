@@ -1,291 +1,81 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Payment Page</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Open+Sans:wght@600&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      margin: 0;
-      background-color: #c6d9f7;
-      font-family: 'Open Sans', sans-serif;
-      min-height: 100vh;
-      color: #1f3a5f;
-    }
-    header {
-      background: #fff;
-      border-bottom: 1px solid #d1d5db;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .logo .km {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 40px;
-      line-height: 1;
-      color: #1f3a5f;
-      user-select: none;
-    }
-    .logo .km span {
-      font-weight: 400;
-      font-size: 18px;
-      vertical-align: middle;
-    }
-    .logo-text {
-      font-size: 10px;
-      line-height: 1;
-      display: flex;
-      flex-direction: column;
-      letter-spacing: 0.15em;
-      font-weight: 100;
-      color: #1f3a5f;
-    }
-    .logo-text span:first-child {
-      font-weight: 600;
-      letter-spacing: 0.3em;
-    }
-    nav {
-      display: flex;
-      gap: 24px;
-      font-weight: 600;
-      font-size: 14px;
-    }
-    nav a {
-      color: #1f3a5f;
-      text-decoration: none;
-      padding: 4px 12px;
-      border-radius: 6px;
-    }
-    nav a.active {
-      background-color: #c6d9f7;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    .profile-circle {
-      width: 40px;
-      height: 40px;
-      background-color: #d1d5db;
-      border-radius: 50%;
-    }
-
-    .progress-bar {
-      background-color: #1f3a5f;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 8px 0;
-      display: flex;
-      justify-content: center;
-    }
-    .progress-list {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      color: white;
-      font-weight: 600;
-      font-size: 12px;
-      user-select: none;
-    }
-    .progress-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-    }
-    .progress-item .circle {
-      width: 20px;
-      height: 20px;
-      border: 1px solid white;
-      border-radius: 3px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: white;
-      background: transparent;
-      z-index: 1;
-    }
-    .progress-item.active .circle {
-      background-color: white;
-      color: #1f3a5f;
-    }
-    .progress-item:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      right: -34px;
-      width: 40px;
-      border-top: 1px solid white;
-      transform: translateY(-50%);
-      z-index: 0;
-    }
-    .progress-item:last-child span {
-      font-weight: 700;
-    }
-
-    main {
-      max-width: 900px;
-      margin: 24px auto;
-      padding: 0 16px 32px;
-      background-color: #c6d9f7;
-      display: flex;
-      gap: 24px;
-      justify-content: flex-start;
-      flex-wrap: nowrap;
-    }
-    form {
-      display: flex;
-      gap: 24px;
-      width: 100%;
-      max-width: 700px;
-    }
-    fieldset {
-      border: 1px solid #6b7280;
-      border-radius: 6px;
-      padding: 12px;
-      background-color: white;
-      width: 320px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #1f3a5f;
-      box-sizing: border-box;
-      min-height: 120px;
-    }
-    legend {
-      padding: 0 4px;
-      font-weight: 600;
-      font-size: 12px;
-      color: #1f3a5f;
-    }
-    fieldset p {
-      margin: 8px 0 0 0;
-    }
-    fieldset p:last-child {
-      font-weight: 400;
-      margin-top: 12px;
-    }
-
-    .summary {
-      border: 1px solid #6b7280;
-      border-radius: 6px;
-      padding: 12px;
-      background-color: white;
-      width: 320px;
-      font-size: 12px;
-      font-weight: 400;
-      color: #1f3a5f;
-      box-sizing: border-box;
-      min-height: 120px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .summary p {
-      display: flex;
-      justify-content: space-between;
-      margin: 6px 0;
-    }
-    .summary p:last-child {
-      font-weight: 600;
-      margin-top: 18px;
-    }
-
-    .btn-container {
-      width: 100%;
-      margin-top: 24px;
-      display: flex;
-      justify-content: center;
-    }
-    button {
-      background-color: white;
-      color: #1f3a5f;
-      font-weight: 600;
-      font-size: 12px;
-      border-radius: 6px;
-      padding: 6px 24px;
-      border: 1px solid #d1d5db;
-      cursor: pointer;
-      min-width: 120px;
-      transition: background-color 0.2s ease;
-    }
-    button:hover {
-      background-color: #f3f4f6;
+      font-family: "Roboto Mono", monospace;
     }
   </style>
 </head>
-<body>
-  <header>
-    <div class="logo">
-      <div class="km">K<span>M</span></div>
-      <div class="logo-text">
-        <span>ARTS &amp; CRAFTS</span>
-        <span>creation</span>
-      </div>
+<body class="bg-[#c6d9f7] text-[#1f3a5f] m-0 p-0 min-h-screen flex flex-col">
+  <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
+    <!-- Logo (Aligned left) -->
+    <div class="flex items-center">
+      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain" />
     </div>
-    <nav>
-    <li><a href="#" class="home">Home</a></li>
-    <li><a href="#">Shop</a></li>
-    <li><a href="#">Contact</a></li>
-    <li><a href="#">About Us</a></li>
-    <li><a href="#">Order Process</a></li>
-    <li><a href="#">Gallery & Reviews</a></li>
-    <li><a href="#">Cart</a></li>
-      <a href="#" class="active">Cart</a>
+
+    <!-- Navigation in the center -->
+    <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
     </nav>
-    <div class="profile-circle"></div>
+
+    <!-- Login button on the right -->
+    <a href="/frontend/admin/Login.html" class="ml-auto flex-shrink-0">
+      <button
+        class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
+      >
+        Login/Register
+      </button>
+    </a>
   </header>
 
-  <div class="progress-bar" aria-label="Checkout progress">
-    <ul class="progress-list">
-      <li class="progress-item">
-        <div class="circle">1</div>
+  <section class="bg-[#1c2f4a] text-white flex justify-center p-3 font-bold text-sm">
+    <div class="flex items-center gap-6">
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">1</div>
         <span>Cart</span>
-      </li>
-      <li class="progress-item">
-        <div class="circle">2</div>
+      </div>
+      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">2</div>
         <span>Address</span>
-      </li>
-      <li class="progress-item active">
-        <div class="circle">3</div>
+      </div>
+      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-6 h-6 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold">3</div>
         <span>Payment</span>
-      </li>
-    </ul>
-  </div>
+      </div>
+    </div>
+  </section>
 
-  <main>
-    <form>
-      <fieldset>
-        <legend>Payment Details</legend>
-        <p><strong>Options:</strong></p>
-        <p><strong>Cash on Delivery</strong></p>
-        <p><strong>Pay with card</strong></p>
+  <main class="max-w-4xl mx-auto mt-6 px-6 flex flex-col md:flex-row gap-6">
+    <form class="flex flex-col md:flex-row gap-6 w-full max-w-4xl bg-white p-6 rounded-lg shadow-md">
+      <fieldset class="border border-gray-400 rounded-md p-4 flex-1 min-w-[300px]">
+        <legend class="font-semibold text-[#1f3a5f]">Payment Details</legend>
+        <p class="font-semibold mt-2">Options:</p>
+        <p class="font-semibold">Cash on Delivery</p>
+        <p class="font-semibold">Pay with card</p>
         <p>Card Details:</p>
       </fieldset>
 
-      <div class="summary" aria-label="Order summary">
-        <p><span>Flower no. 1</span><span>₱100</span></p>
-        <p><span>Delivery fee:</span><span>₱0</span></p>
-        <p><span>Coupon:</span><span>N/A</span></p>
-        <p><strong>Total:</strong><strong>₱100</strong></p>
+      <div class="summary border border-gray-400 rounded-md p-4 flex-1 min-w-[300px] flex flex-col justify-center">
+        <p class="flex justify-between mb-2"><span>Flower no. 1</span><span>₱100</span></p>
+        <p class="flex justify-between mb-2"><span>Delivery fee:</span><span>₱0</span></p>
+        <p class="flex justify-between mb-2"><span>Coupon:</span><span>N/A</span></p>
+        <p class="flex justify-between font-semibold mt-4"><span>Total:</span><span>₱100</span></p>
       </div>
     </form>
   </main>
-
-  <div class="btn-container">
-    <button type="submit" form="form">Place Order</button>
-  </div>
 </body>
 </html>

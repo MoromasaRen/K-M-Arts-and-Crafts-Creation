@@ -1,255 +1,89 @@
+<!DOCTYPE html>
 <html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Address Page
-  </title>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Address Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
-
-   body {
-    margin: 0;
-    background-color: #c1d5e9;
-    font-family: Arial, sans-serif;
-    color: #1f2d47;
-   }
-
-   header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: white;
-    padding: 16px 24px;
-    border: 1px solid #d1d5db;
-   }
-
-   .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-   }
-
-   .logo-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 9px;
-    line-height: 1;
-    color: #1f2d47;
-    display: none;
-   }
-
-   @media (min-width: 640px) {
-    .logo-text {
-     display: block;
+    body {
+      font-family: "Roboto Mono", monospace;
     }
-   }
-
-   nav {
-    display: none;
-    gap: 24px;
-    font-weight: 600;
-    font-size: 14px;
-    color: #1f2d47;
-   }
-
-   nav a {
-    text-decoration: none;
-    color: #1f2d47;
-   }
-
-   nav a:hover {
-    text-decoration: underline;
-   }
-
-   nav .active {
-    background-color: #c1d5e9;
-    border-radius: 6px;
-    padding: 4px 12px;
-    font-weight: 600;
-   }
-
-   @media (min-width: 768px) {
-    nav {
-     display: flex;
-   }
-   }
-
-   .profile-circle {
-    width: 48px;
-    height: 48px;
-    background-color: #d1d5db;
-    border-radius: 50%;
-   }
-
-   .steps-bar {
-    background-color: #1f2d47;
-    padding: 12px 0;
-    display: flex;
-    justify-content: center;
-   }
-
-   .steps-container {
-    display: flex;
-    align-items: center;
-    gap: 48px;
-    font-family: Arial, sans-serif;
-    font-weight: 600;
-    font-size: 12px;
-    color: white;
-   }
-
-   .step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-   }
-
-   .step-number {
-    border: 1px solid white;
-    border-radius: 3px;
-    padding: 2px 8px;
-    margin-bottom: 4px;
-    font-size: 10px;
-   }
-
-   .step-separator {
-    border-top: 1px solid white;
-    width: 40px;
-    margin-top: 12px;
-   }
-
-   main {
-    max-width: 960px;
-    margin: 24px auto;
-    padding: 0 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-   }
-
-   @media (min-width: 768px) {
-    main {
-     flex-direction: row;
-    }
-   }
-
-   section.address-form, section.address-book {
-    background-color: #c1d5e9;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    padding: 16px;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
-    flex: 1;
-    max-width: 400px;
-   }
-
-   h2 {
-    font-weight: 600;
-    font-size: 12px;
-    margin-bottom: 12px;
-   }
-
-   form input {
-    width: 100%;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 12px;
-    color: #1f2d47;
-    font-family: Arial, sans-serif;
-    margin-bottom: 12px;
-    box-sizing: border-box;
-   }
-
-   form input::placeholder {
-    color: #1f2d47;
-   }
-
-   button.add-address {
-    background-color: white;
-    color: #1f2d47;
-    font-weight: 600;
-    font-size: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    padding: 4px 16px;
-    cursor: pointer;
-   }
-
-   button.add-address:hover {
-    background-color: #f3f4f6;
-   }
-
-   .address-book-item {
-    background-color: #c1d5e9;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    padding: 12px 16px;
-    font-size: 12px;
-    font-family: Arial, sans-serif;
-    color: #1f2d47;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
-   }
   </style>
- </head>
- <body>
-  <header>
-   <div class="logo-container">
-    <img alt="KM Arts &amp; Crafts creation logo with decorative K and M letters" height="60" src="https://storage.googleapis.com/a1aa/image/386b15a5-0078-43d2-6f45-40b2a2e23fdf.jpg" width="80"/>
-    <div class="logo-text">
-     <div>ARTS &amp; CRAFTS</div>
-     <div>creation</div>
+</head>
+<body class="bg-[#c1d5e9] text-[#1f2d47] m-0 p-0">
+  <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
+    <!-- Logo (Aligned left) -->
+    <div class="flex items-center">
+      <img src="../../assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain" />
     </div>
-   </div>
-   <nav>
-    <li><a href="#" class="home">Home</a></li>
-    <li><a href="#">Shop</a></li>
-    <li><a href="#">Contact</a></li>
-    <li><a href="#">About Us</a></li>
-    <li><a href="#">Order Process</a></li>
-    <li><a href="#">Gallery & Reviews</a></li>
-    <li><a href="#">Cart</a></li>
-    <a class="active" href="#">Cart</a>
-   </nav>
-   <div class="profile-circle"></div>
+
+    <!-- Navigation in the center -->
+    <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
+      <a href="#" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
+    </nav>
+
+    <!-- Login button on the right -->
+    <a href="/frontend/admin/Login.html" class="ml-auto flex-shrink-0">
+      <button
+        class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
+      >
+        Login/Register
+      </button>
+    </a>
   </header>
-  <section class="steps-bar">
-   <div class="steps-container">
-    <div class="step">
-     <div class="step-number">1</div>
-     <div>Cart</div>
+
+  <section class="bg-[#1c2f4a] text-white flex justify-center p-3 font-bold text-sm">
+    <div class="flex items-center gap-6">
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">1</div>
+        <span>Cart</span>
+      </div>
+      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-6 h-6 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold">2</div>
+        <span>Address</span>
+      </div>
+      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">3</div>
+        <span>Payment</span>
+      </div>
     </div>
-    <div class="step-separator"></div>
-    <div class="step">
-     <div class="step-number">2</div>
-     <div>Address</div>
-    </div>
-    <div class="step-separator"></div>
-    <div class="step">
-     <div class="step-number">3</div>
-     <div>Payment</div>
-    </div>
-   </div>
   </section>
-  <main>
-   <section class="address-form">
-    <h2>Address</h2>
-    <form>
-     <input placeholder="Name" type="text"/>
-     <input placeholder="City(required)" type="text"/>
-     <input placeholder="Province(required)" type="text"/>
-     <input placeholder="Road(Required)" type="text"/>
-     <input placeholder="Mobile number(required)" type="text"/>
-     <input placeholder="Additional Information(Optional)" type="text"/>
-     <button class="add-address" type="button">Add Address +</button>
-    </form>
-   </section>
-   <section class="address-book">
-    <h2>Address Book</h2>
-    <div class="address-book-item">Name: Ren Moromasa | 0999999999</div>
-    <div class="address-book-item">Name: Cedrick Cuas | 09123456789</div>
-    <div class="address-book-item">Name: Laurenz Palanas | 09123456789</div>
-   </section>
+
+  <main class="max-w-4xl mx-auto mt-6 px-6 flex flex-col md:flex-row gap-6">
+    <section class="address-form bg-[#c1d5e9] border border-gray-300 rounded-lg p-6 flex-1 shadow-md">
+      <h2 class="text-[#1f2d47] font-semibold text-lg mb-4">Address</h2>
+      <form class="flex flex-col gap-4">
+        <input placeholder="Name" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
+        <input placeholder="City (required)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
+        <input placeholder="Province (required)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
+        <input placeholder="Road (required)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
+        <input placeholder="Mobile number (required)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
+        <input placeholder="Additional Information (Optional)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
+        <button type="button" class="bg-white text-[#1f2d47] font-semibold py-2 rounded hover:bg-gray-100 transition">Add Address +</button>
+      </form>
+    </section>
+    <section class="address-book bg-[#c1d5e9] border border-gray-300 rounded-lg p-6 flex-1 shadow-md">
+      <h2 class="text-[#1f2d47] font-semibold text-lg mb-4">Address Book</h2>
+      <div class="address-book-item mb-2 p-3 bg-[#c1d5e9] border border-gray-300 rounded shadow-sm text-[#1f2d47] font-mono">
+        Name: Ren Moromasa | 0999999999
+      </div>
+      <div class="address-book-item mb-2 p-3 bg-[#c1d5e9] border border-gray-300 rounded shadow-sm text-[#1f2d47] font-mono">
+        Name: Cedrick Cuas | 09123456789
+      </div>
+      <div class="address-book-item mb-2 p-3 bg-[#c1d5e9] border border-gray-300 rounded shadow-sm text-[#1f2d47] font-mono">
+        Name: Laurenz Palanas | 09123456789
+      </div>
+    </section>
   </main>
- </body>
+</body>
 </html>
