@@ -60,12 +60,12 @@
   </section>
 
 
-  <main class="max-w-7xl mx-auto mt-8 px-6 flex flex-col md:flex-row gap-8">
+  <main class="max-w-7xl mx-auto mt-8 px-6 flex flex-col md:flex-row gap-6 justify-center items-start">
     <!-- Payment Details -->
-    <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:max-w-[60rem]">
+    <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:w-[320px]">
       <h2 class="font-semibold text-[#1c2f4a] mb-4 text-base">Payment Details</h2>
-      <div class="border-b border-gray-300 pb-2 mb-2 font-bold text-[#1c2f4a]">Cash on Delivery</div>
-      <div class="border-b border-gray-300 pb-2 mb-2 font-bold text-[#1c2f4a]">Pay with card</div>
+      <div class="border-b border-gray-300 pb-2 mb-2 font-bold text-[#1c2f4a] cursor-pointer">Cash on Delivery</div>
+      <div class="border-b border-gray-300 pb-2 mb-2 font-bold text-[#1c2f4a] cursor-pointer">Pay with card</div>
       <div>
         <div class="font-bold mb-2 text-[#1c2f4a]">Card Details:</div>
         <div class="text-sm mb-1">Card Number: [•••• •••• •••• 1234]</div>
@@ -75,7 +75,7 @@
     </section>
   
     <!-- Order Summary -->
-    <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:max-w-md flex flex-col justify-between">
+    <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:w-[320px] flex flex-col justify-between">
       <h2 class="font-semibold text-[#1c2f4a] mb-4 text-base">Order summary</h2>
       <div class="flex flex-col gap-2 mb-2 text-sm">
         <div class="flex justify-between"><span>Flower no. 1</span><span>₱100</span></div>
@@ -87,7 +87,10 @@
         <span>Total:</span>
         <span>₱100</span>
       </div>
-      <button class="mt-2 w-full bg-[#f2f7fd] border border-gray-400 rounded py-2 font-semibold text-[#1c2f4a] hover:bg-[#c7d9f9] transition">Place Order</button>
+      <div class="flex justify-between mt-2">
+        <a href="/frontend/user/CartAddress.html" class="bg-gray-300 text-[#1f3a5f] font-semibold py-2 px-6 rounded hover:bg-gray-400 transition duration-300 ease-in-out">Back</a>
+        <button class="bg-[#f2f7fd] border border-gray-400 rounded py-2 px-6 font-semibold text-[#1c2f4a] hover:bg-[#c7d9f9] transition">Place Order</button>
+      </div>
     </section>
   </main>
 </body>
