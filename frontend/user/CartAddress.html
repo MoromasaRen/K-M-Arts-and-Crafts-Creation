@@ -43,25 +43,28 @@
   <section class="bg-[#1c2f4a] text-white flex justify-center p-3 font-bold text-sm">
     <div class="flex items-center gap-6">
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/Cart.html" class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold hover:bg-white hover:text-[#1c2f4a] transition">1</a>
+        <a href="/frontend/user/Cart.html" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold hover:bg-white hover:text-[#1c2f4a] transition">1</a>
         <span>Cart</span>
       </div>
-      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/CartAddress.html" class="w-6 h-6 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">2</a>
+        <a href="/frontend/user/CartAddress.html" class="w-8 h-8 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">2</a>
         <span>Address</span>
       </div>
-      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/CartPayment.html" class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">3</a>
+        <a href="/frontend/user/CartPayment.html" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">3</a>
         <span>Payment</span>
       </div>
     </div>
   </section>
 
   <main class="max-w-4xl mx-auto mt-6 px-6 flex flex-col md:flex-row gap-6">
-    <section class="address-form bg-[#c1d5e9] border border-gray-300 rounded-lg p-6 flex-1 shadow-md">
-      <h2 class="text-[#1f2d47] font-semibold text-lg mb-4">Address</h2>
+    <section class="address-form bg-white border border-gray-300 rounded-lg p-6 flex-1 shadow-md">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-[#1f2d47] font-semibold text-lg">My Addresses</h2>
+        <button class="bg-white border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition">Add New Address +</button>
+      </div>
       <form class="flex flex-col gap-4">
         <input placeholder="Name" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
         <input placeholder="City (required)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
@@ -69,19 +72,33 @@
         <input placeholder="Road (required)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
         <input placeholder="Mobile number (required)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
         <input placeholder="Additional Information (Optional)" type="text" class="p-2 rounded border border-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1f2d47]" />
-        <button type="button" class="bg-white text-[#1f2d47] font-semibold py-2 rounded hover:bg-gray-100 transition">Add Address +</button>
+        <button type="button" class="bg-[#1f2d47] text-white font-semibold py-2 rounded hover:bg-[#12243b] transition">Add Address</button>
       </form>
     </section>
-    <section class="address-book bg-[#c1d5e9] border border-gray-300 rounded-lg p-6 flex-1 shadow-md">
-      <h2 class="text-[#1f2d47] font-semibold text-lg mb-4">Address Book</h2>
-      <div class="address-book-item mb-2 p-3 bg-[#c1d5e9] border border-gray-300 rounded shadow-sm text-[#1f2d47] font-mono">
-        Name: Ren Moromasa | 0999999999
+    <section class="address-book bg-white border border-gray-300 rounded-lg p-6 flex-1 shadow-md">
+      <div class="address-book-item mb-4 p-4 border-b border-gray-300 last:border-b-0 flex justify-between items-start">
+        <div>
+          <p><strong>Laurenz Palanas</strong> | 09123455678</p>
+          <p>25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila</p>
+          <p>Person: Angela Mae Dela Cruz</p>
+        </div>
+        <button class="border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition">Use address</button>
       </div>
-      <div class="address-book-item mb-2 p-3 bg-[#c1d5e9] border border-gray-300 rounded shadow-sm text-[#1f2d47] font-mono">
-        Name: Cedrick Cuas | 09123456789
+      <div class="address-book-item mb-4 p-4 border-b border-gray-300 last:border-b-0 flex justify-between items-start">
+        <div>
+          <p><strong>Ren Moromasa</strong> | 09123455678</p>
+          <p>25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila</p>
+          <p>Person: Angela Mae Dela Cruz</p>
+        </div>
+        <button class="border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition">Use address</button>
       </div>
-      <div class="address-book-item mb-2 p-3 bg-[#c1d5e9] border border-gray-300 rounded shadow-sm text-[#1f2d47] font-mono">
-        Name: Laurenz Palanas | 09123456789
+      <div class="address-book-item mb-4 p-4 border-b border-gray-300 last:border-b-0 flex justify-between items-start">
+        <div>
+          <p><strong>Cedrick Lord Cuas</strong> | 09123455678</p>
+          <p>25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila</p>
+          <p>Person: Angela Mae Dela Cruz</p>
+        </div>
+        <button class="border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition">Use address</button>
       </div>
     </section>
   </main>
