@@ -179,121 +179,89 @@
         </div>
       </div>
 
-      <!-- Bar Chart (Statistics) -->
-      <div class="flex flex-col lg:flex-row gap-6">
-        <div class="bg-white shadow-md rounded p-4 w-full lg:w-2/3">
-          <div class="flex justify-between items-center mb-3">
-            <p class="font-semibold text-gray-900">Statistics</p>
-            <button aria-label="Statistics menu" class="text-gray-900 text-lg">
-              <i class="fas fa-bars"></i>
-            </button>
-          </div>
+<!-- Extra Info Cards -->
+<div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+  <!-- Remaining Orders -->
+  <div class="bg-white shadow-md rounded p-4 flex items-center justify-center gap-4 w-full">
+    <div class="text-3xl text-[#0f2e4d] bg-[#d3e1f9] p-4 rounded-full shadow-sm">
+      <i class="fas fa-box"></i>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-900">Remaining Orders</p>
+      <p class="text-sm text-gray-600">5</p>
+    </div>
+  </div>
 
-          <!-- Bar chart -->
-          <div class="w-full overflow-x-auto">
-            <div class="flex justify-center">
-              <div class="flex items-end gap-4 sm:gap-6 h-56">
-                <!-- Month bars -->
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Jan</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Feb</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Mar</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-40"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Apr</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-32"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">May</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Jun</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-28"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Jul</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-32"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Aug</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Sep</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-24"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Oct</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Nov</span>
-                </div>
-                <div class="flex flex-col items-center gap-1">
-                  <div
-                    class="bg-blue-700 w-8 sm:w-10 md:w-12 rounded-sm h-36"
-                  ></div>
-                  <span class="text-[12px] text-gray-400">Dec</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- Remaining Deliveries -->
+  <div class="bg-white shadow-md rounded p-4 flex items-center justify-center gap-4 w-full">
+    <div class="text-3xl text-[#0f2e4d] bg-[#d3e1f9] p-4 rounded-full shadow-sm">
+      <i class="fas fa-shipping-fast"></i>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-900">Remaining Deliveries</p>
+      <p class="text-sm text-gray-600">3</p>
+    </div>
+  </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col gap-4 w-full lg:w-1/3">
-          <button
-            data-type="order"
-            class="openManageModal text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white"
-          >
-            Generate Report
-          </button>
-          <button
-            data-type="delivery"
-            class="openManageModal text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white"
-          >
-            Schedule a Delivery
-          </button>
-          <button
-            data-type="inventory"
-            class="openManageModal text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white"
-          >
-            Add to Inventory
-          </button>
-        </div>
-      </div>
-    </main>
+  <!-- Completed Orders -->
+  <div class="bg-white shadow-md rounded p-4 flex items-center justify-center gap-4 w-full">
+    <div class="text-3xl text-[#0f2e4d] bg-[#d3e1f9] p-4 rounded-full shadow-sm">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <div>
+      <p class="font-semibold text-gray-900">Completed Orders</p>
+      <p class="text-sm text-gray-600">12</p>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom section with Notifications and Action Buttons side by side -->
+<div class="flex flex-col lg:flex-row gap-6 w-full">
+  <!-- Notifications Panel -->
+  <div class="bg-white shadow-md rounded p-4 w-full lg:w-2/3">
+  <div class="flex justify-between items-center mb-3">
+    <p class="font-semibold text-gray-900 text-lg">Notifications</p>
+    <button
+      aria-label="Refresh notifications"
+      onclick="fetchNotifications()"
+      class="text-gray-900 text-lg hover:text-blue-700 transition"
+    >
+      <i class="fas fa-sync-alt"></i>
+    </button>
+  </div>
+
+  <!-- Notification List -->
+  <ul id="notificationList" class="space-y-3 max-h-64 overflow-y-auto text-sm">
+    <li class="bg-blue-50 p-3 rounded shadow-sm">
+      <p class="text-gray-800">
+        🛒 <strong>Order #12345</strong> placed by <strong>User_01</strong>
+      </p>
+      <p class="text-gray-500 text-xs">Just now</p>
+    </li>
+    <!-- More items dynamically added here -->
+  </ul>
+</div>
+<!-- Action Buttons aligned to the right -->
+<div class="flex flex-col gap-4 w-full lg:w-1/3">
+  <button
+    data-type="order"
+    class="openManageModal text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white w-full"
+  >
+    Generate Report
+  </button>
+  <button
+    data-type="delivery"
+    class="openManageModal text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white w-full"
+  >
+    Schedule a Delivery
+  </button>
+  <button
+    data-type="inventory"
+    class="openManageModal text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white w-full"
+  >
+    Add to Inventory
+  </button>
+</div>
 
     <!-- Manage Modal -->
     <div id="manageModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
@@ -446,6 +414,8 @@
     <script src="/frontend/admin/js/modal-info.js"></script>
     <script src="/frontend/admin/js/modal-welcome.js"></script>
     <script src="/frontend/admin/js/init.js"></script>
+    <script src="/frontend/admin/js/animations.js"></script>
+    <script src="/frontend/admin/js/notifications.js"></script>
 
   </body>
 </html>

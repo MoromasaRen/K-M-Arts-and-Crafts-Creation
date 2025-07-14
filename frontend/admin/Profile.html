@@ -11,8 +11,19 @@
     />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+    
       body {
         font-family: "Roboto Mono", monospace;
+      }
+    
+      .glass-card {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 1rem;
+        padding: 1rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
       }
     </style>
   </head>
@@ -93,9 +104,7 @@
 
         <div class="space-y-4">
           <!-- User Summary Card -->
-          <div
-            class="bg-[#e3ebf9] rounded-md p-4 shadow-md flex items-center space-x-6"
-          >
+          <div class="bg-[#e3f6ff] rounded-xl p-4 shadow-md flex items-center space-x-6">
             <img
               src="/assets/pfp.jpg"
               alt="User"
@@ -113,10 +122,7 @@
           </div>
 
           <!-- Personal Info Section -->
-          <div
-            id="personal-info"
-            class="bg-[#e3ebf9] rounded-md p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6"
-          >
+          <div id="personal-info" class="bg-[#e3f6ff]  rounded-xl p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
             <div class="col-span-full flex justify-between items-center mb-2">
               <p class="font-bold text-sm tracking-widest border-b border-[#0f2e4d] pb-1">
                 Personal Information
@@ -202,10 +208,7 @@
 
           <!-- Address Section -->
 <!-- Address Section -->
-<div
-  id="address-info"
-  class="bg-[#e3ebf9] rounded-md p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6"
->
+<div id="address-info" class="bg-[#e3f6ff] rounded-xl p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
   <!-- Header Row: Title + Buttons -->
   <div class="col-span-full flex justify-between items-center mb-2">
     <p class="font-bold text-sm tracking-widest border-b border-[#0f2e4d] pb-1">

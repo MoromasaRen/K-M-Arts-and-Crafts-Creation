@@ -1,5 +1,3 @@
-// modal-info.js
-
 function openModal(type) {
   const title = document.getElementById("modalTitle");
   const content = document.getElementById("modalContent");
@@ -29,3 +27,14 @@ function openModal(type) {
 function closeModal() {
   fadeOutModal("infoModal");
 }
+
+// ✅ Close modal when clicking outside the modal content
+const infoModal = document.getElementById("infoModal");
+
+infoModal.addEventListener("click", (event) => {
+  const modalContent = infoModal.querySelector("div");
+
+  if (!modalContent.contains(event.target)) {
+    fadeOutModal("infoModal");
+  }
+});
