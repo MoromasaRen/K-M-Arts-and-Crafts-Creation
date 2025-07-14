@@ -43,39 +43,52 @@
   <section class="bg-[#1c2f4a] text-white flex justify-center p-3 font-bold text-sm">
     <div class="flex items-center gap-6">
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/Cart.html" class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold hover:bg-white hover:text-[#1c2f4a] transition">1</a>
+        <a href="/frontend/user/Cart.html" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold hover:bg-white hover:text-[#1c2f4a] transition">1</a>
         <span>Cart</span>
       </div>
-      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/CartAddress.html" class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold hover:bg-white hover:text-[#1c2f4a] transition">2</a>
+        <a href="/frontend/user/CartAddress.html" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold hover:bg-white hover:text-[#1c2f4a] transition">2</a>
         <span>Address</span>
       </div>
-      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/CartPayment.html" class="w-6 h-6 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold">3</a>
+        <a href="/frontend/user/CartPayment.html" class="w-8 h-8 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">3</a>
         <span>Payment</span>
       </div>
     </div>
   </section>
 
-  <main class="max-w-4xl mx-auto mt-6 px-6 flex flex-col md:flex-row gap-6">
-    <form class="flex flex-col md:flex-row gap-6 w-full max-w-4xl bg-white p-6 rounded-lg shadow-md">
-      <fieldset class="border border-gray-400 rounded-md p-4 flex-1 min-w-[300px]">
-        <legend class="font-semibold text-[#1f3a5f]">Payment Details</legend>
-        <p class="font-semibold mt-2">Options:</p>
-        <p class="font-semibold">Cash on Delivery</p>
-        <p class="font-semibold">Pay with card</p>
-        <p>Card Details:</p>
-      </fieldset>
 
-      <div class="summary border border-gray-400 rounded-md p-4 flex-1 min-w-[300px] flex flex-col justify-center">
-        <p class="flex justify-between mb-2"><span>Flower no. 1</span><span>₱100</span></p>
-        <p class="flex justify-between mb-2"><span>Delivery fee:</span><span>₱0</span></p>
-        <p class="flex justify-between mb-2"><span>Coupon:</span><span>N/A</span></p>
-        <p class="flex justify-between font-semibold mt-4"><span>Total:</span><span>₱100</span></p>
+  <main class="max-w-6xl mx-auto mt-8 px-6 flex flex-col md:flex-row gap-8">
+    <!-- Payment Details -->
+    <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:max-w-[28rem]">
+      <h2 class="font-semibold text-[#1c2f4a] mb-4 text-base">Payment Details</h2>
+      <div class="border-b border-gray-300 pb-2 mb-2 font-bold text-[#1c2f4a]">Cash on Delivery</div>
+      <div class="border-b border-gray-300 pb-2 mb-2 font-bold text-[#1c2f4a]">Pay with card</div>
+      <div>
+        <div class="font-bold mb-2 text-[#1c2f4a]">Card Details:</div>
+        <div class="text-sm mb-1">Card Number: [•••• •••• •••• 1234]</div>
+        <div class="text-sm mb-1">Expiry: [MM/YY] &nbsp; CVV: [123]</div>
+        <div class="text-sm mb-1">Cardholder Name: [________]</div>
       </div>
-    </form>
+    </section>
+  
+    <!-- Order Summary -->
+    <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:max-w-md flex flex-col justify-between">
+      <h2 class="font-semibold text-[#1c2f4a] mb-4 text-base">Order summary</h2>
+      <div class="flex flex-col gap-2 mb-2 text-sm">
+        <div class="flex justify-between"><span>Flower no. 1</span><span>₱100</span></div>
+        <div class="flex justify-between"><span>Delivery fee:</span><span>₱0</span></div>
+        <div class="flex justify-between"><span>Coupon:</span><span>N/A</span></div>
+      </div>
+      <hr class="my-2"/>
+      <div class="flex justify-between font-bold text-base mb-4">
+        <span>Total:</span>
+        <span>₱100</span>
+      </div>
+      <button class="mt-2 w-full bg-[#f2f7fd] border border-gray-400 rounded py-2 font-semibold text-[#1c2f4a] hover:bg-[#c7d9f9] transition">Place Order</button>
+    </section>
   </main>
 </body>
 </html>

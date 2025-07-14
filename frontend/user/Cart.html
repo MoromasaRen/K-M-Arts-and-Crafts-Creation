@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
@@ -11,7 +12,7 @@
     }
   </style>
 </head>
-  <body class="bg-[#1c2f4a] text-[#1c2f4a] min-h-screen flex flex-col">
+<body class="bg-[#1c2f4a] text-[#1c2f4a] min-h-screen flex flex-col">
 
   <!-- Header (Updated) -->
   <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
@@ -22,13 +23,13 @@
 
     <!-- Navigation in the center -->
     <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
-        <a href="/index.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
-        <a href="/frontend/user/Shop.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
-        <a href="/frontend/user/Contacts.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
-        <a href="/frontend/user/About.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
-        <a href="/frontend/user/OrderProcess.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
-        <a href="/frontend/user/GalleryAndReviews.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
-        <a href="/frontend/user/Cart.html" class="bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
+      <a href="/index.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+      <a href="/frontend/user/Shop.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
+      <a href="/frontend/user/Contacts.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
+      <a href="/frontend/user/About.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
+      <a href="/frontend/user/OrderProcess.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
+      <a href="/frontend/user/GalleryAndReviews.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
+      <a href="/frontend/user/Cart.html" class="bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
     </nav>
 
     <!-- Login button on the right -->
@@ -45,45 +46,102 @@
   <section class="bg-[#1c2f4a] text-white flex justify-center p-3 font-bold text-sm">
     <div class="flex items-center gap-6">
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/Cart.html" class="w-6 h-6 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">1</a>
+        <a href="/frontend/user/Cart.html" class="w-8 h-8 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">1</a>
         <span>Cart</span>
       </div>
-      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/CartAddress.html" class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold hover:bg-white hover:text-[#1c2f4a] transition">2</a>
+        <a href="/frontend/user/CartAddress.html" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">2</a>
         <span>Address</span>
       </div>
-      <div class="h-[1px] w-8 bg-white"></div>
+      <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/frontend/user/CartPayment.html" class="w-6 h-6 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">3</a>
+        <a href="/frontend/user/CartPayment.html" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">3</a>
         <span>Payment</span>
       </div>
     </div>
   </section>
 
+
   <!-- Main Content -->
-  <main class="flex flex-col gap-6 p-6 flex-grow bg-[#c7d9f7] md:flex-row md:justify-center">
-    <!-- Items Section -->
-    <section class="bg-white border border-gray-300 rounded-lg p-4 w-full max-w-[40rem]">
-      <h2 class="font-bold text-sm mb-3 text-[#1c2f4a]">Items</h2>
-      <ul class="list-none p-0 m-0 space-y-3">
-        <!-- Cart Item 1 -->
-        <li class="flex items-center border border-gray-300 rounded-lg p-2 gap-3 text-gray-700 font-bold text-sm">
-          <img src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" alt="Flower no.1" class="w-14 h-14 object-cover rounded-md"/>
-          <div class="flex-grow">
-            <div class="font-bold text-[#1c2f4a]">Flower no.1</div>
-            <div class="text-sm text-gray-500">₱250</div>
+  <div class="bg-[#c6d9f7] flex-1">
+    <main class="max-w-6xl mx-auto py-10 px-6 flex flex-col md:flex-row gap-8">
+      <!-- Items Section -->
+      <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:max-w-[28rem] shadow">
+        <h2 class="font-semibold text-[#1c2f4a] mb-4 text-base">Items</h2>
+        <ul class="space-y-4">
+          <!-- Item 1 -->
+          <li class="flex items-center border border-gray-300 rounded-lg p-3 gap-4 bg-[#f5f7fa]">
+            <img src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" alt="Flower no.1" class="w-16 h-16 object-cover rounded-md"/>
+            <div class="flex-grow">
+              <div class="font-semibold text-[#1c2f4a]">Flower no.1</div>
+              <div class="text-sm text-gray-500">₱250</div>
+            </div>
+            <button class="text-[#1c2f4a] font-bold text-lg hover:text-red-600 px-2">×</button>
+            <div class="flex items-center gap-1 font-bold text-sm text-gray-700 ml-4">
+              <button class="px-2 py-1 rounded hover:bg-gray-200">-</button>
+              <span>1</span>
+              <button class="px-2 py-1 rounded hover:bg-gray-200">+</button>
+            </div>
+          </li>
+          <!-- Item 2 -->
+          <li class="flex items-center border border-gray-300 rounded-lg p-3 gap-4 bg-[#f5f7fa]">
+            <img src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" alt="Flower no.2" class="w-16 h-16 object-cover rounded-md"/>
+            <div class="flex-grow">
+              <div class="font-semibold text-[#1c2f4a]">Flower no.2</div>
+              <div class="text-sm text-gray-500">₱150</div>
+            </div>
+            <button class="text-[#1c2f4a] font-bold text-lg hover:text-red-600 px-2">×</button>
+            <div class="flex items-center gap-1 font-bold text-sm text-gray-700 ml-4">
+              <button class="px-2 py-1 rounded hover:bg-gray-200">-</button>
+              <span>1</span>
+              <button class="px-2 py-1 rounded hover:bg-gray-200">+</button>
+            </div>
+          </li>
+          <!-- Item 3 -->
+          <li class="flex items-center border border-gray-300 rounded-lg p-3 gap-4 bg-[#f5f7fa]">
+            <img src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" alt="Flower no.3" class="w-16 h-16 object-cover rounded-md"/>
+            <div class="flex-grow">
+              <div class="font-semibold text-[#1c2f4a]">Flower no.3</div>
+              <div class="text-sm text-gray-500">₱100</div>
+            </div>
+            <button class="text-[#1c2f4a] font-bold text-lg hover:text-red-600 px-2">×</button>
+            <div class="flex items-center gap-1 font-bold text-sm text-gray-700 ml-4">
+              <button class="px-2 py-1 rounded hover:bg-gray-200">-</button>
+              <span>1</span>
+              <button class="px-2 py-1 rounded hover:bg-gray-200">+</button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    
+      <!-- Right Section (Coupons & Price Details) -->
+      <section class="flex flex-col gap-6 w-full md:max-w-md">
+        <!-- Coupon -->
+        <div class="bg-white border border-gray-300 rounded-lg p-4 shadow">
+          <h2 class="font-semibold text-[#1c2f4a] mb-2 text-base">Coupons</h2>
+          <input type="text" placeholder="Enter Gift Code"
+                class="w-full border border-gray-400 rounded px-4 py-2 text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#1c2f4a]"/>
+        </div>
+        <!-- Price Details -->
+        <div class="bg-white border border-gray-300 rounded-lg p-4 shadow">
+          <h2 class="font-semibold text-[#1c2f4a] mb-2 text-base">Price Details</h2>
+          <div class="mb-2 text-sm">1 Item</div>
+          <div class="flex justify-between text-sm mb-1">
+            <span>Flower no. 1</span>
+            <span>₱100</span>
           </div>
-          <button class="text-gray-700 font-bold text-sm p-0.5 hover:text-black">×</button>
-          <div class="flex items-center gap-1 font-bold text-sm text-gray-700">
-            <button class="p-1">-</button>
-            <span>1</span>
-            <button class="p-1">+</button>
+          <hr class="my-2"/>
+          <div class="flex justify-between font-bold text-base">
+            <span>Total Amount</span>
+            <span>₱100</span>
           </div>
-        </li>
-        <!-- Cart Item 2 -->
-        <li class="flex items-center border border-gray-300 rounded-lg p-2 gap-3 text-gray-700 font-bold text-sm">
-          <img src="https://storage.googleapis.com/a1aa/image/c1ca6351-8ade-42ba-d6c9-bd775481dd2e.jpg" alt="Flower no.2" class="w-14 h-14 object-cover rounded-md"/>
-          <div class="flex-grow">
-            <div class="font-bold text-[#1c2f4a]">Flower no.2</div>
-            <d
+          <a href="/frontend/user/CartAddress.html">
+            <button class="mt-4 w-full bg-white border border-gray-400 rounded py-2 font-bold text-[#1c2f4a] hover:bg-[#c6d9f7] transition">NEXT</button>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
