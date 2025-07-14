@@ -59,38 +59,57 @@
       <img src="/assets/Logo(Transparant).png" class="w-full max-w-[700px] h-auto" alt="Logo Transparent" />
     </div>
 
-    <!-- Right Side -->
-    <div class="lg:w-2/3 w-full overflow-x-auto">
-      <div class="flex flex-nowrap gap-6 items-center">
-        <!-- Product Card Template -->
-        <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
-          <img src="/assets/flower pictures(no names)/1.png" alt="Blue Orchid Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
-          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P385</div>
-        </div>
+ <!-- Right Side -->
+<div class="lg:w-2/3 w-full relative">
+  <!-- Left Arrow -->
+  <button
+    id="scroll-left"
+    aria-label="Scroll left"
+    class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#1a3550] text-white rounded-full p-3 shadow-md z-10 hover:bg-[#12243b] transition"
+  >
+    &#8592;
+  </button>
 
-        <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
-          <img src="/assets/flower pictures(no names)/7.png" alt="Blue Tulips Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
-          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
-        </div>
+  <!-- Scrollable container -->
+  <div id="product-scroll" class="flex flex-nowrap gap-6 items-center overflow-x-hidden scroll-smooth">
+    <!-- Product Card Template -->
+    <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
+      <img src="/assets/flower pictures(no names)/1.png" alt="Blue Orchid Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
+      <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P385</div>
+    </div>
 
-        <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
-          <img src="/assets/flower pictures(no names)/14.png" alt="Lily Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
-          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
-        </div>
+    <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
+      <img src="/assets/flower pictures(no names)/7.png" alt="Blue Tulips Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
+      <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
+    </div>
 
-        <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
-          <img src="/assets/flower pictures(no names)/20.png" alt="Pink Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
-          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
-        </div>
+    <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
+      <img src="/assets/flower pictures(no names)/14.png" alt="Lily Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
+      <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
+    </div>
 
-        <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
-          <img src="/assets/flower pictures(no names)/26.png" alt="Blue Garden Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
-          <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P165</div>
-        </div>
-      </div>
+    <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
+      <img src="/assets/flower pictures(no names)/20.png" alt="Pink Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
+      <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P155</div>
+    </div>
+
+    <div class="relative flex flex-col items-center border shadow-lg p-4 rounded-lg bg-white min-w-[270px] transition-all duration-300 hover:bg-white/10 hover:backdrop-blur-md hover:border-white/30 hover:shadow-xl">
+      <img src="/assets/flower pictures(no names)/26.png" alt="Blue Garden Bouquet" class="rounded-lg w-[270px] h-auto object-cover" />
+      <div class="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-[#1a3550] text-white text-xs font-semibold px-2 py-1 rounded-full">P165</div>
     </div>
   </div>
-</section>
+
+  <!-- Right Arrow -->
+  <button
+    id="scroll-right"
+    aria-label="Scroll right"
+    class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-[#1a3550] text-white rounded-full p-3 shadow-md z-10 hover:bg-[#12243b] transition"
+  >
+    &#8594;
+  </button>
+</div>
+</section>  
+
   <Footer>
   <footer class="bg-[#183655] text-white py-8">
     <div class="max-w-screen-xl mx-auto px-6 flex flex-col items-center justify-center text-center space-y-6">
@@ -119,5 +138,21 @@
     </div>
   </footer>
 </Footer>
+
+<script>
+  const scrollContainer = document.getElementById('product-scroll');
+  const scrollLeftBtn = document.getElementById('scroll-left');
+  const scrollRightBtn = document.getElementById('scroll-right');
+
+  const scrollAmount = 300; // Adjust scroll distance on arrow click
+
+  scrollLeftBtn.addEventListener('click', () => {
+    scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  });
+
+  scrollRightBtn.addEventListener('click', () => {
+    scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  });
+</script>
 </body>
 </html>
