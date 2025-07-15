@@ -361,8 +361,8 @@
         .getElementById("cancel-address-info")
         .addEventListener("click", () => cancelChanges("address-info"));
 
-
-        document.getElementById("logout-btn").addEventListener("click", function (e) {
+      // logout-btn
+    document.getElementById("logout-btn").addEventListener("click", function (e) {
     e.preventDefault(); // Prevent default link behavior
 
     fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/auth/logout.php", {

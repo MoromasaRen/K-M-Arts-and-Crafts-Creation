@@ -172,8 +172,30 @@
     `;
   }
 
+      // logout-btn
+    document.getElementById("logout-btn").addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent default link behavior
 
+    fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/auth/logout.php", {
+      method: "POST",
+      credentials: "include" // Include session cookie
+    })
+      .then(res => res.text())
+      .then(response => {
+        // Clear localStorage values
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_type");
+        localStorage.removeItem("username");
 
+        // Redirect to homepage
+        window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
+      })
+      .catch(err => {
+        console.error("Logout failed:", err);
+        alert("Something went wrong during logout.");
+      });
+  });
 </script>
 
 </body>
