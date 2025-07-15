@@ -17,6 +17,7 @@
       }
     </style>
   </head>
+
   <body
     class="bg-[#D5E7FF] min-h-screen flex items-center justify-center relative px-4"
   >
@@ -76,4 +77,30 @@
       </p>
     </form>
   </body>
+
+
+    
+  <script>
+  document.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const payload = { email: document.getElementById("email").value };
+
+    fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/auth/forgot.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("Something went wrong."); message
+      });
+  });
+</script>
+
+
+
 </html>

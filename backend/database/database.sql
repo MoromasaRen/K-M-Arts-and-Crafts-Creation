@@ -1,10 +1,13 @@
+CREATE DATABASE km_arts;
+USE km_arts;
+
 -- USERS TABLE
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    user_type ENUM('admin', 'staff', 'delivery') NOT NULL,
+    user_type ENUM('staff', 'user') NOT NULL,
     password VARCHAR(255),
     contact_number VARCHAR(20)
 );
