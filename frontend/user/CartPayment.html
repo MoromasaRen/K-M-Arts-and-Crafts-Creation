@@ -7,10 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    html, body {
+      height: 100%; /* Ensure html and body are full height */
+    }
     body {
       font-family: "Roboto Mono", monospace;
     }
   </style>
+</head>
 </head>
 <body class="bg-[#c6d9f7] text-[#1f3a5f] m-0 p-0 min-h-screen flex flex-col">
   <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
@@ -60,7 +64,7 @@
   </section>
 
 
-  <main class="max-w-7xl mx-auto mt-8 px-6 flex flex-col md:flex-row gap-6 justify-center items-start">
+  <main class="flex-1 max-w-7xl mx-auto mt-8 px-6 flex flex-col md:flex-row gap-6 justify-center items-start">
     <!-- Payment Details -->
     <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:w-[320px]">
       <h2 class="font-semibold text-[#1c2f4a] mb-4 text-base">Payment Details</h2>
@@ -93,5 +97,31 @@
       </div>
     </section>
   </main>
+
+  
+    <!-- Footer -->
+     <div class="mt-16"></div>
+    <footer class="bg-[#183655] text-white py-8">
+      <div class="max-w-screen-xl mx-auto px-6 flex flex-col items-center justify-center text-center space-y-6">
+        <!-- Logo -->
+        <img src="/K-M-Arts-and-Crafts-Creation/assets/Logo3.png" alt="KM Arts & Crafts Creation Logo" class="w-80 h-auto" />
+
+        <!-- Social Media Icons -->
+        <div class="flex gap-6">
+          <a href="https://www.instagram.com/kmartsandcraftscreation/" target="_blank" aria-label="Instagram">
+            <img src="/K-M-Arts-and-Crafts-Creation/assets/InstaIconWhite.png" alt="Instagram" class="w-11 h-11" />
+          </a>
+          <a href="https://www.facebook.com/stumoniii" target="_blank" aria-label="Facebook">
+            <img src="/K-M-Arts-and-Crafts-Creation/assets/FacebookIconWhite.png" alt="Facebook" class="w-11 h-11" />
+          </a>
+          <a href="https://www.tiktok.com/@kmartsandcraftscreation" target="_blank" aria-label="TikTok">
+            <img src="/K-M-Arts-and-Crafts-Creation/assets/TikTokIconWhite.png" alt="TikTok" class="w-11 h-11" />
+          </a>
+        </div>
+
+        <!-- Copyright -->
+        <p class="text-sm tracking-widest">2025 KM ARTS & CRAFTS. All rights reserved.</p>
+      </div>
+    </footer>
 </body>
 </html>
