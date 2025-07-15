@@ -31,17 +31,22 @@ try {
     </div>
     <div class="flex items-center space-x-4 mb-4">
       <img alt="User profile" class="w-20 h-20 rounded-full" src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg" />
-      <div class="text-lg font-bold leading-tight">
-        <p class="text-[#0f2e4d]">Admin</p>
-        <p class="text-[#0f2e4d]">Username</p>
-        <div class="flex items-center space-x-1 text-xs font-normal">
-          <span class="w-3 h-3 rounded-full bg-lime-500 inline-block"></span>
-          <span class="text-[#0f2e4d]">Status: <span class="font-normal">Online</span></span>
+      
+       <!-- update here -->
+        <div class="text-lg font-bold leading-tight">
+            <p id="admin-role" class="text-[#0f2e4d]">Admin</p>
+            <p id="admin-name" class="text-[#0f2e4d]">Username</p>
+          <div class="flex items-center space-x-1 text-xs font-normal">
+            <span class="w-3 h-3 rounded-full bg-lime-500 inline-block"></span>
+            <span class="text-[#0f2e4d]">Status: <span class="font-normal">Online</span></span>
+          </div>
         </div>
-      </div>
     </div>
     <hr class="border-gray-500 mb-6" />
+
+
     <nav class="flex flex-col space-y-3 text-lg font-bold text-[#0f2e4d] tracking-wide">
+                  <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
       <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Dashboard.html">Dashboard</a>
       <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Order.html">Orders</a>
       <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Delivery.html">Deliveries</a>
@@ -188,6 +193,45 @@ try {
           descriptionInput.value = '';
         }
       });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  window.addEventListener("DOMContentLoaded", function () {
+    const userId = localStorage.getItem("user_id");
+
+    if (!userId) {
+      document.getElementById("admin-role").textContent = "";
+      document.getElementById("admin-name").textContent = "";
+      return;
+    }
+
+    fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          document.getElementById("admin-role").textContent = data.first_name;
+          document.getElementById("admin-name").textContent = data.last_name;
+        } else {
+          document.getElementById("admin-role").textContent = "";
+          document.getElementById("admin-name").textContent = "";
+        }
+      })
+      .catch(() => {
+        document.getElementById("admin-role").textContent = "Error";
+        document.getElementById("admin-name").textContent = "Name";
+      });
+  });
     </script>
   </main>
 </body>

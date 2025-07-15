@@ -54,8 +54,8 @@
 
         <!-- update here -->
         <div class="text-lg font-bold leading-tight">
-            <p id="admin-role" class="text-[#0f2e4d]">Admin</p>
-            <p id="admin-name" class="text-[#0f2e4d]">Username</p>
+            <p id="admin-role" class="text-[#0f2e4d]"></p>
+            <p id="admin-name" class="text-[#0f2e4d]"></p>
           <div class="flex items-center space-x-1 text-xs font-normal">
             <span class="w-3 h-3 rounded-full bg-lime-500 inline-block"></span>
             <span class="text-[#0f2e4d]">Status: <span class="font-normal">Online</span></span>
@@ -424,8 +424,8 @@
     const userId = localStorage.getItem("user_id");
 
     if (!userId) {
-      document.getElementById("admin-role").textContent = "Unknown";
-      document.getElementById("admin-name").textContent = "User";
+      document.getElementById("admin-role").textContent = "";
+      document.getElementById("admin-name").textContent = "";
       return;
     }
 
@@ -436,13 +436,13 @@
           document.getElementById("admin-role").textContent = data.first_name;
           document.getElementById("admin-name").textContent = data.last_name;
         } else {
-          document.getElementById("admin-role").textContent = "Unknown";
-          document.getElementById("admin-name").textContent = "User";
+          document.getElementById("admin-role").textContent = "";
+          document.getElementById("admin-name").textContent = "";
         }
       })
       .catch(() => {
         document.getElementById("admin-role").textContent = "Error";
-        document.getElementById("admin-name").textContent = "Loading";
+        document.getElementById("admin-name").textContent = "Name";
       });
   });
 </script>
