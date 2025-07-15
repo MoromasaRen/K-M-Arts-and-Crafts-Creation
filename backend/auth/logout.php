@@ -3,7 +3,7 @@
 session_start();
 session_unset();
 session_destroy();
-header("Location: index.php");
+header("Location: /K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html");
 exit();
 
 ?>
