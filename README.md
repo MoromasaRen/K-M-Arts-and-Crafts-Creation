@@ -1,34 +1,35 @@
-# Database Setup Instructions
-## Follow the steps below to set up the database for this project:
+## Database Setup Instructions
+
+Follow the steps below to set up the database for this project:
+
 ---
+
 ### 1. Open XAMPP Control Panel
-Open the XAMPP Control Panel on your local machine.
 
-Start the following services:
+1. Open the XAMPP control panel on your local machine.
+2. Start the following services:
+   - **Apache**: This will run the web server.
+   - **MySQL**: This will run the database server.
 
-Apache: This will run the web server.
-
-MySQL: This will run the database server.
 ---
+
 ### 2. Open MySQL Admin (phpMyAdmin)
-Open your web browser.
 
-In the address bar, type localhost and press Enter.
+1. Open your web browser.
+2. In the address bar, type `localhost` and press **Enter**.
+3. Click on **phpMyAdmin** to open the MySQL admin interface.
+4. In the left sidebar, click **New** to create a new database.
+5. Enter the name `kmartsdb` database name and click **Create**.
 
-Click on phpMyAdmin to open the MySQL admin interface.
-
-In the left sidebar, click New to create a new database.
-
-Enter the name kmartsdb and click Create.
 ---
-### 3. Create Database Tables
-On the top bar of phpMyAdmin, click on the SQL tab.
 
-In the SQL query box, paste the following code:
+### 3. Create Database Table
+
+1. On the top bar of phpMyAdmin, click on the **SQL** tab.
+2. In the SQL query box, paste the following code:
 
 ```sql
-Copy
-Edit
+
 -- Create Database
 CREATE DATABASE kmartsdb;
 USE kmartsdb;
@@ -112,8 +113,9 @@ DROP TABLE IF EXISTS Orders_T;
 DROP TABLE IF EXISTS Product_T;
 DROP TABLE IF EXISTS Staff_T;
 DROP TABLE IF EXISTS Users_T;
+SET FOREIGN_KEY_CHECKS = 1;
 
 ```
 
-SET FOREIGN_KEY_CHECKS = 1;
-Execute the SQL script by clicking Go.
+
+3. Execute the SQL script by clicking Go.
