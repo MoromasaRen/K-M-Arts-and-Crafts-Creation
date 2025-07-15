@@ -17,8 +17,8 @@ CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     product_name VARCHAR(255),
     product_description TEXT,
-    base_price DECIMAL(10,2),
-    status ENUM('active', 'inactive') DEFAULT 'active'
+    base_price DECIMAL(10, 2),
+    status ENUM('in stock', 'low stock', 'no stock') DEFAULT 'in stock'
 );
 
 -- ORDERS TABLE
@@ -57,3 +57,16 @@ CREATE TABLE deliveries (
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (staff_id) REFERENCES users(user_id)
 );
+
+-- Insert Products
+ALTER TABLE products ADD product_quantity INT NOT NULL DEFAULT 0;
+INSERT INTO products (product_name, product_description, base_price, product_quantity, status) VALUES
+('1DZ', '12 roses', 999, 200, 'in stock'),
+('6 Sunrise 2', '1 sunflower 6 roses', 880, 200, 'in stock'),
+('6 Sunrise Bloom', '3 red roses 3 pink', 880, 200, 'in stock'),
+('6R Black', '6 red roses black cello', 510, 200, 'in stock'),
+('6R Green', '6 red roses green cello', 500, 200, 'in stock'),
+('6R Vio', '6 roses vio cello', 500, 200, 'in stock'),
+('6R White', '6 roses white cello', 510, 200, 'in stock'),
+('6R2 White', '6 roses white cello v2', 610, 200, 'in stock'),
+('7R Green', '8 roses green cello', 500, 200, 'in stock');

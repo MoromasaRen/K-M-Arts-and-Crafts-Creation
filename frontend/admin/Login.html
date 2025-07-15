@@ -102,7 +102,7 @@
 
   
   <script>
-    document.querySelector("form").addEventListener("submit", function (e) {
+    document.querySelector("loginForm").addEventListener("submit", function (e) {
       e.preventDefault();
     
       const payload = {
@@ -124,6 +124,8 @@
             // Save user info to localStorage or session
             localStorage.setItem("user_id", data.user_id);
             localStorage.setItem("user_type", data.user_type);
+            localStorage.setItem("first_name", data.first_name);
+            localStorage.setItem("last_name", data.last_name);
     
             // Redirect to appropriate dashboard
             if (data.user_type === "staff") {
