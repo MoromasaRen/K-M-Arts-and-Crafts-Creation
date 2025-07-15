@@ -85,8 +85,9 @@
           >Profile</a
         >
         <a
+          id = "logout-btn"
           class="pl-4 py-1 px-2 rounded hover:bg-red-100 transition duration-150"
-          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html"
+          href="#"
           >Logout</a
         >
       </nav>
@@ -359,6 +360,31 @@
       document
         .getElementById("cancel-address-info")
         .addEventListener("click", () => cancelChanges("address-info"));
+
+
+        document.getElementById("logout-btn").addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent default link behavior
+
+    fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/auth/logout.php", {
+      method: "POST",
+      credentials: "include" // Include session cookie
+    })
+      .then(res => res.text())
+      .then(response => {
+        // Clear localStorage values
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_type");
+        localStorage.removeItem("username");
+
+        // Redirect to homepage
+        window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
+      })
+      .catch(err => {
+        console.error("Logout failed:", err);
+        alert("Something went wrong during logout.");
+      });
+  });
     </script>
   </body>
 </html>
