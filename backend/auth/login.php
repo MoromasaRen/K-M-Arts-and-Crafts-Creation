@@ -9,7 +9,7 @@ if (!isset($data->email, $data->password)) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT user_id, password, user_type FROM users WHERE email = ?");
+$stmt = $pdo->prepare("SELECT user_id, password, user_type, first_name, last_name FROM users WHERE email = ?");
 $stmt->execute([$data->email]);
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -18,7 +18,9 @@ if ($user && password_verify($data->password, $user['password'])) {
     echo json_encode([
         'success' => true,
         'user_id' => $user['user_id'],
-        'user_type' => $user['user_type']
+        'user_type' => $user['user_type'],
+        'first_name' => $user['first_name'],
+        'last_name' => $user['last_name']
     ]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid credentials']);

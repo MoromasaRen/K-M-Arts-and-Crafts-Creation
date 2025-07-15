@@ -51,16 +51,16 @@
           alt="User profile picture"
           class="w-20 h-20 rounded-full"
         />
+
+        <!-- update here -->
         <div class="text-lg font-bold leading-tight">
-          <p class="text-[#0f2e4d]">Admin</p>
-          <p class="text-[#0f2e4d]">Username</p>
+          <p id="admin-fullname" class="text-[#0f2e4d]">Loading...</p>
           <div class="flex items-center space-x-1 text-xs font-normal">
             <span class="w-3 h-3 rounded-full bg-lime-500 inline-block"></span>
-            <span class="text-[#0f2e4d]"
-              >Status: <span class="font-normal">Online</span></span
-            >
+            <span class="text-[#0f2e4d]">Status: <span class="font-normal">Online</span></span>
           </div>
         </div>
+
       </div>
       <hr class="border-gray-500 mb-6" />
       <nav
@@ -418,4 +418,30 @@
     <script src="/K-M-Arts-and-Crafts-Creation/frontend/admin/js/notifications.js"></script>
 
   </body>
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    const userId = localStorage.getItem("user_id");
+
+    if (!userId) {
+      document.getElementById("admin-fullname").textContent = "Unknown User";
+      return;
+    }
+
+    fetch(`/K-M-Arts-and-Crafts-Creation/backend/auth/login.php`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          const fullName = `${data.first_name} ${data.last_name}`.trim();
+          document.getElementById("admin-fullname").textContent = fullName;
+        } else {
+          document.getElementById("admin-fullname").textContent = "Unknown User";
+        }
+      })
+      .catch(() => {
+        document.getElementById("admin-fullname").textContent = "Error loading name";
+      });
+  });
+</script>
+
+
 </html>
