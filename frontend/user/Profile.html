@@ -43,77 +43,104 @@
 
   <!-- Main Content -->
   <main class="max-w-7xl mx-auto mt-12 px-6 text-center">
-    <!-- Profile Top Card -->
-    <section class="bg-[#b9d0f9] rounded-lg p-4 max-w-4xl shadow-md flex items-center gap-4 mb-6 mx-auto">
-      <img
-        src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
-        alt="User profile picture"
-        class="w-16 h-16 rounded-full object-cover"
-      />
-      <div class="text-sm text-left flex flex-col gap-2 flex-grow">
-        <p class="font-semibold text-gray-800">Username</p>
-        <p class="font-semibold text-gray-600">Admin</p>
-        <p class="font-semibold text-gray-600">Email</p>
-        <button class="mt-2 self-start bg-[#1a2e4a] text-white px-4 py-1 rounded hover:bg-[#12243b] transition">
-          Edit Account
-        </button>
-      </div>
+  <div class="max-w-7xl mx-auto mb-12 grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
+    <div class="md:col-span-2 flex flex-col gap-6">
+      <!-- Profile Top Card -->
+      <section class="bg-[#b9d0f9] rounded-lg p-4 shadow-md flex items-center gap-4">
+        <img
+          src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
+          alt="User profile picture"
+          class="w-16 h-16 rounded-full object-cover"
+        />
+        <div class="text-sm text-left flex flex-col gap-2 flex-grow">
+          <p class="font-semibold text-gray-800">Username</p>
+          <p class="font-semibold text-gray-600">Admin</p>
+          <p class="font-semibold text-gray-600">Email</p>
+          <button id="edit-personal-info" class="mt-2 self-start bg-[#1a2e4a] text-white px-4 py-1 rounded hover:bg-[#12243b] transition">
+            Edit Account
+          </button>
+        </div>
 
         <a
-          id = "logout-btn"
+          id="logout-btn"
           class="pl-4 py-1 px-2 rounded hover:bg-red-100 transition duration-150"
           href="#"
           >Logout</a
         >
-    </section>
+      </section>
 
-    <!-- Profile Details Card -->
-    <section class="bg-white rounded-lg p-6 max-w-4xl shadow-md grid grid-cols-2 gap-6 mb-6 text-sm text-gray-800 mx-auto text-left">
-      <div>
-        <p class="font-medium text-gray-600 mb-1">First Name</p>
-        <p class="font-semibold">Ven</p>
-      </div>
-      <div>
-        <p class="font-medium text-gray-600 mb-1">Last Name</p>
-        <p class="font-semibold">Malingin</p>
-      </div>
-      <div>
-        <p class="font-medium text-gray-600 mb-1">Date Of Birth</p>
-        <p class="font-semibold">01 - 24 - 2000</p>
-      </div>
-      <div>
-        <p class="font-medium text-gray-600 mb-1">Email Address</p>
-        <p class="font-semibold">sample@gmail.com</p>
-      </div>
-      <div>
-        <p class="font-medium text-gray-600 mb-1">Phone</p>
-        <p class="font-semibold">099</p>
-      </div>
-    </section>
+      <!-- Profile Details Card -->
+      <!-- Editable Profile Section -->
+<section id="personal-info" class="bg-white rounded-lg p-6 shadow-md grid grid-cols-2 gap-6 text-sm text-gray-800 text-left">
+
+  <!-- Save / Cancel Buttons Row -->
+  <div class="col-span-full flex justify-end gap-2 mb-4">
+    <button id="save-personal-info" class="hidden bg-green-600 text-white px-3 py-1 rounded text-xs">Save</button>
+    <button id="cancel-personal-info" class="hidden bg-red-600 text-white px-3 py-1 rounded text-xs">Cancel</button>
+  </div>
+
+  <!-- First Name -->
+  <div>
+    <p class="text-xs font-semibold tracking-widest">First Name</p>
+    <p id="first-name-text" class="font-bold text-sm">Ven</p>
+    <input id="first-name-input" type="text" value="Ven" class="hidden border rounded p-1 w-full" />
+  </div>
+
+  <!-- Last Name -->
+  <div>
+    <p class="text-xs font-semibold tracking-widest">Last Name</p>
+    <p id="last-name-text" class="font-bold text-sm">Malingin</p>
+    <input id="last-name-input" type="text" value="Malingin" class="hidden border rounded p-1 w-full" />
+  </div>
+
+  <!-- Date of Birth -->
+  <div>
+    <p class="text-xs font-semibold tracking-widest">Date Of Birth</p>
+    <p id="dob-text" class="font-bold text-sm">01 - 24 - 2000</p>
+    <input id="dob-input" type="date" value="2000-01-24" class="hidden border rounded p-1 w-full" />
+  </div>
+
+  <!-- Email -->
+  <div>
+    <p class="text-xs font-semibold tracking-widest">Email Address</p>
+    <p id="email-text" class="font-bold text-sm underline">sample@gmail.com</p>
+    <input id="email-input" type="email" value="sample@gmail.com" class="hidden border rounded p-1 w-full" />
+  </div>
+
+  <!-- Phone -->
+  <div>
+    <p class="text-xs font-semibold tracking-widest">Phone</p>
+    <p id="phone-text" class="font-bold text-sm">099</p>
+    <input id="phone-input" type="tel" value="099" class="hidden border rounded p-1 w-full" />
+  </div>
+</section>
+
+    </div>
 
     <!-- My Orders Section -->
-    <section class="max-w-4xl mx-auto mb-12">
-      <h2 class="text-2xl font-semibold text-left mb-4">My Orders</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Previous Orders Card -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-          <h3 class="font-semibold mb-2">Previous Orders</h3>
-          <ul class="text-sm text-gray-700 space-y-2">
-            <li>Order #12345 - Delivered</li>
-            <li>Order #12346 - Delivered</li>
-            <li>Order #12347 - Delivered</li>
-          </ul>
-        </div>
-        <!-- Orders to Pay Card -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-          <h3 class="font-semibold mb-2">Orders to Pay</h3>
-          <ul class="text-sm text-gray-700 space-y-2">
-            <li>Order #12348 - Pending Payment</li>
-            <li>Order #12349 - Pending Payment</li>
-          </ul>
-        </div>
+    <section class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between">
+    <h2 class="text-2xl font-semibold text-left mb-4">My Orders</h2>
+    <div class="grid grid-cols-1 gap-6">
+      <!-- Previous Orders -->
+      <div class="bg-[#f8f9fb] rounded-lg shadow-sm p-4">
+        <h3 class="font-semibold mb-2 text-[#1a2e4a]">Previous Orders</h3>
+        <ul class="text-sm text-gray-700 space-y-2">
+          <li>Order #12345 - Delivered</li>
+          <li>Order #12346 - Delivered</li>
+          <li>Order #12347 - Delivered</li>
+        </ul>
       </div>
-    </section>
+      <!-- Orders to Pay -->
+      <div class="bg-[#f8f9fb] rounded-lg shadow-sm p-4">
+        <h3 class="font-semibold mb-2 text-[#1a2e4a]">Orders to Pay</h3>
+        <ul class="text-sm text-gray-700 space-y-2">
+          <li>Order #12348 - Pending Payment</li>
+          <li>Order #12349 - Pending Payment</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  </div>
   </main>
 
   <footer class="bg-[#183655] text-white py-8 mt-16">
@@ -196,6 +223,71 @@
         alert("Something went wrong during logout.");
       });
   });
+
+
+  function toggleEdit(sectionId, enable) {
+    const section = document.getElementById(sectionId);
+    const textFields = section.querySelectorAll('[id$="-text"]');
+    const inputFields = section.querySelectorAll('[id$="-input"]');
+    const editBtn = document.getElementById(`edit-${sectionId}`);
+    const saveBtn = document.getElementById(`save-${sectionId}`);
+    const cancelBtn = document.getElementById(`cancel-${sectionId}`);
+
+    if (enable) {
+      textFields.forEach(el => el.classList.add("hidden"));
+      inputFields.forEach(el => el.classList.remove("hidden"));
+      editBtn.classList.add("hidden");
+      saveBtn.classList.remove("hidden");
+      cancelBtn.classList.remove("hidden");
+    } else {
+      textFields.forEach(el => el.classList.remove("hidden"));
+      inputFields.forEach(el => el.classList.add("hidden"));
+      editBtn.classList.remove("hidden");
+      saveBtn.classList.add("hidden");
+      cancelBtn.classList.add("hidden");
+    }
+  }
+
+  function cancelChanges(sectionId) {
+    const section = document.getElementById(sectionId);
+    const textFields = section.querySelectorAll('[id$="-text"]');
+    const inputFields = section.querySelectorAll('[id$="-input"]');
+
+    inputFields.forEach((input, i) => {
+      if (textFields[i]) {
+        input.value = textFields[i].textContent.trim();
+      }
+    });
+
+    toggleEdit(sectionId, false);
+  }
+
+  function saveChanges(sectionId) {
+    const section = document.getElementById(sectionId);
+    const textFields = section.querySelectorAll('[id$="-text"]');
+    const inputFields = section.querySelectorAll('[id$="-input"]');
+
+    inputFields.forEach((input, i) => {
+      if (textFields[i]) {
+        textFields[i].textContent = input.value;
+      }
+    });
+
+    // Update summary display (optional)
+    if (sectionId === "personal-info") {
+      const fname = document.getElementById("first-name-input").value;
+      const lname = document.getElementById("last-name-input").value;
+  
+    }
+
+    toggleEdit(sectionId, false);
+  }
+
+  // Attach events
+   document.getElementById("edit-personal-info").addEventListener("click", () => toggleEdit("personal-info", true));
+  document.getElementById("save-personal-info").addEventListener("click", () => saveChanges("personal-info"));
+  document.getElementById("cancel-personal-info").addEventListener("click", () => cancelChanges("personal-info"));
+</script>
 </script>
 
 </body>
