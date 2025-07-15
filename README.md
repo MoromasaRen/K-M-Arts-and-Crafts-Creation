@@ -1,35 +1,37 @@
-Database Setup Instructions
-Follow the steps below to set up the database for this project:
+# Database Setup Instructions
+## Follow the steps below to set up the database for this project:
 
-1. Start XAMPP Services
+### 1. Open XAMPP Control Panel
 Open the XAMPP Control Panel on your local machine.
 
 Start the following services:
 
-Apache (Web server)
+Apache: This will run the web server.
 
-MySQL (Database server)
+MySQL: This will run the database server.
 
-2. Access phpMyAdmin
-Open your web browser and go to http://localhost.
+### 2. Open MySQL Admin (phpMyAdmin)
+Open your web browser.
+
+In the address bar, type localhost and press Enter.
 
 Click on phpMyAdmin to open the MySQL admin interface.
 
 In the left sidebar, click New to create a new database.
 
-Enter the database name: kmartsdb and click Create.
+Enter the name kmartsdb and click Create.
 
-3. Create Database Tables
+### 3. Create Database Tables
 On the top bar of phpMyAdmin, click on the SQL tab.
 
-In the SQL query box, paste the following SQL code:
+In the SQL query box, paste the following code:
 
-sql
+```sql
 Copy
 Edit
 -- Create Database
-CREATE DATABASE KM_Arts_and_Crafts_Creation;
-USE KM_Arts_and_Crafts_Creation;
+CREATE DATABASE kmartsdb;
+USE kmartsdb;
 
 -- Table: Users
 CREATE TABLE Users_T (
@@ -100,4 +102,18 @@ CREATE TABLE Delivery_T (
   FOREIGN KEY (Order_ID) REFERENCES Orders_T(Order_ID),
   FOREIGN KEY (Staff_ID) REFERENCES Staff_T(Staff_ID)
 );
+
+-- Drop existing tables if they exist (useful for resetting the database)
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS Delivery_T;
+DROP TABLE IF EXISTS Order_Item_T;
+DROP TABLE IF EXISTS Orders_T;
+DROP TABLE IF EXISTS Product_T;
+DROP TABLE IF EXISTS Staff_T;
+DROP TABLE IF EXISTS Users_T;
+
+```
+
+SET FOREIGN_KEY_CHECKS = 1;
 Execute the SQL script by clicking Go.
