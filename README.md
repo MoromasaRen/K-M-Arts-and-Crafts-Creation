@@ -1,6 +1,6 @@
 # Database Setup Instructions
 ## Follow the steps below to set up the database for this project:
-
+---
 ### 1. Open XAMPP Control Panel
 Open the XAMPP Control Panel on your local machine.
 
@@ -9,7 +9,7 @@ Start the following services:
 Apache: This will run the web server.
 
 MySQL: This will run the database server.
-
+---
 ### 2. Open MySQL Admin (phpMyAdmin)
 Open your web browser.
 
@@ -20,7 +20,7 @@ Click on phpMyAdmin to open the MySQL admin interface.
 In the left sidebar, click New to create a new database.
 
 Enter the name kmartsdb and click Create.
-
+---
 ### 3. Create Database Tables
 On the top bar of phpMyAdmin, click on the SQL tab.
 
