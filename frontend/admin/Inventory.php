@@ -191,7 +191,7 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
 
     <div id="manageModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
       
-      <form action="/K-M-Arts-and-Crafts-Creation/backend/products/add_product.php" method="POST" class="bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[360px] relative">
+      <form id="productForm" action="/K-M-Arts-and-Crafts-Creation/backend/products/add_product.php" method="POST" class="bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[360px] relative">
         <button id="closeModalBtn" type="button" class="absolute top-2 right-2 text-[#0f2e4d] text-xl font-bold">&times;</button>
        <h3 id="modalTitle" class="bg-[#a9c5ff] rounded-md px-3 py-1 font-extrabold text-[15px] mb-4 inline-block">Manage Inventory</h3>
         <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
@@ -227,12 +227,16 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
         const editFormBtn = document.getElementById("editFormBtn");
         const manageModal = document.getElementById("manageModal");
         const closeModalBtn = document.getElementById("closeModalBtn");
+        const productForm = document.getElementById("productForm");
+        const modalTitle = document.getElementById("modalTitle");
 
         const productIdInput = document.getElementById("product_id");
         const productNameInput = document.getElementById("product_name");
         const quantityInput = document.getElementById("product_quantity");
         const basePriceInput = document.getElementById("base_price");
         const descriptionInput = document.getElementById("product_description");
+
+        let isEditMode = false;
 
         // Function to determine status based on quantity
         function getStatusFromQuantity(quantity) {
@@ -252,7 +256,11 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
           }
         }
 
+        // Create Product button click
         editFormBtn.addEventListener("click", () => {
+          isEditMode = false;
+          productForm.action = "/K-M-Arts-and-Crafts-Creation/backend/products/add_product.php";
+          modalTitle.textContent = "Create Product";
           clearForm();
           manageModal.classList.remove("hidden");
         });
@@ -269,9 +277,15 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
           }
         });
 
+        // Edit button click handlers
         document.querySelectorAll(".editBtn").forEach(button => {
           button.addEventListener("click", () => {
+            isEditMode = true;
+            productForm.action = "/K-M-Arts-and-Crafts-Creation/backend/products/add_product.php"; // Using same endpoint for both add and edit
+            modalTitle.textContent = "Edit Product";
+            
             productIdInput.value = button.dataset.id;
+            productIdInput.readOnly = true; // Make product ID read-only when editing
             productNameInput.value = button.dataset.name;
             
             // Use quantity from data attribute, or derive from status if not available
@@ -292,6 +306,7 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
 
         function clearForm() {
           productIdInput.value = '';
+          productIdInput.readOnly = false; // Allow editing product ID when creating
           productNameInput.value = '';
           quantityInput.value = '';
           basePriceInput.value = '';

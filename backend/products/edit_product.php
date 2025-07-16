@@ -26,30 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($product_id && $product_name && $product_quantity >= 0) {
         try {
-            // Check if product already exists
-            $checkStmt = $pdo->prepare("SELECT product_id FROM products WHERE product_id = ?");
-            $checkStmt->execute([$product_id]);
+            // Update existing product
+            $stmt = $pdo->prepare("
+                UPDATE products 
+                SET product_name = ?, product_description = ?, base_price = ?, product_quantity = ?, status = ?
+                WHERE product_id = ?
+            ");
+            $stmt->execute([$product_name, $product_description, $base_price, $product_quantity, $status, $product_id]);
             
-            if ($checkStmt->fetch()) {
-                // Product exists, update it
-                $stmt = $pdo->prepare("
-                    UPDATE products 
-                    SET product_name = ?, product_description = ?, base_price = ?, product_quantity = ?, status = ?
-                    WHERE product_id = ?
-                ");
-                $stmt->execute([$product_name, $product_description, $base_price, $product_quantity, $status, $product_id]);
-                
+            if ($stmt->rowCount() > 0) {
                 header("Location: /K-M-Arts-and-Crafts-Creation/frontend/admin/Inventory.php?message=Product%20updated%20successfully&type=success");
                 exit;
             } else {
-                // Product doesn't exist, create new one
-                $stmt = $pdo->prepare("
-                    INSERT INTO products (product_id, product_name, product_description, base_price, product_quantity, status)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                ");
-                $stmt->execute([$product_id, $product_name, $product_description, $base_price, $product_quantity, $status]);
-
-                header("Location: /K-M-Arts-and-Crafts-Creation/frontend/admin/Inventory.php?message=Product%20added%20successfully&type=success");
+                header("Location: /K-M-Arts-and-Crafts-Creation/frontend/admin/Inventory.php?message=Product%20not%20found%20or%20no%20changes%20made&type=error");
                 exit;
             }
 
