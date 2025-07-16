@@ -1,5 +1,6 @@
 <?php
-require_once '../../config/database.php'; // Adjust if path is different
+require_once '../../backend/config/database.php';
+
 
 header('Content-Type: application/json');
 
