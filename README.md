@@ -23,73 +23,44 @@ Follow the steps below to set up the database for this project:
 
 ---
 
-### 3. Create Database Table
+### 3. Setting Up Database Table
 
-1. On the top bar of phpMyAdmin, click on the **SQL** tab.
-2. In the SQL query box, paste the following code:
+-> Set up the database by going to backend/database/database.sql
+-> dump all the code into the XAMPP
+-> Execute the SQL script by clicking Go.
 
-```sql
 
-CREATE DATABASE km_arts;
-USE km_arts;
 
--- USERS TABLE
-CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    email VARCHAR(100) UNIQUE,
-    user_type ENUM('staff', 'user') NOT NULL,
-    password VARCHAR(255),
-    contact_number VARCHAR(20)
-);
+### 4. Setting Up The Staff Account
+🪟 For Windows Command Prompt
+-> Open Command Prompt (press Windows + R, type cmd, hit Enter).
 
--- PRODUCTS TABLE
-CREATE TABLE products (
-    product_id INT AUTO_INCREMENT PRIMARY KEY,
-    product_name VARCHAR(255),
-    product_description TEXT,
-    base_price DECIMAL(10,2),
-    status ENUM('active', 'inactive') DEFAULT 'active'
-);
+-> Change to your PHP folder:
+sample:
+cd /d D:\Softwares\XAMPP\php
+or 
+cd C:\xampp\php
 
--- ORDERS TABLE
-CREATE TABLE orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    order_details TEXT,
-    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    total_amount DECIMAL(10,2),
-    status ENUM('pending', 'confirmed', 'completed') DEFAULT 'pending',
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
+//cd /d is used to switch drives (D: in your case) and directories in one command.//
 
--- ORDER_ITEMS TABLE
-CREATE TABLE order_items (
-    order_item_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    product_id INT,
-    quantity INT,
-    price DECIMAL(10,2),
-    total_units DECIMAL(10,2),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id)
-);
+-> then 
 
--- DELIVERIES TABLE
-CREATE TABLE deliveries (
-    delivery_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    staff_id INT,
-    scheduled_time DATETIME,
-    actual_delivery_time DATETIME,
-    delivery_status ENUM('scheduled', 'in_transit', 'delivered') DEFAULT 'scheduled',
-    courier_type VARCHAR(50),
-    plate_number VARCHAR(20),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (staff_id) REFERENCES users(user_id)
-);
+php -r "echo password_hash('12345', PASSWORD_DEFAULT);"
 
-```
+✅ You should see output like:
 
-3. Execute the SQL script by clicking Go.
+$2y$10$VpX3vq3c3gXUpZNsqq5HOOD0UnyGr75sCJKcKGRhGbPC0OMU34E2C
+
+once you get the hashed password
+
+
+### 5. Setting Up The Staff Account part 2 
+run this in sql XAMPP via users
+INSERT INTO users (first_name, last_name, email, user_type, password, contact_number, dateofbirth) VALUES
+('Admin', 'Moromasa', 'admin@gmail.com', 'staff', '$2y$10$TEpaeGKriyAlkvo3/OlY4edjilD3AqpvYL4hoBw6RwYRwv/l5tjcW', NULL, NULL),
+
+
+
+-> the staff account should be:
+email: admin@gmail.com
+password: 12345
