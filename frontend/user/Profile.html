@@ -42,57 +42,196 @@
   <div class="w-full border-t-2 border-slate-800 my-2" style="opacity: 0.3;"></div>
 
   <!-- Main Content -->
-  <main class="max-w-7xl mx-auto mt-12 px-6 text-center">
-    <!-- Profile Top Card -->
-    <section class="bg-[#b9d0f9] rounded-lg p-4 max-w-4xl shadow-md flex items-center gap-4 mb-6 mx-auto">
-      <img
-        src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
-        alt="User profile picture"
-        class="w-16 h-16 rounded-full object-cover"
-      />
-      <div class="text-sm text-left flex flex-col gap-2 flex-grow">
-        <p class="font-semibold text-gray-800">Username</p>
-        <p class="font-semibold text-gray-600">Admin</p>
-        <p class="font-semibold text-gray-600">Email</p>
-        <button class="mt-2 self-start bg-[#1a2e4a] text-white px-4 py-1 rounded hover:bg-[#12243b] transition">
-          Edit Account
-        </button>
-      </div>
+  <main class="flex-1 p-6 text-[#1a1a1a]">
 
-        <a
-          id = "logout-btn"
-          class="pl-4 py-1 px-2 rounded hover:bg-red-100 transition duration-150"
-          href="#"
-          >Logout</a
-        >
-    </section>
+    <section class="max-w-6xl mx-auto">
+              <!-- <h2
+                class="font-bold text-base tracking-widest mb-2 border-b border-[#1a1a1a] pb-1"
+              >
+                My Profile
+              </h2> -->
 
-    <!-- Profile Details Card -->
-    <section class="bg-white rounded-lg p-6 max-w-4xl shadow-md grid grid-cols-2 gap-6 mb-6 text-sm text-gray-800 mx-auto text-left">
-      <div>
-        <p class="font-medium text-gray-600 mb-1">First Name</p>
-        <p class="font-semibold">Ven</p>
-      </div>
-      <div>
-        <p class="font-medium text-gray-600 mb-1">Last Name</p>
-        <p class="font-semibold">Malingin</p>
-      </div>
-      <div>
-        <p class="font-medium text-gray-600 mb-1">Date Of Birth</p>
-        <p class="font-semibold">01 - 24 - 2000</p>
-      </div>
-      <div>
-        <p class="font-medium text-gray-600 mb-1">Email Address</p>
-        <p class="font-semibold">sample@gmail.com</p>
-      </div>
-      <div>
-        <p class="font-medium text-gray-600 mb-1">Phone</p>
-        <p class="font-semibold">099</p>
-      </div>
-    </section>
+              <div class="space-y-4">
+                <!-- User Summary Card -->
+                <div class="bg-[#e3f6ff] rounded-xl p-4 shadow-md flex items-center justify-between">
+                  <img
+                    src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
+                    alt="User"
+                    class="w-16 h-16 rounded-full"
+                  />
+                  <div class="ml-5">
+                    <p id="summary-username" class="font-bold text-lg tracking-wide">
+                      Von Malingin
+                    </p>
+                    <p class="text-xs font-normal">User</p>
+                    <p id="summary-address" class="text-xs font-normal">
+                      Philippines, Cebu 6000
+                    </p>
+                  </div>
+
+                  <div class="sm:ml-auto">
+                    <button
+                      id="logout-btn"
+                      class="bg-[#f44336] hover:bg-[#d32f2f] text-white font-semibold text-xs px-4 py-2 rounded-md shadow"
+                      title="Logout"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Personal Info Section -->
+                <div id="personal-info" class="bg-[#e3f6ff]  rounded-xl p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
+                  <div class="col-span-full flex justify-between items-center mb-2">
+                    <p class="font-bold text-sm tracking-widest border-b border-[#0f2e4d] pb-1">
+                      Personal Information
+                    </p>
+                    <div id="personal-info-buttons">
+                      <button
+                        id="edit-personal-info"
+                        class="bg-[#f4c7c7] text-[#a94442] text-xs font-semibold px-3 py-1 rounded-md"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        id="save-personal-info"
+                        class="hidden bg-[#4caf50] text-white text-xs font-semibold px-3 py-1 rounded-md mr-2"
+                      >
+                        Save
+                      </button>
+                      <button
+                        id="cancel-personal-info"
+                        class="hidden bg-[#f44336] text-white text-xs font-semibold px-3 py-1 rounded-md"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold tracking-widest">First Name</p>
+                    <p id="first-name-text" class="font-bold text-sm">Von</p>
+                    <input
+                      id="first-name-input"
+                      type="text"
+                      class="hidden font-bold text-sm rounded-md p-1 w-full"
+                      value="Von"
+                    />
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold tracking-widest">Last Name</p>
+                    <p id="last-name-text" class="font-bold text-sm">Malingin</p>
+                    <input
+                      id="last-name-input"
+                      type="text"
+                      class="hidden font-bold text-sm rounded-md p-1 w-full"
+                      value="Malingin"
+                    />
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold tracking-widest">Date Of Birth</p>
+                    <p id="dob-text" class="font-bold text-sm">01 - 24 -2000</p>
+                    <input
+                      id="dob-input"
+                      type="date"
+                      class="hidden font-bold text-sm rounded-md p-1 w-full"
+                      value="2000-01-24"
+                    />
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold tracking-widest">Phone</p>
+                    <p id="phone-text" class="font-bold text-sm">099</p>
+                    <input
+                      id="phone-input"
+                      type="text"
+                      class="hidden font-bold text-sm rounded-md p-1 w-full"
+                      value="099"
+                    />
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold tracking-widest">Email Address</p>
+                    <p id="email-text" class="font-bold text-sm underline">
+                      sample@gmail.com
+                    </p>
+                    <input
+                      id="email-input"
+                      type="email"
+                      class="hidden font-bold text-sm rounded-md p-1 w-full"
+                      value="sample@gmail.com"
+                    />
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold tracking-widest">User Role</p>
+                    <p class="font-bold text-sm">Admin</p>
+                  </div>
+                </div>
+
+                <!-- Address Section -->
+        <!-- Address Section -->
+        <div id="address-info" class="bg-[#e3f6ff] rounded-xl p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
+        <!-- Header Row: Title + Buttons -->
+        <div class="col-span-full flex justify-between items-center mb-2">
+          <p class="font-bold text-sm tracking-widest border-b border-[#0f2e4d] pb-1">
+            Address
+          </p>
+          <div id="address-info-buttons">
+            <button
+              id="edit-address-info"
+              class="bg-[#f4c7c7] text-[#a94442] text-xs font-semibold px-3 py-1 rounded-md"
+            >
+              Edit
+            </button>
+            <button
+              id="save-address-info"
+              class="hidden bg-[#4caf50] text-white text-xs font-semibold px-3 py-1 rounded-md mr-2"
+            >
+              Save
+            </button>
+            <button
+              id="cancel-address-info"
+              class="hidden bg-[#f44336] text-white text-xs font-semibold px-3 py-1 rounded-md"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <!-- Fields -->
+        <div>
+          <p class="text-xs font-semibold tracking-widest">Country</p>
+          <p id="country-text" class="font-bold text-sm">Philippines</p>
+          <input
+            id="country-input"
+            type="text"
+            class="hidden font-bold text-sm rounded-md p-1 w-full"
+            value="Philippines"
+          />
+        </div>
+        <div>
+          <p class="text-xs font-semibold tracking-widest">City</p>
+          <p id="city-text" class="font-bold text-sm">Cebu</p>
+          <input
+            id="city-input"
+            type="text"
+            class="hidden font-bold text-sm rounded-md p-1 w-full"
+            value="Cebu"
+          />
+        </div>
+        <div>
+          <p class="text-xs font-semibold tracking-widest">Postal Code</p>
+          <p id="postal-code-text" class="font-bold text-sm">6000</p>
+          <input
+            id="postal-code-input"
+            type="text"
+            class="hidden font-bold text-sm rounded-md p-1 w-full"
+            value="6000"
+          />
+        </div>
+        </div>
+
+            </section>
 
     <!-- My Orders Section -->
-    <section class="max-w-4xl mx-auto mb-12">
+    <section class="max-w-6xl mx-auto mt-12 mb-12">
       <h2 class="text-2xl font-semibold text-left mb-4">My Orders</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Previous Orders Card -->
@@ -142,61 +281,161 @@
   </footer>
 
   
-<script>
-
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const authButton = document.getElementById('auth-button');
-
-  if (isLoggedIn) {
-    // Show profile icon
-    authButton.innerHTML = `
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Profile.html">
-        <img
-          src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
-          alt="Profile"
-          class="w-10 h-10 rounded-full object-cover border-2 border-[#1a3550]"
-          title="My Profile"
-        />
-      </a>
-    `;
-  } else {
-    // Show Login/Register
-    authButton.innerHTML = `
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html">
-        <button
-          class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
-        >
-          Login/Register
-        </button>
-      </a>
-    `;
-  }
-
-      // logout-btn
-    document.getElementById("logout-btn").addEventListener("click", function (e) {
-    e.preventDefault(); // Prevent default link behavior
-
-    fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/auth/logout.php", {
-      method: "POST",
-      credentials: "include" // Include session cookie
-    })
-      .then(res => res.text())
-      .then(response => {
-        // Clear localStorage values
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("user_id");
-        localStorage.removeItem("user_type");
-        localStorage.removeItem("username");
-
-        // Redirect to homepage
-        window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
-      })
-      .catch(err => {
-        console.error("Logout failed:", err);
-        alert("Something went wrong during logout.");
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // --- Auth Button Display Logic ---
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === 'true';
+      const authButton = document.getElementById('auth-button');
+  
+      if (authButton) {
+        if (isLoggedIn) {
+          authButton.innerHTML = `
+            <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Profile.html">
+              <img
+                src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
+                alt="Profile"
+                class="w-10 h-10 rounded-full object-cover border-2 border-[#1a3550]"
+                title="My Profile"
+              />
+            </a>
+          `;
+        } else {
+          authButton.innerHTML = `
+            <a href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html">
+              <button
+                class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
+              >
+                Login/Register
+              </button>
+            </a>
+          `;
+        }
+      }
+  
+      // --- Edit Mode Logic ---
+      function toggleEdit(sectionId, enable) {
+        const section = document.getElementById(sectionId);
+        const textFields = section.querySelectorAll('[id$="-text"]');
+        const inputFields = section.querySelectorAll('[id$="-input"]');
+        const editBtn = document.getElementById(`edit-${sectionId}`);
+        const saveBtn = document.getElementById(`save-${sectionId}`);
+        const cancelBtn = document.getElementById(`cancel-${sectionId}`);
+  
+        if (enable) {
+          section.classList.add("editing");
+          textFields.forEach((el) => el.classList.add("hidden"));
+          inputFields.forEach((el) => el.classList.remove("hidden"));
+          editBtn.classList.add("hidden");
+          saveBtn.classList.remove("hidden");
+          cancelBtn.classList.remove("hidden");
+        } else {
+          section.classList.remove("editing");
+          textFields.forEach((el) => el.classList.remove("hidden"));
+          inputFields.forEach((el) => el.classList.add("hidden"));
+          editBtn.classList.remove("hidden");
+          saveBtn.classList.add("hidden");
+          cancelBtn.classList.add("hidden");
+        }
+      }
+  
+      function cancelChanges(sectionId) {
+        const section = document.getElementById(sectionId);
+        const textFields = section.querySelectorAll('[id$="-text"]');
+        const inputFields = section.querySelectorAll('[id$="-input"]');
+  
+        inputFields.forEach((input, i) => {
+          if (textFields[i]) input.value = textFields[i].textContent.trim();
+        });
+  
+        toggleEdit(sectionId, false);
+      }
+  
+      function saveChanges(sectionId) {
+        const section = document.getElementById(sectionId);
+        const textFields = section.querySelectorAll('[id$="-text"]');
+        const inputFields = section.querySelectorAll('[id$="-input"]');
+  
+        inputFields.forEach((input, i) => {
+          if (textFields[i]) textFields[i].textContent = input.value;
+        });
+  
+        // Update summary info if needed
+        if (sectionId === "personal-info") {
+          const firstName = document.getElementById("first-name-input").value;
+          const lastName = document.getElementById("last-name-input").value;
+          document.getElementById("summary-username").textContent = `${firstName} ${lastName}`;
+        }
+  
+        if (sectionId === "address-info") {
+          const country = document.getElementById("country-input").value;
+          const city = document.getElementById("city-input").value;
+          const postal = document.getElementById("postal-code-input").value;
+          document.getElementById("summary-address").textContent = `${country}, ${city} ${postal}`;
+        }
+  
+        toggleEdit(sectionId, false);
+      }
+  
+      // --- Attach Button Listeners ---
+      const sections = ["personal-info", "address-info"];
+      sections.forEach(sectionId => {
+        const editBtn = document.getElementById(`edit-${sectionId}`);
+        const saveBtn = document.getElementById(`save-${sectionId}`);
+        const cancelBtn = document.getElementById(`cancel-${sectionId}`);
+  
+        if (editBtn && saveBtn && cancelBtn) {
+          editBtn.addEventListener("click", () => toggleEdit(sectionId, true));
+          saveBtn.addEventListener("click", () => saveChanges(sectionId));
+          cancelBtn.addEventListener("click", () => cancelChanges(sectionId));
+        }
       });
-  });
-</script>
-
+  
+      // --- Optional Logout Button (Guarded) ---
+      const logoutBtn = document.getElementById("logout-btn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/auth/logout.php", {
+            method: "POST",
+            credentials: "include"
+          })
+            .then(res => res.text())
+            .then(() => {
+              localStorage.removeItem("isLoggedIn");
+              localStorage.removeItem("user_id");
+              localStorage.removeItem("user_type");
+              localStorage.removeItem("username");
+              window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
+            })
+            .catch(err => {
+              console.error("Logout failed:", err);
+              alert("Something went wrong during logout.");
+            });
+        });
+      }
+  
+      // --- Admin Name Fetch Logic (Optional) ---
+      const userId = localStorage.getItem("user_id");
+      if (userId) {
+        fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              const roleEl = document.getElementById("admin-role");
+              const nameEl = document.getElementById("admin-name");
+              if (roleEl) roleEl.textContent = data.first_name;
+              if (nameEl) nameEl.textContent = data.last_name;
+            }
+          })
+          .catch(() => {
+            const roleEl = document.getElementById("admin-role");
+            const nameEl = document.getElementById("admin-name");
+            if (roleEl) roleEl.textContent = "Error";
+            if (nameEl) nameEl.textContent = "Name";
+          });
+      }
+    });
+  </script>
+  
 </body>
 </html>
