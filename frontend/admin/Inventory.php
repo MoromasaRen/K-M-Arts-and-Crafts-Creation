@@ -1,14 +1,22 @@
 <?php
 require_once '../../backend/config/database.php';
 
+$statusFilter = $_GET['status'] ?? ''; // Check for status in the URL
+
 try {
-    $stmt = $pdo->query("SELECT * FROM products");
+    if ($statusFilter && in_array($statusFilter, ['in stock', 'low stock', 'no stock'])) {
+        $stmt = $pdo->prepare("SELECT * FROM products WHERE status = :status");
+        $stmt->execute(['status' => $statusFilter]);
+    } else {
+        $stmt = $pdo->query("SELECT * FROM products");
+    }
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "❌ Error fetching products: " . $e->getMessage();
     $products = [];
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,18 +67,23 @@ try {
     <div class="flex items-center mb-4 text-[#0f2e4d]">
       <h2 class="font-extrabold text-lg border-b border-[#0f2e4d] pb-1">Inventory</h2>
     </div>
-
+    <div class="mb-4">
+  <span class="text-[#0f2e4d] font-semibold mr-2">Filter by Status:</span>
+  <a href="Inventory.php" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm font-medium">All</a>
+  <a href="Inventory.php?status=in%20stock" class="bg-green-200 hover:bg-green-300 px-3 py-1 rounded text-sm font-medium">In Stock</a>
+  <a href="Inventory.php?status=low%20stock" class="bg-yellow-200 hover:bg-yellow-300 px-3 py-1 rounded text-sm font-medium">Low Stock</a>
+  <a href="Inventory.php?status=no%20stock" class="bg-red-200 hover:bg-red-300 px-3 py-1 rounded text-sm font-medium">No Stock</a>
+</div>
     <table class="w-full bg-white rounded-md shadow-md text-sm text-[#0f2e4d] border-separate border-spacing-1 mt-6">
-      <thead>
-        <tr>
-          <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Product ID</th>
-          <th class="text-left font-extrabold px-2 py-1">Product Name</th>
-          <th class="text-left font-extrabold px-2 py-1">Status</th>
-          <th class="text-left font-extrabold px-2 py-1">Price</th>
-          <th class="text-left font-extrabold px-2 py-1">Description</th>
-          <th class="text-right font-extrabold px-4 py-2 rounded-tr-md align-middle">Actions</th>
-        </tr>
-      </thead>
+    <thead>
+  <tr>
+    <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Product ID</th>
+    <th class="text-left font-extrabold px-2 py-1">Product Name</th>
+    <th class="text-left font-extrabold px-2 py-1">Status</th>
+    <th class="text-left font-extrabold px-2 py-1">Price</th>
+    <th class="text-left font-extrabold px-2 py-1">Description</th>
+</thead>
+
       <tbody>
         <?php if (!empty($products)) : ?>
           <?php foreach ($products as $product) : ?>
@@ -81,8 +94,8 @@ try {
               <td class="px-2 py-1"><?= htmlspecialchars($product['base_price']) ?></td>
               <td class="px-2 py-1"><?= htmlspecialchars($product['product_description']) ?></td>
               <td class="px-2 py-1">
-<td class="px-4 py-2 text-right align-middle">
-  <div class="inline-flex gap-2">
+              <td class="px-4 py-2 text-right align-middle">
+  <div class="inline-flex gap-2 items-center justify-end">
     <button
       class="editBtn text-blue-600 hover:underline text-xs font-semibold"
       data-id="<?= htmlspecialchars($product['product_id']) ?>"
@@ -105,6 +118,7 @@ try {
     </form>
   </div>
 </td>
+
             </tr>
           <?php endforeach; ?>
         <?php else : ?>
