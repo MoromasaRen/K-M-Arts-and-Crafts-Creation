@@ -150,7 +150,7 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
                   >
                     Edit
                   </button>
-
+            
                   <form
                     method="POST"
                     action="/K-M-Arts-and-Crafts-Creation/backend/products/delete_product.php"
