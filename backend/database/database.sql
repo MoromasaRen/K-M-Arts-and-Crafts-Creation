@@ -10,6 +10,7 @@ CREATE TABLE users (
     user_type ENUM('staff', 'user') NOT NULL,
     password VARCHAR(255),
     contact_number VARCHAR(20)
+    dateofbirth DATE
 );
 
 -- PRODUCTS TABLE
@@ -73,6 +74,7 @@ INSERT INTO products (product_name, product_description, base_price, product_qua
 
 -- Insert Users
 INSERT INTO users (first_name, last_name, email, user_type, password, contact_number) VALUES
+('Admin', 'Moromasa', 'test1@example.com', 'staff', 'password123', '09170000001'),
 ('Test1', 'User', 'test1@example.com', 'user', 'password123', '09170000001'),
 ('Test2', 'User', 'test2@example.com', 'user', 'password123', '09170000002'),
 ('Test3', 'User', 'test3@example.com', 'user', 'password123', '09170000003'),
