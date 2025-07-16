@@ -32,10 +32,12 @@ CREATE TABLE orders (
     user_id INT,
     order_details TEXT,
     order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    order_quantity INT,
     total_amount DECIMAL(10,2),
     status ENUM('pending', 'confirmed', 'completed') DEFAULT 'pending',
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
 
 -- ORDER_ITEMS TABLE
 CREATE TABLE order_items (
@@ -128,74 +130,141 @@ INSERT INTO users (first_name, last_name, email, user_type, password, contact_nu
 ('Test20', 'User', 'test20@example.com', 'user', 'password123', NULL, NULL);
 
 
+INSERT INTO orders (user_id, order_details, order_date, order_quantity, total_amount, status) VALUES
+-- User 1
+(1, '1DZ',           '2025-07-16 19:29:05', 1, 999.00, 'confirmed'),
+(1, '6R Black',      '2025-07-16 19:29:05', 1, 510.00, 'confirmed'),
+(1, '6 Sunrise Bloom','2025-07-18 10:04:01', 1, 880.00, 'pending'),
 
-// make sure there are relation to order, product, and delivery such that
+-- User 2
+(2, '6 Sunrise 2',   '2025-07-18 20:45:40', 1, 880.00, 'confirmed'),
+(2, '1DZ',           '2025-07-11 18:33:49', 1, 999.00, 'pending'),
+(2, '7R Green',      '2025-07-16 02:38:46', 1, 500.00, 'completed'),
 
-Following Relations need to be added:
+-- User 3
+(3, '6R White',      '2025-07-10 17:31:42', 1, 510.00, 'confirmed'),
+(3, '6 Sunrise Bloom','2025-07-21 13:13:30', 1, 880.00, 'pending'),
+(3, '6R2 White',     '2025-07-21 13:13:30', 1, 610.00, 'pending'),
+(3, '6R Vio',        '2025-07-17 17:53:01', 1, 500.00, 'completed'),
 
-product -> order
-when a user orders a product in a batch of specific product_quantities this will get multiplied by product_quantities * the base_price to get the total amount of orders
+-- User 4
+(4, '6R Green',      '2025-07-10 00:16:53', 1, 500.00, 'confirmed'),
+(4, '1DZ',           '2025-07-14 17:41:32', 1, 999.00, 'pending'),
+(4, '6 Sunrise 2',   '2025-07-20 02:06:24', 1, 880.00, 'completed'),
+(4, '6R White',      '2025-07-20 02:06:24', 1, 510.00, 'completed'),
+
+-- User 5
+(5, '6 Sunrise Bloom','2025-07-20 17:59:48', 1, 880.00, 'confirmed'),
+(5, '6R2 White',     '2025-07-13 15:56:33', 1, 610.00, 'pending'),
+(5, '6R Black',      '2025-07-10 23:27:07', 1, 510.00, 'completed'),
+
+-- User 6
+(6, '1DZ',            '2025-07-20 15:50:18', 1, 999.00, 'confirmed'),
+(6, '7R Green',       '2025-07-13 04:29:35', 1, 500.00, 'pending'),
+(6, '6 Sunrise 2',    '2025-07-13 04:29:35', 1, 880.00, 'pending'),
+(6, '6R Green',       '2025-07-12 13:03:29', 1, 500.00, 'completed'),
+
+-- User 7
+(7, '6R Vio',         '2025-07-19 18:57:13', 1, 500.00, 'confirmed'),
+(7, '6R White',       '2025-07-19 01:38:18', 1, 510.00, 'pending'),
+(7, '6R2 White',      '2025-07-19 01:38:18', 1, 610.00, 'pending'),
+(7, '6 Sunrise Bloom','2025-07-09 06:27:33', 1, 880.00, 'completed'),
+
+-- User 8
+(8, '6 Sunrise 2',    '2025-07-19 00:50:39', 1, 880.00, 'confirmed'),
+(8, '1DZ',            '2025-07-11 03:47:53', 1, 999.00, 'pending'),
+(8, '6R Green',       '2025-07-11 03:47:53', 1, 500.00, 'pending'),
+(8, '6R Vio',         '2025-07-17 00:14:51', 1, 500.00, 'completed'),
+
+-- User 9
+(9, '6R Black',       '2025-07-18 12:34:13', 1, 510.00, 'confirmed'),
+(9, '6 Sunrise Bloom','2025-07-22 14:20:11', 1, 880.00, 'pending'),
+(9, '6R2 White',      '2025-07-18 23:44:32', 1, 610.00, 'completed'),
+
+-- User 10
+(10, '7R Green',      '2025-07-12 11:56:55', 1, 500.00, 'confirmed'),
+(10, '6R Green',      '2025-07-18 06:10:09', 1, 500.00, 'pending'),
+(10, '6R White',      '2025-07-18 06:10:09', 1, 510.00, 'pending'),
+(10, '1DZ',           '2025-07-17 04:26:58', 1, 999.00, 'completed'),
+
+-- User 11
+(11, '6 Sunrise 2',   '2025-07-11 13:19:32', 1, 880.00, 'confirmed'),
+(11, '6R Vio',        '2025-07-17 19:14:10', 1, 500.00, 'pending'),
+(11, '6R2 White',     '2025-07-14 07:42:01', 1, 610.00, 'completed'),
+
+-- User 12
+(12, '6 Sunrise Bloom','2025-07-21 09:10:01', 1, 880.00, 'confirmed'),
+(12, '6R White',      '2025-07-22 18:50:02', 1, 510.00, 'pending'),
+(12, '1DZ',           '2025-07-13 21:19:24', 1, 999.00, 'completed'),
+
+-- User 13
+(13, '6R Green',      '2025-07-09 03:12:07', 1, 500.00, 'confirmed'),
+(13, '6R Black',      '2025-07-19 13:22:18', 1, 500.00, 'pending'),
+(13, '6R Vio',        '2025-07-19 13:22:18', 1, 510.00, 'pending'),
+(13, '6R2 White',     '2025-07-17 15:18:44', 1, 610.00, 'completed'),
+
+-- User 14
+(14, '6 Sunrise 2',   '2025-07-13 08:14:53', 1, 880.00, 'confirmed'),
+(14, '6R White',      '2025-07-10 21:44:13', 1, 510.00, 'pending'),
+(14, '1DZ',           '2025-07-10 21:44:13', 1, 999.00, 'pending'),
+(14, '7R Green',      '2025-07-21 04:59:30', 1, 500.00, 'completed'),
+
+-- User 15
+(15, '6 Sunrise Bloom','2025-07-12 09:11:23', 1, 880.00, 'confirmed'),
+(15, '6R2 White',     '2025-07-20 10:20:13', 1, 610.00, 'pending'),
+(15, '6R Green',      '2025-07-20 10:20:13', 1, 500.00, 'pending'),
+(15, '6R Black',      '2025-07-18 08:02:17', 1, 510.00, 'completed'),
+
+-- User 16
+(16, '6 Sunrise 2',   '2025-07-13 01:26:17', 1, 880.00, 'confirmed'),
+(16, '1DZ',           '2025-07-22 07:47:10', 1, 999.00, 'pending'),
+(16, '6R White',      '2025-07-22 07:47:10', 1, 510.00, 'pending'),
+(16, '6R Vio',        '2025-07-15 04:00:00', 1, 500.00, 'completed'),
+
+-- User 17
+(17, '6 Sunrise Bloom','2025-07-11 15:48:59', 1, 880.00, 'confirmed'),
+(17, '6R2 White',     '2025-07-22 13:10:23', 1, 610.00, 'pending'),
+(17, '6R White',      '2025-07-13 19:41:22', 1, 510.00, 'completed'),
+(17, '6R Black',      '2025-07-13 19:41:22', 1, 510.00, 'completed'),
+
+-- User 18
+(18, '6 Sunrise 2',   '2025-07-13 17:18:02', 1, 880.00, 'confirmed'),
+(18, '6R Green',      '2025-07-13 17:18:02', 1, 500.00, 'confirmed'),
+(18, '1DZ',           '2025-07-10 03:04:58', 1, 999.00, 'pending'),
+(18, '6R Vio',        '2025-07-14 10:55:29', 1, 500.00, 'completed'),
+
+-- User 19
+(19, '6R2 White',     '2025-07-09 07:43:25', 1, 610.00, 'confirmed'),
+(19, '6 Sunrise Bloom','2025-07-21 00:59:19', 1, 880.00, 'pending'),
+(19, '6R White',      '2025-07-21 00:59:19', 1, 510.00, 'pending'),
+(19, '1DZ',           '2025-07-15 18:05:20', 1, 999.00, 'completed'),
+
+-- User 20
+(20, '6R Green',      '2025-07-09 22:23:44', 1, 500.00, 'confirmed'),
+(20, '6R Black',      '2025-07-09 22:23:44', 1, 510.00, 'confirmed'),
+(20, '6 Sunrise 2',   '2025-07-15 11:36:39', 1, 880.00, 'pending');
 
 
-order -> delivery
-// populate delivery table using order status = 'confirmed'
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (1, '1DZ, 6R Black', '2025-07-16 19:29:05', 1509.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (1, '6 Sunrise Bloom', '2025-07-18 10:04:01', 880.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (1, '6R Green, 6R Vio', '2025-07-11 05:44:32', 1000.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (2, '6 Sunrise 2', '2025-07-18 20:45:40', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (2, '1DZ', '2025-07-11 18:33:49', 999.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (2, '7R Green', '2025-07-16 02:38:46', 500.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (3, '6R White', '2025-07-10 17:31:42', 510.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (3, '6 Sunrise Bloom, 6R2 White', '2025-07-21 13:13:30', 1490.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (3, '6R Vio', '2025-07-17 17:53:01', 500.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (4, '6R Green', '2025-07-10 00:16:53', 500.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (4, '1DZ', '2025-07-14 17:41:32', 999.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (4, '6 Sunrise 2, 6R White', '2025-07-20 02:06:24', 1390.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (5, '6 Sunrise Bloom', '2025-07-20 17:59:48', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (5, '6R2 White', '2025-07-13 15:56:33', 610.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (5, '6R Black', '2025-07-10 23:27:07', 510.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (6, '1DZ', '2025-07-20 15:50:18', 999.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (6, '7R Green, 6 Sunrise 2', '2025-07-13 04:29:35', 1380.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (6, '6R Green', '2025-07-12 13:03:29', 500.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (7, '6R Vio', '2025-07-19 18:57:13', 500.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (7, '6R White, 6R2 White', '2025-07-19 01:38:18', 1120.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (7, '6 Sunrise Bloom', '2025-07-09 06:27:33', 880.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (8, '6 Sunrise 2', '2025-07-19 00:50:39', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (8, '1DZ, 6R Green', '2025-07-11 03:47:53', 1499.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (8, '6R Vio', '2025-07-17 00:14:51', 500.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (9, '6R Black', '2025-07-18 12:34:13', 510.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (9, '6 Sunrise Bloom', '2025-07-22 14:20:11', 880.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (9, '6R2 White', '2025-07-18 23:44:32', 610.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (10, '7R Green', '2025-07-12 11:56:55', 500.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (10, '6R Green, 6R White', '2025-07-18 06:10:09', 1010.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (10, '1DZ', '2025-07-17 04:26:58', 999.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (11, '6 Sunrise 2', '2025-07-11 13:19:32', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (11, '6R Vio', '2025-07-17 19:14:10', 500.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (11, '6R2 White', '2025-07-14 07:42:01', 610.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (12, '6 Sunrise Bloom', '2025-07-21 09:10:01', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (12, '6R White', '2025-07-22 18:50:02', 510.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (12, '1DZ', '2025-07-13 21:19:24', 999.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (13, '6R Green', '2025-07-09 03:12:07', 500.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (13, '6R Black, 6R Vio', '2025-07-19 13:22:18', 1010.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (13, '6R2 White', '2025-07-17 15:18:44', 610.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (14, '6 Sunrise 2', '2025-07-13 08:14:53', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (14, '6R White, 1DZ', '2025-07-10 21:44:13', 1509.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (14, '7R Green', '2025-07-21 04:59:30', 500.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (15, '6 Sunrise Bloom', '2025-07-12 09:11:23', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (15, '6R2 White, 6R Green', '2025-07-20 10:20:13', 1110.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (15, '6R Black', '2025-07-18 08:02:17', 510.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (16, '6 Sunrise 2', '2025-07-13 01:26:17', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (16, '1DZ, 6R White', '2025-07-22 07:47:10', 1509.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (16, '6R Vio', '2025-07-15 04:00:00', 500.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (17, '6 Sunrise Bloom', '2025-07-11 15:48:59', 880.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (17, '6R2 White', '2025-07-22 13:10:23', 610.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (17, '6R White, 6R Black', '2025-07-13 19:41:22', 1020.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (18, '6 Sunrise 2, 6R Green', '2025-07-13 17:18:02', 1380.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (18, '1DZ', '2025-07-10 03:04:58', 999.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (18, '6R Vio', '2025-07-14 10:55:29', 500.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (19, '6R2 White', '2025-07-09 07:43:25', 610.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (19, '6 Sunrise Bloom, 6R White', '2025-07-21 00:59:19', 1390.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (19, '1DZ', '2025-07-15 18:05:20', 999.0, 'completed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (20, '6R Green, 6R Black', '2025-07-09 22:23:44', 1010.0, 'confirmed');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (20, '6 Sunrise 2', '2025-07-15 11:36:39', 880.0, 'pending');
-INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (20, '6R2 White', '2025-07-22 21:33:15', 610.0, 'completed');
+INSERT INTO deliveries (
+    order_id, staff_id, scheduled_time, actual_delivery_time, delivery_status, courier_type, plate_number
+) VALUES
+(1,  4, '2025-07-17 17:29:05', '2025-07-17 19:29:05', 'in_transit', 'Maxim',   'ABC123'),
+(2,  1, '2025-07-19 14:45:40', '2025-07-19 17:45:40', 'delivered',  'Motor',   'XYZ789'),
+(3,  2, '2025-07-11 16:31:42', '2025-07-11 18:31:42', 'scheduled',  'Move It', 'MNO456'),
+(4,  4, '2025-07-10 08:16:53', '2025-07-10 11:16:53', 'delivered',  'Move It', 'JKL321'),
+(5,  2, '2025-07-20 19:59:48', '2025-07-20 21:59:48', 'scheduled',  'Maxim',   'QWE987'),
+(6,  4, '2025-07-21 06:50:18', '2025-07-21 08:50:18', 'delivered',  'Move It', 'ZXC654'),
+(7,  3, '2025-07-20 10:57:13', '2025-07-20 11:57:13', 'delivered',  'Move It', 'RTY321'),
+(8,  4, '2025-07-19 20:50:39', '2025-07-20 00:50:39', 'in_transit', 'Motor',   'GHJ852'),
+(9,  5, '2025-07-19 12:34:13', '2025-07-19 13:34:13', 'in_transit', 'Motor',   'BNM963'),
+(10, 2, '2025-07-13 08:56:55', '2025-07-13 10:56:55', 'in_transit', 'Motor',   'PLM741'),
+(11, 5, '2025-07-11 09:30:22', '2025-07-11 11:30:22', 'scheduled',  'Move It', 'LMN654'),
+(12, 2, '2025-07-21 15:20:10', '2025-07-21 17:20:10', 'in_transit', 'Motor',   'TYU321'),
+(13, 4, '2025-07-18 06:46:33', '2025-07-18 09:46:33', 'delivered',  'Maxim',   'UIO963'),
+(14, 1, '2025-07-11 07:15:00', '2025-07-11 09:15:00', 'in_transit', 'Move It', 'GHF852'),
+(15, 5, '2025-07-13 18:27:45', '2025-07-13 20:27:45', 'delivered',  'Motor',   'VBN789'),
+(16, 3, '2025-07-12 13:48:50', '2025-07-12 15:48:50', 'scheduled',  'Maxim',   'WER456'),
+(17, 2, '2025-07-15 10:17:33', '2025-07-15 12:17:33', 'in_transit', 'Move It', 'ASE159'),
+(18, 1, '2025-07-14 21:09:18', '2025-07-15 00:09:18', 'delivered',  'Motor',   'KLM741'),
+(19, 5, '2025-07-09 09:12:31', '2025-07-09 11:12:31', 'scheduled',  'Move It', 'TRE963'),
+(20, 3, '2025-07-11 06:05:27', '2025-07-11 08:05:27', 'delivered',  'Maxim',   'DFG147');
