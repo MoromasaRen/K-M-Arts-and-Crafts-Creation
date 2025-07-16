@@ -1,12 +1,8 @@
 <?php
-echo password_hash("password123", PASSWORD_DEFAULT);
-password_verify($inputPassword, $hashedPasswordFromDB);
 header('Content-Type: application/json');
 require __DIR__ . '/../config/database.php';
 
 $data = json_decode(file_get_contents("php://input"));
-
-echo password_hash("12345", PASSWORD_DEFAULT);
 
 if (!isset($data->email, $data->password)) {
     echo json_encode(['success' => false, 'message' => 'Missing credentials']);
