@@ -15,7 +15,6 @@
     }
   </style>
 </head>
-</head>
 <body class="bg-[#c6d9f7] text-[#1f3a5f] m-0 p-0 min-h-screen flex flex-col">
   <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
     <!-- Logo (Aligned left) -->
@@ -87,12 +86,24 @@
       </div>
       <div class="flex justify-between mt-2">
         <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.html" class="bg-gray-300 text-[#1f3a5f] font-semibold py-2 px-6 rounded hover:bg-gray-400 transition duration-300 ease-in-out">Back</a>
-        <button class="bg-[#f2f7fd] border border-gray-400 rounded py-2 px-6 font-semibold text-[#1c2f4a] hover:bg-[#c7d9f9] transition">Place Order</button>
+        <button id="submitOrderBtn" class="bg-[#f2f7fd] border border-gray-400 rounded py-2 px-6 font-semibold text-[#1c2f4a] hover:bg-[#c7d9f9] transition">
+          Place Order
+        </button>
       </div>
     </section>
   </main>
 
-  
+  <!-- Success Modal -->
+<div id="orderSuccessModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm w-full">
+    <h2 class="text-xl font-semibold mb-2 text-green-700">Order Successfully Placed!</h2>
+    <p class="text-gray-700 mb-4">Thank you for ordering from KM Arts & Crafts.</p>
+    <button onclick="closeModal()" class="bg-[#1f3a5f] text-white px-4 py-2 rounded hover:bg-[#2d4f77] transition">
+      Close
+    </button>
+  </div>
+</div>
+
     <!-- Footer -->
      <div class="mt-16"></div>
     <footer class="bg-[#183655] text-white py-8">
@@ -151,8 +162,67 @@
       const total = localStorage.getItem("totalPrice") || "0.00";
     document.getElementById("payment-total").textContent = `₱${total}`;
     
-    
+    document.getElementById("submitOrderBtn").addEventListener("click", function () {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const userId = localStorage.getItem("user_id");
+
+  if (!userId || cart.length === 0) {
+    alert("Missing user or cart is empty.");
+    return;
+  }
+
+  const items = cart.map(item => ({
+    product_id: item.id,
+    quantity: item.quantity,
+    price: item.price,
+    total_units: item.quantity * item.price
+  }));
+
+  const totalAmount = items.reduce((sum, item) => sum + item.total_units, 0);
+  const orderDetails = items.map(i => `#${i.product_id} x${i.quantity}`).join(", ");
+
+  fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/orders/submit_order.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      user_id: userId,
+      order_details: orderDetails,
+      total_amount: totalAmount,
+      items: items
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      localStorage.removeItem("cart");
+      showSuccessModal();
+    } else {
+      console.error("Error:", data);
+      alert("Order failed: " + (data.error || "Unknown error"));
+    }
+  })
+  .catch(err => {
+    console.error("Network error:", err);
+  });
+}); // ✅ Close the click event function properly
+
+// ✅ These go outside the event listener
+function showSuccessModal() {
+  const modal = document.getElementById('orderSuccessModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById('orderSuccessModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    window.location.href = "thank_you.html";
+  }
+}
     </script>
-    
 </body>
 </html>
