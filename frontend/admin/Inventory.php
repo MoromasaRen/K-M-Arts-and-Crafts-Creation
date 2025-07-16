@@ -144,7 +144,7 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
                     class="editBtn text-blue-600 hover:underline text-xs font-semibold"
                     data-id="<?= htmlspecialchars($product['product_id']) ?>"
                     data-name="<?= htmlspecialchars($product['product_name']) ?>"
-                    data-status="<?= htmlspecialchars($product['status']) ?>"
+                    data-quantity="<?= htmlspecialchars($product['product_quantity'] ?? 0) ?>"
                     data-price="<?= htmlspecialchars($product['base_price']) ?>"
                     data-description="<?= htmlspecialchars($product['product_description']) ?>"
                   >
@@ -204,14 +204,9 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
             <input name="product_name" id="product_name" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="text" required />
           </label>
           <label class="flex flex-col gap-1">
-  Status
-  <select name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal" required>
-    <option value="">Select status</option>
-    <option value="In Stock">In Stock</option>
-    <option value="Low Stock">Low Stock</option>
-    <option value="No Stock">No Stock</option>
-  </select>
-</label>
+            Quantity
+            <input name="product_quantity" id="product_quantity" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="number" min="0" required />
+          </label>
           <label class="flex flex-col gap-1">
             Price
             <input name="base_price" id="base_price" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="number" step="0.01" required />
@@ -235,9 +230,27 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
 
         const productIdInput = document.getElementById("product_id");
         const productNameInput = document.getElementById("product_name");
-        const statusInput = document.getElementById("status");
+        const quantityInput = document.getElementById("product_quantity");
         const basePriceInput = document.getElementById("base_price");
         const descriptionInput = document.getElementById("product_description");
+
+        // Function to determine status based on quantity
+        function getStatusFromQuantity(quantity) {
+          const qty = parseInt(quantity);
+          if (qty === 0) return 'No Stock';
+          if (qty < 20) return 'Low Stock';
+          return 'In Stock';
+        }
+
+        // Function to get quantity from status (for display purposes)
+        function getQuantityFromStatus(status) {
+          switch(status) {
+            case 'No Stock': return 0;
+            case 'Low Stock': return 10; // default value for low stock
+            case 'In Stock': return 50; // default value for in stock
+            default: return 0;
+          }
+        }
 
         editFormBtn.addEventListener("click", () => {
           clearForm();
@@ -251,16 +264,25 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
           }
         });
         manageModal.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    manageModal.classList.add("hidden");
-  }
-});
+          if (e.key === "Escape") {
+            manageModal.classList.add("hidden");
+          }
+        });
 
         document.querySelectorAll(".editBtn").forEach(button => {
           button.addEventListener("click", () => {
             productIdInput.value = button.dataset.id;
             productNameInput.value = button.dataset.name;
-            statusInput.value = button.dataset.status;
+            
+            // Use quantity from data attribute, or derive from status if not available
+            if (button.dataset.quantity) {
+              quantityInput.value = button.dataset.quantity;
+            } else {
+              // Fallback: derive quantity from status for backward compatibility
+              const status = button.dataset.status || '';
+              quantityInput.value = getQuantityFromStatus(status);
+            }
+            
             basePriceInput.value = button.dataset.price;
             descriptionInput.value = button.dataset.description;
             
@@ -271,10 +293,19 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
         function clearForm() {
           productIdInput.value = '';
           productNameInput.value = '';
-          statusInput.value = '';
+          quantityInput.value = '';
           basePriceInput.value = '';
           descriptionInput.value = '';
         }
+
+        // Add event listener to quantity input to show preview of status
+        quantityInput.addEventListener('input', function() {
+          const quantity = this.value;
+          const status = getStatusFromQuantity(quantity);
+          
+          // Optional: Show status preview (you can uncomment this if you want visual feedback)
+          // console.log('Status will be:', status);
+        });
       });
 
       window.addEventListener("DOMContentLoaded", function () {
