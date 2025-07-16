@@ -17,6 +17,25 @@
   </style>
 </head>
 <body class="bg-white text-[#1a2e4a] m-0 p-0">
+  <script> 
+   if (!localStorage.getItem("isLoggedIn")) {
+    window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
+  }
+
+      const user_Id = localStorage.getItem("user_id");
+
+    fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${user_Id}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById("first-name").textContent = data.first_name;
+          // other fields here
+        } else {
+          alert("User not found.");
+        }
+      })
+
+  </script>
   <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
     <!-- Logo (Aligned left) -->
     <div class="flex items-center">
@@ -61,11 +80,10 @@
                   />
                   <div class="ml-5">
                     <p id="summary-username" class="font-bold text-lg tracking-wide">
-                      Von Malingin
                     </p>
                     <p class="text-xs font-normal">User</p>
                     <p id="summary-address" class="text-xs font-normal">
-                      Philippines, Cebu 6000
+                      Set Address
                     </p>
                   </div>
 
@@ -109,7 +127,7 @@
                   </div>
                   <div>
                     <p class="text-xs font-semibold tracking-widest">First Name</p>
-                    <p id="first-name-text" class="font-bold text-sm">Von</p>
+                    <p id="first-name-text" class="font-bold text-sm"></p>
                     <input
                       id="first-name-input"
                       type="text"
@@ -119,7 +137,7 @@
                   </div>
                   <div>
                     <p class="text-xs font-semibold tracking-widest">Last Name</p>
-                    <p id="last-name-text" class="font-bold text-sm">Malingin</p>
+                    <p id="last-name-text" class="font-bold text-sm"></p>
                     <input
                       id="last-name-input"
                       type="text"
@@ -247,11 +265,10 @@
         <!-- Previous Orders Card -->
         <div class="bg-white rounded-lg shadow-md p-6">
           <h3 class="font-semibold mb-2">Previous Orders</h3>
-          <ul class="text-sm text-gray-700 space-y-2">
-            <li>Order #12345 - Delivered</li>
-            <li>Order #12346 - Delivered</li>
-            <li>Order #12347 - Delivered</li>
-          </ul>
+            <ul id="previous-orders-list" class="text-sm text-gray-700 space-y-2">
+              <li>Loading...</li>
+            </ul>
+
         </div>
         <!-- Orders to Pay Card -->
         <div class="bg-white rounded-lg shadow-md p-6">
@@ -291,323 +308,264 @@
       </p>
     </div>
   </footer>
+<script>
+  let originalPersonalData = {};
+  let originalAddressData = {};
 
-  <script>
-    // Global variables to store original values
-    let originalPersonalData = {};
-    let originalAddressData = {};
+  const userId = localStorage.getItem("user_id");
 
-    function toggleEdit(sectionId, enable) {
-      const section = document.getElementById(sectionId);
-      const textFields = section.querySelectorAll('[id$="-text"]');
-      const inputFields = section.querySelectorAll('[id$="-input"]');
-      const editBtn = document.getElementById(`edit-${sectionId}`);
-      const saveBtn = document.getElementById(`save-${sectionId}`);
-      const cancelBtn = document.getElementById(`cancel-${sectionId}`);
+  function toggleEdit(sectionId, enable) {
+    const section = document.getElementById(sectionId);
+    const textFields = section.querySelectorAll('[id$="-text"]');
+    const inputFields = section.querySelectorAll('[id$="-input"]');
+    const editBtn = document.getElementById(`edit-${sectionId}`);
+    const saveBtn = document.getElementById(`save-${sectionId}`);
+    const cancelBtn = document.getElementById(`cancel-${sectionId}`);
 
-      if (enable) {
-        // Store original values before editing
-        if (sectionId === 'personal-info') {
-          originalPersonalData = {
-            firstName: document.getElementById('first-name-text').textContent,
-            lastName: document.getElementById('last-name-text').textContent,
-            email: document.getElementById('email-text').textContent,
-            phone: document.getElementById('phone-text').textContent,
-            dob: document.getElementById('dob-text').textContent
-          };
-        } else if (sectionId === 'address-info') {
-          originalAddressData = {
-            address: document.getElementById('address-text').textContent,
-            country: document.getElementById('country-text').textContent,
-            city: document.getElementById('city-text').textContent,
-            postalCode: document.getElementById('postal-code-text').textContent
-          };
-        }
-
-        section.classList.add("editing");
-        textFields.forEach((el) => el.classList.add("hidden"));
-        inputFields.forEach((el) => el.classList.remove("hidden"));
-        editBtn.classList.add("hidden");
-        saveBtn.classList.remove("hidden");
-        cancelBtn.classList.remove("hidden");
-      } else {
-        section.classList.remove("editing");
-        textFields.forEach((el) => el.classList.remove("hidden"));
-        inputFields.forEach((el) => el.classList.add("hidden"));
-        editBtn.classList.remove("hidden");
-        saveBtn.classList.add("hidden");
-        cancelBtn.classList.add("hidden");
-      }
-    }
-
-    function cancelChanges(sectionId) {
+    if (enable) {
       if (sectionId === 'personal-info') {
-        // Restore original values
-        document.getElementById('first-name-text').textContent = originalPersonalData.firstName;
-        document.getElementById('last-name-text').textContent = originalPersonalData.lastName;
-        document.getElementById('email-text').textContent = originalPersonalData.email;
-        document.getElementById('phone-text').textContent = originalPersonalData.phone;
-        document.getElementById('dob-text').textContent = originalPersonalData.dob;
-        
-        // Reset input values
-        document.getElementById('first-name-input').value = originalPersonalData.firstName;
-        document.getElementById('last-name-input').value = originalPersonalData.lastName;
-        document.getElementById('email-input').value = originalPersonalData.email;
-        document.getElementById('phone-input').value = originalPersonalData.phone;
-        
-        // Convert date format back for input
-        const dobParts = originalPersonalData.dob.split(' - ');
-        if (dobParts.length === 3) {
-          const formattedDate = `${dobParts[2]}-${dobParts[0].padStart(2, '0')}-${dobParts[1].padStart(2, '0')}`;
-          document.getElementById('dob-input').value = formattedDate;
-        }
+        originalPersonalData = {
+          firstName: document.getElementById('first-name-text').textContent,
+          lastName: document.getElementById('last-name-text').textContent,
+          email: document.getElementById('email-text').textContent,
+          phone: document.getElementById('phone-text').textContent,
+          dob: document.getElementById('dob-text').textContent
+        };
       } else if (sectionId === 'address-info') {
-        document.getElementById('address-text').textContent = originalAddressData.address;
-        document.getElementById('country-text').textContent = originalAddressData.country;
-        document.getElementById('city-text').textContent = originalAddressData.city;
-        document.getElementById('postal-code-text').textContent = originalAddressData.postalCode;
-        
-        document.getElementById('address-input').value = originalAddressData.address;
-        document.getElementById('country-input').value = originalAddressData.country;
-        document.getElementById('city-input').value = originalAddressData.city;
-        document.getElementById('postal-code-input').value = originalAddressData.postalCode;
+        originalAddressData = {
+          address: document.getElementById('address-text').textContent,
+          country: document.getElementById('country-text').textContent,
+          city: document.getElementById('city-text').textContent,
+          postalCode: document.getElementById('postal-code-text').textContent
+        };
       }
 
-      toggleEdit(sectionId, false);
+      section.classList.add("editing");
+      textFields.forEach((el) => el.classList.add("hidden"));
+      inputFields.forEach((el) => el.classList.remove("hidden"));
+      editBtn.classList.add("hidden");
+      saveBtn.classList.remove("hidden");
+      cancelBtn.classList.remove("hidden");
+    } else {
+      section.classList.remove("editing");
+      textFields.forEach((el) => el.classList.remove("hidden"));
+      inputFields.forEach((el) => el.classList.add("hidden"));
+      editBtn.classList.remove("hidden");
+      saveBtn.classList.add("hidden");
+      cancelBtn.classList.add("hidden");
+    }
+  }
+
+  function cancelChanges(sectionId) {
+    if (sectionId === 'personal-info') {
+      document.getElementById('first-name-text').textContent = originalPersonalData.firstName;
+      document.getElementById('last-name-text').textContent = originalPersonalData.lastName;
+      document.getElementById('email-text').textContent = originalPersonalData.email;
+      document.getElementById('phone-text').textContent = originalPersonalData.phone;
+      document.getElementById('dob-text').textContent = originalPersonalData.dob;
+
+      document.getElementById('first-name-input').value = originalPersonalData.firstName;
+      document.getElementById('last-name-input').value = originalPersonalData.lastName;
+      document.getElementById('email-input').value = originalPersonalData.email;
+      document.getElementById('phone-input').value = originalPersonalData.phone;
+
+      const dobParts = originalPersonalData.dob.split(' - ');
+      if (dobParts.length === 3) {
+        const formattedDate = `${dobParts[2]}-${dobParts[0].padStart(2, '0')}-${dobParts[1].padStart(2, '0')}`;
+        document.getElementById('dob-input').value = formattedDate;
+      }
+    } else if (sectionId === 'address-info') {
+      document.getElementById('address-text').textContent = originalAddressData.address;
+      document.getElementById('country-text').textContent = originalAddressData.country;
+      document.getElementById('city-text').textContent = originalAddressData.city;
+      document.getElementById('postal-code-text').textContent = originalAddressData.postalCode;
+
+      document.getElementById('address-input').value = originalAddressData.address;
+      document.getElementById('country-input').value = originalAddressData.country;
+      document.getElementById('city-input').value = originalAddressData.city;
+      document.getElementById('postal-code-input').value = originalAddressData.postalCode;
     }
 
-    function saveChanges(sectionId) {
-      if (sectionId === 'personal-info') {
-        // Update text fields with input values
-        const firstName = document.getElementById('first-name-input').value;
-        const sidebarFirstName = document.getElementById('sidebar-first-name');
-        if (sidebarFirstName) sidebarFirstName.textContent = firstName;
+    toggleEdit(sectionId, false);
+  }
 
-        const lastName = document.getElementById('last-name-input').value;
-        const sidebarLastName = document.getElementById('sidebar-last-name');
-        if (sidebarLastName) sidebarLastName.textContent = lastName;
+  function saveChanges(sectionId) {
+    if (sectionId === 'personal-info') {
+      const firstName = document.getElementById('first-name-input').value;
+      const lastName = document.getElementById('last-name-input').value;
+      const email = document.getElementById('email-input').value;
+      const phone = document.getElementById('phone-input').value;
+      const dobInput = document.getElementById('dob-input').value;
 
-        const email = document.getElementById('email-input').value;
-        const phone = document.getElementById('phone-input').value;
-        const dobInput = document.getElementById('dob-input').value;
-        
-        // Format date for display
-        let dobDisplay = dobInput;
-        if (dobInput) {
-          const date = new Date(dobInput);
-          const month = (date.getMonth() + 1).toString().padStart(2, '0');
-          const day = date.getDate().toString().padStart(2, '0');
-          const year = date.getFullYear();
-          dobDisplay = `${month} - ${day} - ${year}`;
-        }
-        
-        document.getElementById('first-name-text').textContent = firstName;
-        document.getElementById('last-name-text').textContent = lastName;
-        document.getElementById('email-text').textContent = email;
-        document.getElementById('phone-text').textContent = phone;
-        document.getElementById('dob-text').textContent = dobDisplay;
-        
-        // Update sidebar and summary
-        document.getElementById('sidebar-first-name').textContent = firstName;
-        document.getElementById('sidebar-last-name').textContent = lastName;
-        document.getElementById('summary-username').textContent = `${firstName} ${lastName}`;
-        
-        // Send to backend
-        sendUserDataToBackend();
-      } else if (sectionId === 'address-info') {
-        const address = document.getElementById('address-input').value;
-        const country = document.getElementById('country-input').value;
-        const city = document.getElementById('city-input').value;
-        const postalCode = document.getElementById('postal-code-input').value;
-        
-        document.getElementById('address-text').textContent = address || 'Not provided';
-        document.getElementById('country-text').textContent = country;
-        document.getElementById('city-text').textContent = city;
-        document.getElementById('postal-code-text').textContent = postalCode;
-        
-        // Update summary address
-        document.getElementById('summary-address').textContent = `${country}, ${city} ${postalCode}`;
-        
-        // Send to backend
-        sendAddressDataToBackend();
+      let dobDisplay = dobInput;
+      if (dobInput) {
+        const date = new Date(dobInput);
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const year = date.getFullYear();
+        dobDisplay = `${month} - ${day} - ${year}`;
       }
 
-      toggleEdit(sectionId, false);
+      document.getElementById('first-name-text').textContent = firstName;
+      document.getElementById('last-name-text').textContent = lastName;
+      document.getElementById('email-text').textContent = email;
+      document.getElementById('phone-text').textContent = phone;
+      document.getElementById('dob-text').textContent = dobDisplay;
+
+      const sidebarFirst = document.getElementById('sidebar-first-name');
+      const sidebarLast = document.getElementById('sidebar-last-name');
+      const summaryUser = document.getElementById('summary-username');
+
+      if (sidebarFirst) sidebarFirst.textContent = firstName;
+      if (sidebarLast) sidebarLast.textContent = lastName;
+      if (summaryUser) summaryUser.textContent = `${firstName} ${lastName}`;
+
+      sendUserDataToBackend();
+    } else if (sectionId === 'address-info') {
+      const address = document.getElementById('address-input').value;
+      const country = document.getElementById('country-input').value;
+      const city = document.getElementById('city-input').value;
+      const postalCode = document.getElementById('postal-code-input').value;
+
+      document.getElementById('address-text').textContent = address || 'Not provided';
+      document.getElementById('country-text').textContent = country;
+      document.getElementById('city-text').textContent = city;
+      document.getElementById('postal-code-text').textContent = postalCode;
+
+      const summaryAddr = document.getElementById('summary-address');
+      if (summaryAddr) summaryAddr.textContent = `${country}, ${city} ${postalCode}`;
+
+      sendAddressDataToBackend();
     }
 
-    function sendUserDataToBackend() {
-      const user_id = localStorage.getItem("user_id");
-      
-      if (!user_id) {
-        alert("User ID not found. Please log in again.");
-        return;
-      }
+    toggleEdit(sectionId, false);
+  }
 
-      const data = {
-        update_type: "personal_info",
-        user_id: user_id,
-        first_name: document.getElementById("first-name-input").value,
-        last_name: document.getElementById("last-name-input").value,
-        email: document.getElementById("email-input").value,
-        contact_number: document.getElementById("phone-input").value,
-        dateofbirth: document.getElementById("dob-input").value,
-      };
+  function sendUserDataToBackend() {
+    if (!userId) return alert("User ID not found. Please log in again.");
 
-      fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/update_user_info.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      })
-      .then((res) => res.json())
-      .then((response) => {
-        if (response.success) {
-          console.log("Personal information updated successfully");
-        } else {
-          alert("Update failed: " + response.message);
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        alert("Something went wrong while updating personal info.");
-      });
-    }
+    const data = {
+      update_type: "personal_info",
+      user_id: userId,
+      first_name: document.getElementById("first-name-input").value,
+      last_name: document.getElementById("last-name-input").value,
+      email: document.getElementById("email-input").value,
+      contact_number: document.getElementById("phone-input").value,
+      dateofbirth: document.getElementById("dob-input").value,
+    };
 
-    function sendAddressDataToBackend() {
-      const user_id = localStorage.getItem("user_id");
-      
-      if (!user_id) {
-        alert("User ID not found. Please log in again.");
-        return;
-      }
+    fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/update_user_info.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+      if (!response.success) alert("Update failed: " + response.message);
+    })
+    .catch(err => alert("Something went wrong while updating personal info."));
+  }
 
-      const data = {
-        update_type: "address_info",
-        user_id: user_id,
-        address: document.getElementById("address-input").value,
-        country: document.getElementById("country-input").value,
-        city: document.getElementById("city-input").value,
-        postal_code: document.getElementById("postal-code-input").value,
-      };
+  function sendAddressDataToBackend() {
+    if (!userId) return alert("User ID not found. Please log in again.");
 
-      fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/update_user_info.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      })
-      .then((res) => res.json())
-      .then((response) => {
-        if (response.success) {
-          console.log("Address information updated successfully");
-        } else {
-          alert("Address update failed: " + response.message);
-        }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        alert("Something went wrong while updating address info.");
-      });
-    }
+    const data = {
+      update_type: "address_info",
+      user_id: userId,
+      address: document.getElementById("address-input").value,
+      country: document.getElementById("country-input").value,
+      city: document.getElementById("city-input").value,
+      postal_code: document.getElementById("postal-code-input").value,
+    };
 
-    // Event listeners
-    document.getElementById("edit-personal-info").addEventListener("click", () => toggleEdit("personal-info", true));
-    document.getElementById("save-personal-info").addEventListener("click", () => saveChanges("personal-info"));
-    document.getElementById("cancel-personal-info").addEventListener("click", () => cancelChanges("personal-info"));
+    fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/update_user_info.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+      if (!response.success) alert("Address update failed: " + response.message);
+    })
+    .catch(err => alert("Something went wrong while updating address info."));
+  }
 
-    document.getElementById("edit-address-info").addEventListener("click", () => toggleEdit("address-info", true));
-    document.getElementById("save-address-info").addEventListener("click", () => saveChanges("address-info"));
-    document.getElementById("cancel-address-info").addEventListener("click", () => cancelChanges("address-info"));
+  // Events
+  document.getElementById("edit-personal-info").addEventListener("click", () => toggleEdit("personal-info", true));
+  document.getElementById("save-personal-info").addEventListener("click", () => saveChanges("personal-info"));
+  document.getElementById("cancel-personal-info").addEventListener("click", () => cancelChanges("personal-info"));
 
-    // Logout functionality
-    document.getElementById("logout-btn").addEventListener("click", function (e) {
-      e.preventDefault();
+  document.getElementById("edit-address-info").addEventListener("click", () => toggleEdit("address-info", true));
+  document.getElementById("save-address-info").addEventListener("click", () => saveChanges("address-info"));
+  document.getElementById("cancel-address-info").addEventListener("click", () => cancelChanges("address-info"));
 
-      fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/auth/logout.php", {
-        method: "POST",
-        credentials: "include"
-      })
-      .then(res => res.text())
-      .then(response => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("user_id");
-        localStorage.removeItem("user_type");
-        localStorage.removeItem("username");
-        window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
-      })
-      .catch(err => {
-        console.error("Logout failed:", err);
-        alert("Something went wrong during logout.");
-      });
-    });
+  // Logout
+  document.getElementById("logout-btn").addEventListener("click", function (e) {
+    e.preventDefault();
+    fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/auth/logout.php", {
+      method: "POST",
+      credentials: "include"
+    })
+    .then(() => {
+      localStorage.clear();
+      window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
+    })
+    .catch(() => alert("Something went wrong during logout."));
+  });
 
-    // Load user data on page load
-    window.addEventListener("DOMContentLoaded", function () {
-      const userId = localStorage.getItem("user_id");
 
-      if (!userId) {
-        alert("Please log in to view your profile.");
-        window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
-        return;
-      }
 
-      fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            // Format date for display
-            let dobDisplay = data.dateofbirth;
-            if (data.dateofbirth) {
-              const date = new Date(data.dateofbirth);
-              const month = (date.getMonth() + 1).toString().padStart(2, '0');
-              const day = date.getDate().toString().padStart(2, '0');
-              const year = date.getFullYear();
-              dobDisplay = `${month} - ${day} - ${year}`;
-            }
-            
-            // Fill display fields
-            document.getElementById("first-name-text").textContent = data.first_name || '';
-            document.getElementById("last-name-text").textContent = data.last_name || '';
-            document.getElementById("email-text").textContent = data.email || '';
-            document.getElementById("dob-text").textContent = dobDisplay || '';
-            document.getElementById("phone-text").textContent = data.contact_number || '';
-            
-            // Fill address fields
-            document.getElementById("address-text").textContent = data.address || 'Not provided';
-            document.getElementById("country-text").textContent = data.country || 'Philippines';
-            document.getElementById("city-text").textContent = data.city || 'Cebu';
-            document.getElementById("postal-code-text").textContent = data.postal_code || '6000';
 
-            // Fill input fields
-            document.getElementById("first-name-input").value = data.first_name || '';
-            document.getElementById("last-name-input").value = data.last_name || '';
-            document.getElementById("email-input").value = data.email || '';
-            document.getElementById("dob-input").value = data.dateofbirth || '';
-            document.getElementById("phone-input").value = data.contact_number || '';
-            
-            // Fill address input fields
-            document.getElementById("address-input").value = data.address || '';
-            document.getElementById("country-input").value = data.country || 'Philippines';
-            document.getElementById("city-input").value = data.city || 'Cebu';
-            document.getElementById("postal-code-input").value = data.postal_code || '6000';
-
-            // Update sidebar and summary
-            document.getElementById("sidebar-first-name").textContent = data.first_name || '';
-            document.getElementById("sidebar-last-name").textContent = data.last_name || '';
-            document.getElementById("summary-username").textContent = `${data.first_name || ''} ${data.last_name || ''}`;
-            document.getElementById("summary-address").textContent = `${data.country || 'Philippines'}, ${data.city || 'Cebu'} ${data.postal_code || '6000'}`;
-          } else {
-            alert("Failed to load user data: " + data.message);
-          }
-        })
-        .catch((error) => {
-          console.error("Error loading user data:", error);
-          alert("Error loading user data. Please try again.");
-        });
-    });
-  </script>
   
+  // Load user data
+  window.addEventListener("DOMContentLoaded", function () {
+    if (!userId) {
+      alert("Please log in to view your profile.");
+      return (window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html");
+    }
+
+    fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success) return alert("Failed to load user data: " + data.message);
+
+        const dobDisplay = data.dateofbirth
+          ? (() => {
+              const d = new Date(data.dateofbirth);
+              return `${(d.getMonth() + 1).toString().padStart(2, '0')} - ${d.getDate().toString().padStart(2, '0')} - ${d.getFullYear()}`;
+            })()
+          : '';
+
+        document.getElementById("first-name-text").textContent = data.first_name || '';
+        document.getElementById("last-name-text").textContent = data.last_name || '';
+        document.getElementById("summary-username").textContent = `${data.first_name} ${data.last_name}`;
+        document.getElementById("email-text").textContent = data.email || '';
+        document.getElementById("dob-text").textContent = dobDisplay || '';
+        document.getElementById("phone-text").textContent = data.contact_number || '';
+        document.getElementById("address-text").textContent = data.address || 'Not provided';
+        document.getElementById("country-text").textContent = data.country || 'Philippines';
+        document.getElementById("city-text").textContent = data.city || 'Cebu';
+        document.getElementById("postal-code-text").textContent = data.postal_code || '6000';
+
+        document.getElementById("first-name-input").value = data.first_name || '';
+        document.getElementById("last-name-input").value = data.last_name || '';
+        document.getElementById("email-input").value = data.email || '';
+        document.getElementById("dob-input").value = data.dateofbirth || '';
+        document.getElementById("phone-input").value = data.contact_number || '';
+        document.getElementById("address-input").value = data.address || '';
+        document.getElementById("country-input").value = data.country || 'Philippines';
+        document.getElementById("city-input").value = data.city || 'Cebu';
+        document.getElementById("postal-code-input").value = data.postal_code || '6000';
+
+        document.getElementById("sidebar-first-name").textContent = data.first_name || '';
+        document.getElementById("sidebar-last-name").textContent = data.last_name || '';
+        document.getElementById("summary-username").textContent = `${data.first_name || ''} ${data.last_name || ''}`;
+        document.getElementById("summary-address").textContent = `${data.country || 'Philippines'}, ${data.city || 'Cebu'} ${data.postal_code || '6000'}`;
+      });
+      
+  loadPreviousOrders(userId);
+  });
+</script>
+
 </body>
 </html>

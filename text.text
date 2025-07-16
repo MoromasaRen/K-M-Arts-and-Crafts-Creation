@@ -1,0 +1,73 @@
+
+
+
+SEE the dashboard html?
+there's a total of 6 things I need you to help me with for now
+
+These are the 
+1. New Orders 
+- where displays latest orders by users in a day. resets to zero every
+time its set to a new day. 
+2. Pending Orders
+- Dislpays number count of orders where pending 
+3. Scheduled Deliveries
+Displays # of deliveries where status = 'scheduled'
+4. Deliveries in Transit
+- select COUNT(*) from deliveries where status = "in_transit"
+5. Inventory Status
+Displays majority of status in inventory
+
+6. Completed Orders
+- SELECT COUNT(*) FROM ORDERS WHERE ORDER_status = 'completed';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+___________________________
+
+
+
+COMPLETED 
+- 1. PROFILE USER
+personal information save button
+
+
+
+
+
+
+
+PROBLEM SA 
+
+-1.2 add My Oders (which shows)
+Current Orders 
+
+previous orders filter by delivery status
+
+
+2. Dashboard
+- make it functional
+
+
+3. Staff Deliveries
+
+- edit schedule problem
+- and make the delete work
+
+
+
+
+
+
+
