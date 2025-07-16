@@ -77,10 +77,18 @@
                 class="w-full border border-gray-400 rounded px-4 py-2 text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#1c2f4a]"/>
         </div>
         <!-- Price Details -->
-        <div class="flex justify-between font-bold text-base">
-          <span>Total Amount</span>
-          <span id="total-amount">₱0.00</span>
-        </div>
+        <!-- Total Summary Card -->
+            <div class="bg-white border border-gray-300 rounded-lg p-4 shadow">
+              <h2 class="font-semibold text-[#1c2f4a] mb-4 text-base">Cart Summary</h2>
+              <div class="flex justify-between mb-2">
+                <span class="font-semibold">Total Items:</span>
+                <span id="item-count" class="text-[#1c2f4a] font-bold">0 items</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="font-semibold">Total Price:</span>
+                <span id="total-amount" class="text-[#1c2f4a] font-bold">₱0.00</span>
+              </div>
+            </div>
           <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.html">
             <button class="mt-4 w-full bg-white border border-gray-400 rounded py-2 font-bold text-[#1c2f4a] hover:bg-[#c6d9f7] transition">NEXT</button>
           </a>
@@ -181,6 +189,7 @@
 
     itemCountSpan.textContent = totalItems + " item" + (totalItems !== 1 ? "s" : "");
     totalAmountSpan.textContent = "₱" + totalPrice.toFixed(2);
+    localStorage.setItem("totalPrice", totalPrice.toFixed(2));
   }
 
   function removeItem(index) {
@@ -208,7 +217,6 @@
 
   // Load the cart on page load
   loadCart();
-
 
 
 </script>

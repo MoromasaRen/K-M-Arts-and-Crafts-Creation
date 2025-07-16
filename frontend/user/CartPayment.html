@@ -83,7 +83,7 @@
       <hr class="my-2"/>
       <div class="flex justify-between font-bold text-base mb-4">
         <span>Total:</span>
-        <span>₱100</span>
+        <span id="payment-total">₱0.00</span>
       </div>
       <div class="flex justify-between mt-2">
         <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.html" class="bg-gray-300 text-[#1f3a5f] font-semibold py-2 px-6 rounded hover:bg-gray-400 transition duration-300 ease-in-out">Back</a>
@@ -148,6 +148,8 @@
         `;
       }
     
+      const total = localStorage.getItem("totalPrice") || "0.00";
+    document.getElementById("payment-total").textContent = `₱${total}`;
     
     
     </script>
