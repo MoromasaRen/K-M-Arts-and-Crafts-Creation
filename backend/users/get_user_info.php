@@ -9,7 +9,7 @@ if (!$userId) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT first_name, last_name FROM users WHERE user_id = ?");
+$stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
 $stmt->execute([$userId]);
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -19,6 +19,12 @@ if ($user) {
         'success' => true,
         'first_name' => $user['first_name'],
         'last_name' => $user['last_name']
+        'email' => $user['email']
+        'user_type' => $user['user_type']
+        'last_name' => $user['last_name']
+        'last_name' => $user['last_name']
+
+        
     ]);
 } else {
     echo json_encode(['success' => false, 'message' => 'User not found']);
