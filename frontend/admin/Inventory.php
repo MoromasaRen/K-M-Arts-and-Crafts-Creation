@@ -1,20 +1,20 @@
 <?php
-require_once '../../backend/config/database.php';
+require_once '../../backend/products/fetch_products.php';
 
-$statusFilter = $_GET['status'] ?? ''; // Check for status in the URL
+$searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
+$statusFilter = isset($_GET['status']) ? trim($_GET['status']) : '';
+$sortOrder = isset($_GET['sort']) ? trim($_GET['sort']) : 'asc';
 
-try {
-    if ($statusFilter && in_array($statusFilter, ['in stock', 'low stock', 'no stock'])) {
-        $stmt = $pdo->prepare("SELECT * FROM products WHERE status = :status");
-        $stmt->execute(['status' => $statusFilter]);
-    } else {
-        $stmt = $pdo->query("SELECT * FROM products");
-    }
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "❌ Error fetching products: " . $e->getMessage();
-    $products = [];
-}
+$page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int) $_GET['page'] : 1;
+$limit = 10; // items per page
+$offset = ($page - 1) * $limit;
+
+// Get total count of matching products for pagination
+$totalProducts = fetchProductsCount($searchTerm, $statusFilter);
+$totalPages = ceil($totalProducts / $limit);
+
+// Fetch paginated products
+$products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offset);
 ?>
 
 <!DOCTYPE html>
@@ -39,22 +39,19 @@ try {
     </div>
     <div class="flex items-center space-x-4 mb-4">
       <img alt="User profile" class="w-20 h-20 rounded-full" src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg" />
-      
-       <!-- update here -->
-        <div class="text-lg font-bold leading-tight">
-            <p id="admin-role" class="text-[#0f2e4d]">Admin</p>
-            <p id="admin-name" class="text-[#0f2e4d]">Username</p>
-          <div class="flex items-center space-x-1 text-xs font-normal">
-            <span class="w-3 h-3 rounded-full bg-lime-500 inline-block"></span>
-            <span class="text-[#0f2e4d]">Status: <span class="font-normal">Online</span></span>
-          </div>
+      <div class="text-lg font-bold leading-tight">
+        <p id="admin-role" class="text-[#0f2e4d]">Admin</p>
+        <p id="admin-name" class="text-[#0f2e4d]">Username</p>
+        <div class="flex items-center space-x-1 text-xs font-normal">
+          <span class="w-3 h-3 rounded-full bg-lime-500 inline-block"></span>
+          <span class="text-[#0f2e4d]">Status: <span class="font-normal">Online</span></span>
         </div>
+      </div>
     </div>
     <hr class="border-gray-500 mb-6" />
 
-
     <nav class="flex flex-col space-y-3 text-lg font-bold text-[#0f2e4d] tracking-wide">
-                  <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
+      <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
       <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Dashboard.html">Dashboard</a>
       <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Order.php">Orders</a>
       <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Delivery.html">Deliveries</a>
@@ -65,24 +62,72 @@ try {
 
   <main class="flex-1 p-6 relative">
     <div class="flex items-center mb-4 text-[#0f2e4d]">
+      <button aria-label="Menu" class="text-2xl mr-3">
+        <i class="fas fa-bars"></i>
+      </button>
       <h2 class="font-extrabold text-lg border-b border-[#0f2e4d] pb-1">Inventory</h2>
     </div>
-    <div class="mb-4">
-  <span class="text-[#0f2e4d] font-semibold mr-2">Filter by Status:</span>
-  <a href="Inventory.php" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm font-medium">All</a>
-  <a href="Inventory.php?status=in%20stock" class="bg-green-200 hover:bg-green-300 px-3 py-1 rounded text-sm font-medium">In Stock</a>
-  <a href="Inventory.php?status=low%20stock" class="bg-yellow-200 hover:bg-yellow-300 px-3 py-1 rounded text-sm font-medium">Low Stock</a>
-  <a href="Inventory.php?status=no%20stock" class="bg-red-200 hover:bg-red-300 px-3 py-1 rounded text-sm font-medium">No Stock</a>
-</div>
+    
+    <div class="mb-4 flex items-center space-x-4">
+    <form method="GET" action="Inventory.php" class="flex items-center space-x-2 flex-grow">
+  <input
+    type="text"
+    name="search"
+    placeholder="Search by product name..."
+    value="<?= htmlspecialchars($searchTerm) ?>"
+    class="px-3 py-1 rounded border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 flex-grow"
+  />
+  
+  <!-- Status Filter Dropdown -->
+  <select name="status" class="px-3 py-1 rounded border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+    <option value="" <?= $statusFilter === '' ? 'selected' : '' ?>>All Status</option>
+    <option value="In Stock" <?= $statusFilter === 'In Stock' ? 'selected' : '' ?>>In Stock</option>
+    <option value="Low Stock" <?= $statusFilter === 'Low Stock' ? 'selected' : '' ?>>Low Stock</option>
+    <option value="No Stock" <?= $statusFilter === 'No Stock' ? 'selected' : '' ?>>No Stock</option>
+  </select>
+
+  <input type="hidden" name="sort" value="<?= htmlspecialchars($sortOrder) ?>" />
+  
+  <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">Search</button>
+</form>
+
+      <div class="flex space-x-2 text-sm font-semibold text-[#0f2e4d]">
+        <span>Sort by Price:</span>
+        <a
+          href="Inventory.php?<?= http_build_query(['search' => $searchTerm, 'status' => $statusFilter, 'sort' => 'asc']) ?>"
+          class="px-3 py-1 rounded <?= $sortOrder === 'asc' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300' ?>"
+        >
+          Asc
+        </a>
+        <a
+          href="Inventory.php?<?= http_build_query(['search' => $searchTerm, 'status' => $statusFilter, 'sort' => 'desc']) ?>"
+          class="px-3 py-1 rounded <?= $sortOrder === 'desc' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300' ?>"
+        >
+          Desc
+        </a>
+      </div>
+    </div>
+
     <table class="w-full bg-white rounded-md shadow-md text-sm text-[#0f2e4d] border-separate border-spacing-1 mt-6">
-    <thead>
-  <tr>
-    <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Product ID</th>
-    <th class="text-left font-extrabold px-2 py-1">Product Name</th>
-    <th class="text-left font-extrabold px-2 py-1">Status</th>
-    <th class="text-left font-extrabold px-2 py-1">Price</th>
-    <th class="text-left font-extrabold px-2 py-1">Description</th>
-</thead>
+      <thead>
+        <tr>
+          <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Product ID</th>
+          <th class="text-left font-extrabold px-2 py-1">Product Name</th>
+          <th class="text-left font-extrabold px-2 py-1">Status</th>
+          <th class="text-left font-extrabold px-2 py-1">
+            <a href="Inventory.php?<?= http_build_query(['search' => $searchTerm, 'status' => $statusFilter, 'sort' => $sortOrder === 'asc' ? 'desc' : 'asc']) ?>"
+              class="inline-flex items-center space-x-1 hover:underline">
+              <span>Price</span>
+              <?php if ($sortOrder === 'asc'): ?>
+                <i class="fas fa-arrow-up text-xs"></i>
+              <?php elseif ($sortOrder === 'desc'): ?>
+                <i class="fas fa-arrow-down text-xs"></i>
+              <?php endif; ?>
+            </a>
+          </th>
+          <th class="text-left font-extrabold px-2 py-1 rounded-tr-md">Description</th>
+        </tr>
+      </thead>
 
       <tbody>
         <?php if (!empty($products)) : ?>
@@ -93,32 +138,30 @@ try {
               <td class="px-2 py-1"><?= htmlspecialchars($product['status']) ?></td>
               <td class="px-2 py-1"><?= htmlspecialchars($product['base_price']) ?></td>
               <td class="px-2 py-1"><?= htmlspecialchars($product['product_description']) ?></td>
-              <td class="px-2 py-1">
               <td class="px-4 py-2 text-right align-middle">
-  <div class="inline-flex gap-2 items-center justify-end">
-    <button
-      class="editBtn text-blue-600 hover:underline text-xs font-semibold"
-      data-id="<?= htmlspecialchars($product['product_id']) ?>"
-      data-name="<?= htmlspecialchars($product['product_name']) ?>"
-      data-status="<?= htmlspecialchars($product['status']) ?>"
-      data-price="<?= htmlspecialchars($product['base_price']) ?>"
-      data-description="<?= htmlspecialchars($product['product_description']) ?>"
-    >
-      Edit
-    </button>
+                <div class="inline-flex gap-2 items-center justify-end">
+                  <button
+                    class="editBtn text-blue-600 hover:underline text-xs font-semibold"
+                    data-id="<?= htmlspecialchars($product['product_id']) ?>"
+                    data-name="<?= htmlspecialchars($product['product_name']) ?>"
+                    data-status="<?= htmlspecialchars($product['status']) ?>"
+                    data-price="<?= htmlspecialchars($product['base_price']) ?>"
+                    data-description="<?= htmlspecialchars($product['product_description']) ?>"
+                  >
+                    Edit
+                  </button>
 
-    <form
-      method="POST"
-      action="/K-M-Arts-and-Crafts-Creation/backend/products/delete_product.php"
-      class="inline"
-      onsubmit="return confirm('Are you sure you want to delete this product?');"
-    >
-      <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']) ?>" />
-      <button type="submit" class="text-red-600 hover:underline text-xs font-semibold">Delete</button>
-    </form>
-  </div>
-</td>
-
+                  <form
+                    method="POST"
+                    action="/K-M-Arts-and-Crafts-Creation/backend/products/delete_product.php"
+                    class="inline"
+                    onsubmit="return confirm('Are you sure you want to delete this product?');"
+                  >
+                    <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']) ?>" />
+                    <button type="submit" class="text-red-600 hover:underline text-xs font-semibold">Delete</button>
+                  </form>
+                </div>
+              </td>
             </tr>
           <?php endforeach; ?>
         <?php else : ?>
@@ -126,7 +169,7 @@ try {
         <?php endif; ?>
       </tbody>
     </table>
-
+    
     <div class="fixed bottom-4 left-[375px] z-50">
       <button id="editFormBtn" class="bg-lime-500 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create Product</button>
     </div>
@@ -208,44 +251,28 @@ try {
         }
       });
 
+      window.addEventListener("DOMContentLoaded", function () {
+        const userId = localStorage.getItem("user_id");
 
-
-
-
-
-
-
-
-
-
-
-
-
-  window.addEventListener("DOMContentLoaded", function () {
-    const userId = localStorage.getItem("user_id");
-
-    if (!userId) {
-      document.getElementById("admin-role").textContent = "";
-      document.getElementById("admin-name").textContent = "";
-      return;
-    }
-
-    fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          document.getElementById("admin-role").textContent = data.first_name;
-          document.getElementById("admin-name").textContent = data.last_name;
-        } else {
+        if (!userId) {
           document.getElementById("admin-role").textContent = "";
           document.getElementById("admin-name").textContent = "";
+          return;
         }
-      })
-      .catch(() => {
-        document.getElementById("admin-role").textContent = "Error";
-        document.getElementById("admin-name").textContent = "Name";
+
+        fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              document.getElementById("admin-role").textContent = data.first_name;
+              document.getElementById("admin-name").textContent = data.last_name;
+            }
+          })
+          .catch(() => {
+            document.getElementById("admin-role").textContent = "";
+            document.getElementById("admin-name").textContent = "";
+          });
       });
-  });
     </script>
   </main>
 </body>
