@@ -76,8 +76,9 @@
      <tr class="border-t border-gray-200 h-10"></tr>
      <tr class="border-t border-gray-200 h-10"></tr>
     </tbody>
+    
    </table>
-
+<div id="paginationControls" class="mt-4 flex justify-center space-x-2 text-[#0f2e4d]"></div>
    <div class="fixed bottom-4 left-[375px] z-50">
     <button id="editFormBtn" class="bg-blue-500 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">
       Edit
@@ -152,19 +153,22 @@
     });
   });
 
-  
-function loadDeliveries() {
-  fetch('/K-M-Arts-and-Crafts-Creation/backend/deliveries/get_deliveries.php')
+let currentPage = 1;
+const limit = 15;
+
+function loadDeliveries(page = 1) {
+  const offset = (page - 1) * limit;
+
+  fetch(`/K-M-Arts-and-Crafts-Creation/backend/deliveries/get_deliveries.php?limit=${limit}&offset=${offset}`)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
         const tbody = document.querySelector('tbody');
-        tbody.innerHTML = ''; // Clear default rows
+        tbody.innerHTML = '';
 
         data.data.forEach(delivery => {
           const row = document.createElement('tr');
           row.classList.add('border-t', 'border-gray-200', 'h-10');
-
           row.innerHTML = `
             <td class="px-2 py-1">${delivery.delivery_id}</td>
             <td class="px-2 py-1">${delivery.order_id}</td>
@@ -177,6 +181,8 @@ function loadDeliveries() {
           `;
           tbody.appendChild(row);
         });
+
+        renderPagination(data.total, page);
       } else {
         alert("Failed to load deliveries.");
       }
@@ -186,8 +192,39 @@ function loadDeliveries() {
     });
 }
 
-// Call it when the page loads
-document.addEventListener("DOMContentLoaded", loadDeliveries);
+function renderPagination(total, currentPage) {
+  const totalPages = Math.ceil(total / limit);
+  const paginationContainer = document.getElementById('paginationControls');
+  paginationContainer.innerHTML = '';
+
+  if (currentPage > 1) {
+    const prev = document.createElement('button');
+    prev.className = 'px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600';
+    prev.innerText = 'Previous';
+    prev.onclick = () => loadDeliveries(currentPage - 1);
+    paginationContainer.appendChild(prev);
+  }
+
+  for (let i = 1; i <= totalPages; i++) {
+    const pageBtn = document.createElement('button');
+    pageBtn.innerText = i;
+    pageBtn.className = `px-3 py-1 rounded ${i === currentPage ? 'bg-blue-700 text-white' : 'bg-blue-100 hover:bg-blue-200'}`;
+    pageBtn.onclick = () => loadDeliveries(i);
+    paginationContainer.appendChild(pageBtn);
+  }
+
+  if (currentPage < totalPages) {
+    const next = document.createElement('button');
+    next.className = 'px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600';
+    next.innerText = 'Next';
+    next.onclick = () => loadDeliveries(currentPage + 1);
+    paginationContainer.appendChild(next);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadDeliveries(currentPage);
+});
 
 
 

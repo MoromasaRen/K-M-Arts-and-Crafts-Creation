@@ -127,12 +127,12 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
         <?php if (!empty($products)) : ?>
           <?php foreach ($products as $product) : ?>
             <tr class="border-t border-gray-200 h-10">
-              <td class="px-2 py-1"><?= htmlspecialchars($product['product_id']) ?></td>
+             <td class="px-2 py-1"><?= htmlspecialchars($product['product_id']) ?></td>
               <td class="px-2 py-1"><?= htmlspecialchars($product['product_name']) ?></td>
               <td class="px-2 py-1"><?= htmlspecialchars($product['status']) ?></td>
               <td class="px-2 py-1"><?= htmlspecialchars($product['base_price']) ?></td>
               <td class="px-2 py-1"><?= htmlspecialchars($product['product_description']) ?></td>
-              <td class="px-4 py-2 text-right align-middle">
+               <td class="px-4 py-2 text-right align-middle">
                 <div class="inline-flex gap-2 items-center justify-end">
                   <button
                     class="editBtn text-blue-600 hover:underline text-xs font-semibold"

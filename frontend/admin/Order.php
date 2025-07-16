@@ -179,6 +179,10 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
   <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" class="px-3 py-2 border rounded-md">
   <input type="date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" class="px-3 py-2 border rounded-md">
   <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Filter</button>
+  <!-- Clear Filters Button -->
+  <a href="Order.php" class="px-3 py-2 bg-gray-300 hover:bg-gray-400 text-[#0f2e4d] text-sm font-semibold rounded">
+    Clear Filters
+  </a>
 </form>
 
 
@@ -202,8 +206,22 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
             <td class="px-2 py-1"><?= htmlspecialchars($order['order_date']) ?></td>
             <td class="px-2 py-1">₱<?= number_format($order['total_amount'], 2) ?></td>
             <td class="px-2 py-1 capitalize"><?= htmlspecialchars($order['status']) ?></td>
-            <td class="px-2 py-1 text-center">
-              <button class="text-blue-600 hover:underline text-xs">Edit</button>
+<td class="px-2 py-1 text-center space-x-2">
+<button 
+  class="text-blue-600 hover:underline text-xs edit-btn" 
+  data-id="<?= $order['order_id'] ?>"
+  data-userid="<?= htmlspecialchars($order['user_id']) ?>"
+  data-details="<?= htmlspecialchars($order['order_details']) ?>"
+  data-date="<?= htmlspecialchars($order['order_date']) ?>"
+  data-amount="<?= $order['total_amount'] ?>"
+  data-status="<?= htmlspecialchars($order['status']) ?>"
+>Edit</button>
+  <button 
+    class="text-red-600 hover:underline text-xs delete-btn" 
+    data-id="<?= $order['order_id'] ?>">
+    Delete
+  </button>
+</td>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -214,6 +232,52 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
       <?php endif; ?>
     </tbody>
   </table>
+  
+<!-- Edit Order Modal -->
+<div id="manageOrderModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+  <form id="orderForm" action="../../backend/orders/update_order.php" method="POST" class="bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[360px] relative">
+    <button id="closeOrderModalBtn" type="button" class="absolute top-2 right-2 text-[#0f2e4d] text-xl font-bold">&times;</button>
+    <h3 id="modalOrderTitle" class="bg-[#a9c5ff] rounded-md px-3 py-1 font-extrabold text-[15px] mb-4 inline-block">Edit Order</h3>
+
+    <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
+      <input type="hidden" name="order_id" id="order_id" />
+
+      <label class="flex flex-col gap-1 col-span-2">
+        User ID
+        <input name="user_id" id="user_id" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="text" required />
+      </label>
+
+      <label class="flex flex-col gap-1 col-span-2">
+        Order Details
+        <textarea name="order_details" id="order_details" class="rounded-md border px-2 py-1 text-[13px] font-normal w-full" rows="2" required></textarea>
+      </label>
+
+      <label class="flex flex-col gap-1 col-span-2">
+        Order Date
+        <input name="order_date" id="order_date" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="datetime-local" required />
+      </label>
+
+      <label class="flex flex-col gap-1">
+        Total
+        <input name="total_amount" id="total_amount" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="number" step="0.01" required />
+      </label>
+
+      <label class="flex flex-col gap-1">
+        Status
+        <select name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal">
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="completed">Completed</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="mt-4 text-center space-x-3">
+      <button type="submit" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Save</button>
+    </div>
+  </form>
+</div>
+
 
 <!-- Pagination Controls -->
 <div class="mt-4 flex justify-center space-x-2 text-[#0f2e4d]">
@@ -252,6 +316,76 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
 </main>
 
 <script>
+
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const orderId = this.dataset.id;
+
+      if (confirm(`Are you sure you want to delete order #${orderId}?`)) {
+        fetch('../../backend/orders/delete_order.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `order_id=${encodeURIComponent(orderId)}`
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert("Order deleted successfully.");
+            location.reload();
+          } else {
+            alert("Failed to delete order: " + data.error);
+          }
+        })
+        .catch(() => alert("Error deleting order."));
+      }
+    });
+  });
+  // Order Modal logic
+const orderModal = document.getElementById("manageOrderModal");
+const orderForm = document.getElementById("orderForm");
+const closeOrderModalBtn = document.getElementById("closeOrderModalBtn");
+
+document.querySelectorAll(".edit-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("order_id").value = btn.dataset.id;
+    document.getElementById("user_id").value = btn.dataset.userid;
+    document.getElementById("order_details").value = btn.dataset.details;
+    const dateOnly = btn.dataset.date.split(':').slice(0, 2).join(':'); // removes seconds
+document.getElementById("order_date").value = dateOnly.replace(" ", "T");
+    document.getElementById("total_amount").value = btn.dataset.amount;
+    document.getElementById("status").value = btn.dataset.status;
+
+    orderModal.classList.remove("hidden");
+  });
+});
+
+closeOrderModalBtn.addEventListener("click", () => {
+  orderModal.classList.add("hidden");
+});
+
+// Handle update via fetch
+orderForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const formData = new FormData(orderForm);
+
+  fetch(orderForm.action, {
+    method: "POST",
+    body: new URLSearchParams(formData),
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Order updated successfully!");
+        location.reload();
+      } else {
+        alert("Failed to update order: " + data.error);
+      }
+    })
+    .catch(() => alert("Error updating order."));
+});
+
   window.addEventListener("DOMContentLoaded", function () {
     const userId = localStorage.getItem("user_id");
 
@@ -260,6 +394,7 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
       document.getElementById("admin-name").textContent = "";
       return;
     }
+
 
     fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
       .then((response) => response.json())
