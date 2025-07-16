@@ -9,7 +9,7 @@ CREATE TABLE users (
     email VARCHAR(100) UNIQUE,
     user_type ENUM('staff', 'user') NOT NULL,
     password VARCHAR(255),
-    contact_number VARCHAR(20)
+    contact_number VARCHAR(20),
     dateofbirth DATE
 );
 
@@ -72,29 +72,30 @@ INSERT INTO products (product_name, product_description, base_price, product_qua
 ('6R2 White', '6 roses white cello v2', 610, 200, 'in stock'),
 ('7R Green', '8 roses green cello', 500, 200, 'in stock');
 
--- Insert Users
-INSERT INTO users (first_name, last_name, email, user_type, password, contact_number) VALUES
-('Admin', 'Moromasa', 'test1@example.com', 'staff', 'password123', '09170000001'),
-('Test1', 'User', 'test1@example.com', 'user', 'password123', '09170000001'),
-('Test2', 'User', 'test2@example.com', 'user', 'password123', '09170000002'),
-('Test3', 'User', 'test3@example.com', 'user', 'password123', '09170000003'),
-('Test4', 'User', 'test4@example.com', 'user', 'password123', '09170000004'),
-('Test5', 'User', 'test5@example.com', 'user', 'password123', '09170000005'),
-('Test6', 'User', 'test6@example.com', 'user', 'password123', '09170000006'),
-('Test7', 'User', 'test7@example.com', 'user', 'password123', '09170000007'),
-('Test8', 'User', 'test8@example.com', 'user', 'password123', '09170000008'),
-('Test9', 'User', 'test9@example.com', 'user', 'password123', '09170000009'),
-('Test10', 'User', 'test10@example.com', 'user', 'password123', '09170000010'),
-('Test11', 'User', 'test11@example.com', 'user', 'password123', '09170000011'),
-('Test12', 'User', 'test12@example.com', 'user', 'password123', '09170000012'),
-('Test13', 'User', 'test13@example.com', 'user', 'password123', '09170000013'),
-('Test14', 'User', 'test14@example.com', 'user', 'password123', '09170000014'),
-('Test15', 'User', 'test15@example.com', 'user', 'password123', '09170000015'),
-('Test16', 'User', 'test16@example.com', 'user', 'password123', '09170000016'),
-('Test17', 'User', 'test17@example.com', 'user', 'password123', '09170000017'),
-('Test18', 'User', 'test18@example.com', 'user', 'password123', '09170000018'),
-('Test19', 'User', 'test19@example.com', 'user', 'password123', '09170000019'),
-('Test20', 'User', 'test20@example.com', 'user', 'password123', '09170000020');
+
+-- insert users
+INSERT INTO users (first_name, last_name, email, user_type, password, contact_number, dateofbirth) VALUES
+('Admin', 'Moromasa', 'admin@gmail.com', 'staff', '12345', NULL, NULL),
+('Test1', 'User', 'test1@example.com', 'user', 'password123', NULL, NULL),
+('Test2', 'User', 'test2@example.com', 'user', 'password123', NULL, NULL),
+('Test3', 'User', 'test3@example.com', 'user', 'password123', NULL, NULL),
+('Test4', 'User', 'test4@example.com', 'user', 'password123', NULL, NULL),
+('Test5', 'User', 'test5@example.com', 'user', 'password123', NULL, NULL),
+('Test6', 'User', 'test6@example.com', 'user', 'password123', NULL, NULL),
+('Test7', 'User', 'test7@example.com', 'user', 'password123', NULL, NULL),
+('Test8', 'User', 'test8@example.com', 'user', 'password123', NULL, NULL),
+('Test9', 'User', 'test9@example.com', 'user', 'password123', NULL, NULL),
+('Test10', 'User', 'test10@example.com', 'user', 'password123', NULL, NULL),
+('Test11', 'User', 'test11@example.com', 'user', 'password123', NULL, NULL),
+('Test12', 'User', 'test12@example.com', 'user', 'password123', NULL, NULL),
+('Test13', 'User', 'test13@example.com', 'user', 'password123', NULL, NULL),
+('Test14', 'User', 'test14@example.com', 'user', 'password123', NULL, NULL),
+('Test15', 'User', 'test15@example.com', 'user', 'password123', NULL, NULL),
+('Test16', 'User', 'test16@example.com', 'user', 'password123', NULL, NULL),
+('Test17', 'User', 'test17@example.com', 'user', 'password123', NULL, NULL),
+('Test18', 'User', 'test18@example.com', 'user', 'password123', NULL, NULL),
+('Test19', 'User', 'test19@example.com', 'user', 'password123', NULL, NULL),
+('Test20', 'User', 'test20@example.com', 'user', 'password123', NULL, NULL);
 
 
 INSERT INTO orders (user_id, order_details, total_amount, status) VALUES
