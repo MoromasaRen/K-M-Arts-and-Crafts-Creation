@@ -10,7 +10,11 @@ CREATE TABLE users (
     user_type ENUM('staff', 'user') NOT NULL,
     password VARCHAR(255),
     contact_number VARCHAR(20),
-    dateofbirth DATE
+    dateofbirth DATE,
+    address TEXT DEFAULT NULL,
+    country VARCHAR(100) DEFAULT NULL,
+    city VARCHAR(100) DEFAULT NULL,
+    postal_code VARCHAR(20) DEFAULT NULL
 );
 
 -- PRODUCTS TABLE
