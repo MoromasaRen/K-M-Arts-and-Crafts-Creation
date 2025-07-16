@@ -3,7 +3,7 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>Deliveries</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <style>
    @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
@@ -36,8 +36,8 @@
       <nav class="flex flex-col space-y-3 text-lg font-bold text-[#0f2e4d] tracking-wide">
         <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
         <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"  href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Dashboard.html">Dashboard</a> <!-- current page -->
-        <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Order.html">Orders</a>
-        <a class="pl-4 py-1 px-2 rounded bg-blue-100" href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Delivery.html">Deliveries</a>
+        <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Order.php">Orders</a>
+        <a class="pl-4 py-1 px-2 rounded bg-blue-100" href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Delivery.php">Deliveries</a>
         <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Inventory.php">Inventory</a>
         <a class="mt-6 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Profile.html">Profile</a>
       </nav>
