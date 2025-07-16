@@ -16,7 +16,7 @@
   <header class="flex items-center justify-between p-4 sm:p-8 bg-white w-full">
     <!-- Logo (Aligned left) -->
     <div class="flex items-center">
-      <img src="/K-M-Arts-and-Crafts-Creationassets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain" />
+      <img src="/K-M-Arts-and-Crafts-Creation/assets/Logo.png" alt="KM Logo" class="w-[250px] h-auto object-contain" />
     </div>
 
     <!-- Navigation in the center -->
@@ -64,24 +64,43 @@
           <div>
             <p><strong>Laurenz Palanas</strong> | 09123455678</p>
             <p>25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila</p>
-            <p>Person: Angela Mae Dela Cruz</p>
           </div>
+          <button 
+              class="use-address border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition"
+              data-name="Laurenz Palanas"
+              data-phone="09123455678"
+              data-address="25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila"
+            >
+              Use address
+            </button>
         </div>
         <div class="address-book-item mb-4 p-4 border-b border-gray-300 last:border-b-0 flex justify-between items-start">
           <div>
             <p><strong>Ren Moromasa</strong> | 09123455678</p>
             <p>25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila</p>
-            <p>Person: Angela Mae Dela Cruz</p>
           </div>
-          <button class="border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition">Use address</button>
+         <button 
+              class="use-address border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition"
+              data-name="Ren Moromasa"
+              data-phone="09123455678"
+              data-address="25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila"
+            >
+              Use address
+            </button>
         </div>
         <div class="address-book-item mb-4 p-4 border-b border-gray-300 last:border-b-0 flex justify-between items-start">
           <div>
             <p><strong>Cedrick Lord Cuas</strong> | 09123455678</p>
             <p>25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila</p>
-            <p>Person: Angela Mae Dela Cruz</p>
           </div>
-          <button class="border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition">Use address</button>
+         <button 
+              class="use-address border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition"
+              data-name="Cedrick Lord Cuas"
+              data-phone="09123455678"
+              data-address="25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila"
+            >
+              Use address
+            </button>
         </div>
       </div>
     </section>
@@ -185,6 +204,66 @@ if (isLoggedIn) {
     </a>
   `;
 }
+
+
+
+ const addressButtons = document.querySelectorAll(".use-address");
+
+addressButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    const selectedAddress = {
+      name: button.getAttribute("data-name"),
+      phone: button.getAttribute("data-phone"),
+      address: button.getAttribute("data-address")
+    };
+
+    // Save to localStorage
+    localStorage.setItem("selectedAddress", JSON.stringify(selectedAddress));
+    alert("Address selected!");
+
+    // Hide all "Use address" buttons first
+    addressButtons.forEach(btn => btn.style.display = "inline-block"); // Show all first
+
+    // Then hide only the clicked one
+    button.style.display = "none";
+  });
+});
+
+
+// Check if there's a selected address in localStorage when page loads
+window.addEventListener("DOMContentLoaded", () => {
+  const selectedAddress = JSON.parse(localStorage.getItem("selectedAddress"));
+
+  if (selectedAddress) {
+    addressButtons.forEach(button => {
+      const name = button.getAttribute("data-name");
+      const phone = button.getAttribute("data-phone");
+      const address = button.getAttribute("data-address");
+
+      if (
+        selectedAddress.name === name &&
+        selectedAddress.phone === phone &&
+        selectedAddress.address === address
+      ) {
+        button.style.display = "none"; // Hide the button for the selected one
+      } else {
+        button.style.display = "inline-block"; // Show for others
+      }
+    });
+  } else {
+    // No address was selected yet, pick first one by default
+    const defaultBtn = addressButtons[0];
+    const defaultAddress = {
+      name: defaultBtn.getAttribute("data-name"),
+      phone: defaultBtn.getAttribute("data-phone"),
+      address: defaultBtn.getAttribute("data-address")
+    };
+
+    localStorage.setItem("selectedAddress", JSON.stringify(defaultAddress));
+    defaultBtn.style.display = "none";
+  }
+});
+
 </script>
 
 </html>
