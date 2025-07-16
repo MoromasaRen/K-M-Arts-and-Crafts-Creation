@@ -61,7 +61,7 @@ try {
     <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
     <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="Dashboard.html">Dashboard</a>
     <a class="pl-4 py-1 px-2 rounded bg-blue-100" href="Order.php">Orders</a>
-    <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="Delivery.html">Deliveries</a>
+    <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="Delivery.php">Deliveries</a>
     <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="Inventory.php">Inventory</a>
     <a class="mt-6 py-1 px-2 rounded hover:bg-blue-100 transition duration-150" href="Profile.html">Profile</a>
   </nav>
