@@ -202,8 +202,14 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
             <td class="px-2 py-1"><?= htmlspecialchars($order['order_date']) ?></td>
             <td class="px-2 py-1">₱<?= number_format($order['total_amount'], 2) ?></td>
             <td class="px-2 py-1 capitalize"><?= htmlspecialchars($order['status']) ?></td>
-            <td class="px-2 py-1 text-center">
-              <button class="text-blue-600 hover:underline text-xs">Edit</button>
+<td class="px-2 py-1 text-center space-x-2">
+  <button class="text-blue-600 hover:underline text-xs">Edit</button>
+  <button 
+    class="text-red-600 hover:underline text-xs delete-btn" 
+    data-id="<?= $order['order_id'] ?>">
+    Delete
+  </button>
+</td>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -214,6 +220,7 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
       <?php endif; ?>
     </tbody>
   </table>
+  
 
 <!-- Pagination Controls -->
 <div class="mt-4 flex justify-center space-x-2 text-[#0f2e4d]">
@@ -252,6 +259,33 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
 </main>
 
 <script>
+
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const orderId = this.dataset.id;
+
+      if (confirm(`Are you sure you want to delete order #${orderId}?`)) {
+        fetch('../../backend/orders/delete_order.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `order_id=${encodeURIComponent(orderId)}`
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert("Order deleted successfully.");
+            location.reload();
+          } else {
+            alert("Failed to delete order: " + data.error);
+          }
+        })
+        .catch(() => alert("Error deleting order."));
+      }
+    });
+  });
+  
   window.addEventListener("DOMContentLoaded", function () {
     const userId = localStorage.getItem("user_id");
 
