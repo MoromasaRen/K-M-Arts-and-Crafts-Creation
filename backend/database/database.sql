@@ -74,8 +74,35 @@ INSERT INTO products (product_name, product_description, base_price, product_qua
 ('6R Vio', '6 roses vio cello', 500, 200, 'in stock'),
 ('6R White', '6 roses white cello', 510, 200, 'in stock'),
 ('6R2 White', '6 roses white cello v2', 610, 200, 'in stock'),
-('7R Green', '8 roses green cello', 500, 200, 'in stock');
-
+('7R Green', '8 roses green cello', 550, 200, 'in stock'),
+('8R Blue', '8 roses blue cello', 550, 200, 'in stock'),
+('8R Sunrise', '8 roses sunrise arrangement', 989, 200, 'in stock'),
+('Baby Blooms', 'Small mixed bloom', 488, 200, 'in stock'),
+('Beige Lily', 'Beige lily flowers', 160, 200, 'in stock'),
+('Blue Fade', 'Faded blue floral arrangement', 245, 200, 'in stock'),
+('Blue Gerbera', 'Blue gerbera daisy', 165, 200, 'in stock'),
+('Blue Lily', 'Blue lily flower (single)', 185, 200, 'in stock'),
+('Blue Lily', 'Premium blue lily bouquet', 385, 200, 'in stock'),
+('Blue Star Garden', 'Blue floral star arrangement', 655, 200, 'in stock'),
+('Blue Tulip', 'Blue tulip', 155, 200, 'in stock'),
+('Blush Lily', 'Blush lily flower', 155, 200, 'in stock'),
+('Blush Star Garden', 'Blush-themed star garden', 655, 200, 'in stock'),
+('Blush Tulip', 'Blush pink tulip', 155, 200, 'in stock'),
+('Dark Lilac Lily', 'Dark lilac lily bouquet', 385, 200, 'in stock'),
+('Elegance Bloom', 'Elegant mixed bloom', 488, 200, 'in stock'),
+('Fade Pink Lily', 'Faded pink lily bouquet', 385, 200, 'in stock'),
+('Floral Mix', 'Mixed floral bouquet', 485, 200, 'in stock'),
+('Fortune Bloom', 'Fortune-themed floral bouquet', 500, 200, 'in stock'),
+('Grand Custom', 'Custom grand bouquet', 1199, 200, 'in stock'),
+('Grand Garden', 'Grand garden bouquet', 520, 200, 'in stock'),
+('Green Star Garden', 'Green-themed star garden', 655, 200, 'in stock'),
+('Lilac Blush', 'Lilac blush bouquet', 385, 200, 'in stock'),
+('Lilac Lily', 'Light lilac lily', 155, 200, 'in stock'),
+('Pink Garden', 'Pink-themed garden bouquet', 489, 200, 'in stock'),
+('PinVio', 'Pink and violet bouquet', 520, 200, 'in stock'),
+('Purple Star Garden', 'Purple star garden', 655, 200, 'in stock'),
+('Sunrise Sunflower', 'Sunflower with sunrise tones', 165, 200, 'in stock'),
+('Wild Garden', 'Wildflower bouquet', 489, 200, 'in stock');
 
 -- insert users
 INSERT INTO users (first_name, last_name, email, user_type, password, contact_number, dateofbirth) VALUES
