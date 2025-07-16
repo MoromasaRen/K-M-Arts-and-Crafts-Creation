@@ -19,7 +19,6 @@ Follow the steps below to set up the database for this project:
 2. In the address bar, type `localhost` and press **Enter**.
 3. Click on **phpMyAdmin** to open the MySQL admin interface.
 4. In the left sidebar, click **New** to create a new database.
-5. Enter the name `km_arts` database name and click **Create**.
 
 ---
 
