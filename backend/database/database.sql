@@ -75,7 +75,7 @@ INSERT INTO products (product_name, product_description, base_price, product_qua
 
 -- insert users
 INSERT INTO users (first_name, last_name, email, user_type, password, contact_number, dateofbirth) VALUES
-('Admin', 'Moromasa', 'admin@gmail.com', 'staff', '12345', NULL, NULL),
+('Admin', 'Moromasa', 'admin@gmail.com', 'staff', '$2y$10$4xh6K4/O6FEELTHRwfqTCuwKxuNgI7JoLM7wSgpG3q3HQRXWzG6ny', NULL, NULL),
 ('Test1', 'User', 'test1@example.com', 'user', 'password123', NULL, NULL),
 ('Test2', 'User', 'test2@example.com', 'user', 'password123', NULL, NULL),
 ('Test3', 'User', 'test3@example.com', 'user', 'password123', NULL, NULL),
