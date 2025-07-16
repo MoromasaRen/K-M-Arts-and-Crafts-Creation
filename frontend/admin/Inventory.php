@@ -169,15 +169,31 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
         <?php endif; ?>
       </tbody>
     </table>
-    
+    <div class="mt-4 flex justify-center space-x-2 text-sm text-[#0f2e4d]">
+  <?php if ($page > 1): ?>
+    <a href="?<?= http_build_query(['search'=>$searchTerm, 'status'=>$statusFilter, 'sort'=>$sortOrder, 'page'=>$page-1]) ?>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Prev</a>
+  <?php endif; ?>
+
+  <?php for ($p = 1; $p <= $totalPages; $p++): ?>
+    <a href="?<?= http_build_query(['search'=>$searchTerm, 'status'=>$statusFilter, 'sort'=>$sortOrder, 'page'=>$p]) ?>"
+       class="px-3 py-1 rounded <?= $p === $page ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300' ?>">
+      <?= $p ?>
+    </a>
+  <?php endfor; ?>
+
+  <?php if ($page < $totalPages): ?>
+    <a href="?<?= http_build_query(['search'=>$searchTerm, 'status'=>$statusFilter, 'sort'=>$sortOrder, 'page'=>$page+1]) ?>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+  <?php endif; ?>
+</div>
     <div class="fixed bottom-4 left-[375px] z-50">
       <button id="editFormBtn" class="bg-lime-500 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Create Product</button>
     </div>
 
     <div id="manageModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+      
       <form action="/K-M-Arts-and-Crafts-Creation/backend/products/add_product.php" method="POST" class="bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[360px] relative">
         <button id="closeModalBtn" type="button" class="absolute top-2 right-2 text-[#0f2e4d] text-xl font-bold">&times;</button>
-        <h3 class="bg-[#a9c5ff] rounded-md px-3 py-1 font-extrabold text-[15px] mb-4 inline-block">Manage Inventory</h3>
+       <h3 id="modalTitle" class="bg-[#a9c5ff] rounded-md px-3 py-1 font-extrabold text-[15px] mb-4 inline-block">Manage Inventory</h3>
         <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
           <label class="flex flex-col gap-1">
             Product ID
@@ -188,9 +204,14 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
             <input name="product_name" id="product_name" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="text" required />
           </label>
           <label class="flex flex-col gap-1">
-            Status
-            <input name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="text" required />
-          </label>
+  Status
+  <select name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal" required>
+    <option value="">Select status</option>
+    <option value="In Stock">In Stock</option>
+    <option value="Low Stock">Low Stock</option>
+    <option value="No Stock">No Stock</option>
+  </select>
+</label>
           <label class="flex flex-col gap-1">
             Price
             <input name="base_price" id="base_price" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="number" step="0.01" required />
@@ -229,6 +250,11 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
             manageModal.classList.add("hidden");
           }
         });
+        manageModal.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    manageModal.classList.add("hidden");
+  }
+});
 
         document.querySelectorAll(".editBtn").forEach(button => {
           button.addEventListener("click", () => {
@@ -237,7 +263,7 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
             statusInput.value = button.dataset.status;
             basePriceInput.value = button.dataset.price;
             descriptionInput.value = button.dataset.description;
-
+            
             manageModal.classList.remove("hidden");
           });
         });
