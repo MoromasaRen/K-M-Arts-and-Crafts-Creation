@@ -9,6 +9,23 @@ if (!$userId) {
     exit;
 }
 
+$sql = "
+    SELECT 
+        o.Order_ID,
+        o.Order_Details,
+        o.Status AS order_status,
+        o.Total_Amount,
+        p.Amount_paid,
+        p.Mode_of_payment,
+        p.Payment_Status,
+        d.Delivery_Status
+    FROM Orders o
+    LEFT JOIN Payment p ON o.Order_ID = p.Order_ID
+    LEFT JOIN Delivery d ON o.Order_ID = d.Order_ID
+    WHERE o.User_ID = ?
+    ORDER BY o.Order_Date DESC
+";
+
 try {
     $stmt = $pdo->prepare("
         SELECT o.order_id, o.quantity, p.product_name, d.status AS delivery_status

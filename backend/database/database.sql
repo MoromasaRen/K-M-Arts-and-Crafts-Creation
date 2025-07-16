@@ -39,6 +39,18 @@ CREATE TABLE orders (
 );
 
 
+
+--Payment Table
+CREATE TABLE Payment (
+    Payment_ID INT(11) PRIMARY KEY AUTO_INCREMENT,
+    Order_ID INT(11),
+    Mode_of_payment ENUM('Cash On Delivery', 'To Be Implemented'),
+    Amount_paid DECIMAL(10, 2),
+    Payment_Status ENUM('Pending Payment', 'Completed Payment'),
+    FOREIGN KEY (Order_ID) REFERENCES Orders(Order_ID)
+);
+
+
 -- ORDER_ITEMS TABLE
 CREATE TABLE order_items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,

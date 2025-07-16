@@ -273,9 +273,8 @@
         <!-- Orders to Pay Card -->
         <div class="bg-white rounded-lg shadow-md p-6">
           <h3 class="font-semibold mb-2">Orders to Pay</h3>
-          <ul class="text-sm text-gray-700 space-y-2">
-            <li>Order #12348 - Pending Payment</li>
-            <li>Order #12349 - Pending Payment</li>
+          <ul id="orders-to-pay-list" class="text-sm text-gray-700 space-y-2">
+            <li>Loading...</li>
           </ul>
         </div>
       </div>
@@ -564,7 +563,68 @@
       });
       
   loadPreviousOrders(userId);
+  loadOrdersToPay(userId); // ← Add this line
   });
+
+  function loadPreviousOrders(userId) {
+  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_user_orders.php?user_id=${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      const previousList = document.getElementById("previous-orders-list");
+      previousList.innerHTML = "";
+
+      if (!data.success || !data.orders.length) {
+        previousList.innerHTML = "<li>No previous orders found.</li>";
+        return;
+      }
+
+      const completedOrders = data.orders.filter(order =>
+        order.Payment_Status === "Completed Payment"
+      );
+
+      if (completedOrders.length === 0) {
+        previousList.innerHTML = "<li>No completed orders.</li>";
+        return;
+      }
+
+      completedOrders.forEach(order => {
+        const li = document.createElement("li");
+        li.textContent = `You ordered ${order.Order_Details}. Payment: ${order.Payment_Status}. Delivery: ${order.Delivery_Status}`;
+        previousList.appendChild(li);
+      });
+    });
+}
+
+function loadOrdersToPay(userId) {
+  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_user_orders.php?user_id=${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      const pendingList = document.getElementById("orders-to-pay-list");
+      pendingList.innerHTML = "";
+
+      if (!data.success || !data.orders.length) {
+        pendingList.innerHTML = "<li>No orders to pay.</li>";
+        return;
+      }
+
+      const pendingOrders = data.orders.filter(order =>
+        order.Payment_Status === "Pending Payment" &&
+        (order.Delivery_Status === "In Transit" || order.Delivery_Status === "Scheduled")
+      );
+
+      if (pendingOrders.length === 0) {
+        pendingList.innerHTML = "<li>No pending orders.</li>";
+        return;
+      }
+
+      pendingOrders.forEach(order => {
+        const li = document.createElement("li");
+        li.textContent = `You ordered ${order.Order_Details}. Payment: ${order.Payment_Status}. Delivery: ${order.Delivery_Status}`;
+        pendingList.appendChild(li);
+      });
+    });
+}
+
 </script>
 
 </body>
