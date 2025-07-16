@@ -57,7 +57,7 @@ CREATE TABLE deliveries (
     scheduled_time DATETIME,
     actual_delivery_time DATETIME,
     delivery_status ENUM('scheduled', 'in_transit', 'delivered') DEFAULT 'scheduled',
-    courier_type VARCHAR(50),
+    courier_type ENUM('Move It', 'Maxim', 'Motor') DEFAULT 'Motor',
     plate_number VARCHAR(20),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
     FOREIGN KEY (staff_id) REFERENCES users(user_id)
@@ -128,103 +128,74 @@ INSERT INTO users (first_name, last_name, email, user_type, password, contact_nu
 ('Test20', 'User', 'test20@example.com', 'user', 'password123', NULL, NULL);
 
 
-INSERT INTO orders (user_id, order_details, total_amount, status) VALUES
--- User 1
-(1, '1DZ, 6R Black', 1509.00, 'confirmed'),
-(1, '6 Sunrise Bloom', 880.00, 'pending'),
-(1, '6R Green, 6R Vio', 1000.00, 'completed'),
 
--- User 2
-(2, '6 Sunrise 2', 880.00, 'confirmed'),
-(2, '1DZ', 999.00, 'pending'),
-(2, '7R Green', 500.00, 'completed'),
+// make sure there are relation to order, product, and delivery such that
 
--- User 3
-(3, '6R White', 510.00, 'confirmed'),
-(3, '6 Sunrise Bloom, 6R2 White', 1490.00, 'pending'),
-(3, '6R Vio', 500.00, 'completed'),
+Following Relations need to be added:
 
--- User 4
-(4, '6R Green', 500.00, 'confirmed'),
-(4, '1DZ', 999.00, 'pending'),
-(4, '6 Sunrise 2, 6R White', 1390.00, 'completed'),
+product -> order
+when a user orders a product in a batch of specific product_quantities this will get multiplied by product_quantities * the base_price to get the total amount of orders
 
--- User 5
-(5, '6 Sunrise Bloom', 880.00, 'confirmed'),
-(5, '6R2 White', 610.00, 'pending'),
-(5, '6R Black', 510.00, 'completed'),
 
--- User 6
-(6, '1DZ', 999.00, 'confirmed'),
-(6, '7R Green, 6 Sunrise 2', 1380.00, 'pending'),
-(6, '6R Green', 500.00, 'completed'),
-
--- User 7
-(7, '6R Vio', 500.00, 'confirmed'),
-(7, '6R White, 6R2 White', 1120.00, 'pending'),
-(7, '6 Sunrise Bloom', 880.00, 'completed'),
-
--- User 8
-(8, '6 Sunrise 2', 880.00, 'confirmed'),
-(8, '1DZ, 6R Green', 1499.00, 'pending'),
-(8, '6R Vio', 500.00, 'completed'),
-
--- User 9
-(9, '6R Black', 510.00, 'confirmed'),
-(9, '6 Sunrise Bloom', 880.00, 'pending'),
-(9, '6R2 White', 610.00, 'completed'),
-
--- User 10
-(10, '7R Green', 500.00, 'confirmed'),
-(10, '6R Green, 6R White', 1010.00, 'pending'),
-(10, '1DZ', 999.00, 'completed'),
-
--- User 11
-(11, '6 Sunrise 2', 880.00, 'confirmed'),
-(11, '6R Vio', 500.00, 'pending'),
-(11, '6R2 White', 610.00, 'completed'),
-
--- User 12
-(12, '6 Sunrise Bloom', 880.00, 'confirmed'),
-(12, '6R White', 510.00, 'pending'),
-(12, '1DZ', 999.00, 'completed'),
-
--- User 13
-(13, '6R Green', 500.00, 'confirmed'),
-(13, '6R Black, 6R Vio', 1010.00, 'pending'),
-(13, '6R2 White', 610.00, 'completed'),
-
--- User 14
-(14, '6 Sunrise 2', 880.00, 'confirmed'),
-(14, '6R White, 1DZ', 1509.00, 'pending'),
-(14, '7R Green', 500.00, 'completed'),
-
--- User 15
-(15, '6 Sunrise Bloom', 880.00, 'confirmed'),
-(15, '6R2 White, 6R Green', 1110.00, 'pending'),
-(15, '6R Black', 510.00, 'completed'),
-
--- User 16
-(16, '6 Sunrise 2', 880.00, 'confirmed'),
-(16, '1DZ, 6R White', 1509.00, 'pending'),
-(16, '6R Vio', 500.00, 'completed'),
-
--- User 17
-(17, '6 Sunrise Bloom', 880.00, 'confirmed'),
-(17, '6R2 White', 610.00, 'pending'),
-(17, '6R White, 6R Black', 1020.00, 'completed'),
-
--- User 18
-(18, '6 Sunrise 2, 6R Green', 1380.00, 'confirmed'),
-(18, '1DZ', 999.00, 'pending'),
-(18, '6R Vio', 500.00, 'completed'),
-
--- User 19
-(19, '6R2 White', 610.00, 'confirmed'),
-(19, '6 Sunrise Bloom, 6R White', 1390.00, 'pending'),
-(19, '1DZ', 999.00, 'completed'),
-
--- User 20
-(20, '6R Green, 6R Black', 1010.00, 'confirmed'),
-(20, '6 Sunrise 2', 880.00, 'pending'),
-(20, '6R2 White', 610.00, 'completed');
+order -> delivery
+// populate delivery table using order status = 'confirmed'
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (1, '1DZ, 6R Black', '2025-07-16 19:29:05', 1509.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (1, '6 Sunrise Bloom', '2025-07-18 10:04:01', 880.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (1, '6R Green, 6R Vio', '2025-07-11 05:44:32', 1000.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (2, '6 Sunrise 2', '2025-07-18 20:45:40', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (2, '1DZ', '2025-07-11 18:33:49', 999.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (2, '7R Green', '2025-07-16 02:38:46', 500.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (3, '6R White', '2025-07-10 17:31:42', 510.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (3, '6 Sunrise Bloom, 6R2 White', '2025-07-21 13:13:30', 1490.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (3, '6R Vio', '2025-07-17 17:53:01', 500.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (4, '6R Green', '2025-07-10 00:16:53', 500.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (4, '1DZ', '2025-07-14 17:41:32', 999.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (4, '6 Sunrise 2, 6R White', '2025-07-20 02:06:24', 1390.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (5, '6 Sunrise Bloom', '2025-07-20 17:59:48', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (5, '6R2 White', '2025-07-13 15:56:33', 610.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (5, '6R Black', '2025-07-10 23:27:07', 510.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (6, '1DZ', '2025-07-20 15:50:18', 999.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (6, '7R Green, 6 Sunrise 2', '2025-07-13 04:29:35', 1380.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (6, '6R Green', '2025-07-12 13:03:29', 500.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (7, '6R Vio', '2025-07-19 18:57:13', 500.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (7, '6R White, 6R2 White', '2025-07-19 01:38:18', 1120.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (7, '6 Sunrise Bloom', '2025-07-09 06:27:33', 880.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (8, '6 Sunrise 2', '2025-07-19 00:50:39', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (8, '1DZ, 6R Green', '2025-07-11 03:47:53', 1499.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (8, '6R Vio', '2025-07-17 00:14:51', 500.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (9, '6R Black', '2025-07-18 12:34:13', 510.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (9, '6 Sunrise Bloom', '2025-07-22 14:20:11', 880.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (9, '6R2 White', '2025-07-18 23:44:32', 610.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (10, '7R Green', '2025-07-12 11:56:55', 500.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (10, '6R Green, 6R White', '2025-07-18 06:10:09', 1010.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (10, '1DZ', '2025-07-17 04:26:58', 999.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (11, '6 Sunrise 2', '2025-07-11 13:19:32', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (11, '6R Vio', '2025-07-17 19:14:10', 500.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (11, '6R2 White', '2025-07-14 07:42:01', 610.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (12, '6 Sunrise Bloom', '2025-07-21 09:10:01', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (12, '6R White', '2025-07-22 18:50:02', 510.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (12, '1DZ', '2025-07-13 21:19:24', 999.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (13, '6R Green', '2025-07-09 03:12:07', 500.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (13, '6R Black, 6R Vio', '2025-07-19 13:22:18', 1010.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (13, '6R2 White', '2025-07-17 15:18:44', 610.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (14, '6 Sunrise 2', '2025-07-13 08:14:53', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (14, '6R White, 1DZ', '2025-07-10 21:44:13', 1509.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (14, '7R Green', '2025-07-21 04:59:30', 500.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (15, '6 Sunrise Bloom', '2025-07-12 09:11:23', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (15, '6R2 White, 6R Green', '2025-07-20 10:20:13', 1110.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (15, '6R Black', '2025-07-18 08:02:17', 510.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (16, '6 Sunrise 2', '2025-07-13 01:26:17', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (16, '1DZ, 6R White', '2025-07-22 07:47:10', 1509.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (16, '6R Vio', '2025-07-15 04:00:00', 500.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (17, '6 Sunrise Bloom', '2025-07-11 15:48:59', 880.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (17, '6R2 White', '2025-07-22 13:10:23', 610.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (17, '6R White, 6R Black', '2025-07-13 19:41:22', 1020.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (18, '6 Sunrise 2, 6R Green', '2025-07-13 17:18:02', 1380.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (18, '1DZ', '2025-07-10 03:04:58', 999.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (18, '6R Vio', '2025-07-14 10:55:29', 500.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (19, '6R2 White', '2025-07-09 07:43:25', 610.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (19, '6 Sunrise Bloom, 6R White', '2025-07-21 00:59:19', 1390.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (19, '1DZ', '2025-07-15 18:05:20', 999.0, 'completed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (20, '6R Green, 6R Black', '2025-07-09 22:23:44', 1010.0, 'confirmed');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (20, '6 Sunrise 2', '2025-07-15 11:36:39', 880.0, 'pending');
+INSERT INTO orders (user_id, order_details, order_date, total_amount, status) VALUES (20, '6R2 White', '2025-07-22 21:33:15', 610.0, 'completed');
