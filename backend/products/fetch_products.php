@@ -35,67 +35,38 @@ function calculateStatus($quantity) {
  * @param int $offset
  * @return array
  */
-function fetchProducts($searchTerm = '', $statusFilter = '', $sortOrder = 'asc', $limit = 10, $offset = 0) {
-    global $pdo;
-    
-    // Updated query to include product_quantity and calculate status
-    $query = "SELECT 
-                product_id, 
-                product_name, 
-                product_description, 
-                base_price, 
-                product_quantity,
-                CASE 
-                    WHEN product_quantity = 0 THEN 'No Stock'
-                    WHEN product_quantity < 20 THEN 'Low Stock'
-                    ELSE 'In Stock'
-                END as status
-              FROM products 
-              WHERE 1=1";
-    
-    $params = [];
-    
-    if ($searchTerm !== '') {
-        $query .= " AND product_name LIKE :search";
-        $params[':search'] = "%$searchTerm%";
-    }
-    
-    if ($statusFilter !== '') {
-        // Filter by calculated status
-        $query .= " AND (
-            CASE 
-                WHEN product_quantity = 0 THEN 'No Stock'
-                WHEN product_quantity < 20 THEN 'Low Stock'
-                ELSE 'In Stock'
-            END
-        ) = :status";
-        $params[':status'] = $statusFilter;
-    }
-    
-    $query .= " ORDER BY base_price " . ($sortOrder === 'desc' ? 'DESC' : 'ASC');
-    $query .= " LIMIT :limit OFFSET :offset";
-    
-    $stmt = $pdo->prepare($query);
-    
-    // Bind params
-    foreach ($params as $key => $value) {
-        $stmt->bindValue($key, $value);
-    }
-    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-    
-    $stmt->execute();
-    
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+function fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offset) {
+  global $pdo;
+
+  $query = "SELECT * FROM products WHERE 1";
+  $params = [];
+
+  if (!empty($searchTerm)) {
+    $query .= " AND product_name LIKE :search";
+    $params[':search'] = "%$searchTerm%";
+  }
+
+  if (!empty($statusFilter)) {
+    $query .= " AND status = :status";
+    $params[':status'] = $statusFilter;
+  }
+
+  // ✅ FIX: Add sort logic here
+$query .= " ORDER BY base_price " . ($sortOrder === 'desc' ? 'DESC' : 'ASC');
+
+  $query .= " LIMIT :limit OFFSET :offset";
+  $stmt = $pdo->prepare($query);
+  $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+  $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+  foreach ($params as $key => $val) {
+    $stmt->bindValue($key, $val);
+  }
+
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-/**
- * Get total count of products matching search and status filters
- * 
- * @param string $searchTerm
- * @param string $statusFilter
- * @return int
- */
 function fetchProductsCount($searchTerm = '', $statusFilter = '') {
     global $pdo;
     

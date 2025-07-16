@@ -215,22 +215,39 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
     </tbody>
   </table>
 
-  <!-- Pagination Controls -->
+<!-- Pagination Controls -->
 <div class="mt-4 flex justify-center space-x-2 text-[#0f2e4d]">
+  <?php
+    $queryParams = [
+      'search' => $search ?? '',
+      'status' => $status ?? '',
+      'start_date' => $startDate ?? '',
+      'end_date' => $endDate ?? ''
+    ];
+  ?>
+
   <?php if ($page > 1): ?>
-    <a href="?page=<?= $page - 1 ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&start_date=<?= htmlspecialchars($startDate) ?>&end_date=<?= htmlspecialchars($endDate) ?>" class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600">Previous</a>
+    <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $page - 1])) ?>"
+       class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600">
+      Previous
+    </a>
   <?php endif; ?>
 
   <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-    <a href="?page=<?= $i ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&start_date=<?= htmlspecialchars($startDate) ?>&end_date=<?= htmlspecialchars($endDate) ?>" class="px-3 py-1 rounded <?= $i === $page ? 'bg-blue-700 text-white' : 'bg-blue-100 hover:bg-blue-200' ?>">
+    <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $i])) ?>"
+       class="px-3 py-1 rounded <?= $i === $page ? 'bg-blue-700 text-white' : 'bg-blue-100 hover:bg-blue-200' ?>">
       <?= $i ?>
     </a>
   <?php endfor; ?>
 
   <?php if ($page < $totalPages): ?>
-    <a href="?page=<?= $page + 1 ?>&search=<?= htmlspecialchars($search) ?>&status=<?= htmlspecialchars($status) ?>&start_date=<?= htmlspecialchars($startDate) ?>&end_date=<?= htmlspecialchars($endDate) ?>" class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600">Next</a>
+    <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $page + 1])) ?>"
+       class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600">
+      Next
+    </a>
   <?php endif; ?>
 </div>
+
 
 </main>
 

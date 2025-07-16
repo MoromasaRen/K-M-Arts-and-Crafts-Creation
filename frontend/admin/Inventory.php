@@ -3,10 +3,10 @@ require_once '../../backend/products/fetch_products.php';
 
 $searchTerm = isset($_GET['search']) ? trim($_GET['search']) : '';
 $statusFilter = isset($_GET['status']) ? trim($_GET['status']) : '';
-$sortOrder = isset($_GET['sort']) ? trim($_GET['sort']) : 'asc';
+$sortOrder = isset($_GET['sort']) && strtolower($_GET['sort']) === 'desc' ? 'desc' : 'asc';
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int) $_GET['page'] : 1;
-$limit = 10; // items per page
+$limit = 15; // items per page
 $offset = ($page - 1) * $limit;
 
 // Get total count of matching products for pagination
@@ -91,20 +91,9 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
   <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">Search</button>
 </form>
 
-      <div class="flex space-x-2 text-sm font-semibold text-[#0f2e4d]">
-        <span>Sort by Price:</span>
-        <a
-          href="Inventory.php?<?= http_build_query(['search' => $searchTerm, 'status' => $statusFilter, 'sort' => 'asc']) ?>"
-          class="px-3 py-1 rounded <?= $sortOrder === 'asc' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300' ?>"
-        >
-          Asc
-        </a>
-        <a
-          href="Inventory.php?<?= http_build_query(['search' => $searchTerm, 'status' => $statusFilter, 'sort' => 'desc']) ?>"
-          class="px-3 py-1 rounded <?= $sortOrder === 'desc' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300' ?>"
-        >
-          Desc
-        </a>
+<a href="Inventory.php?sort=asc&page=1" class="text-sm px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded font-semibold text-[#0f2e4d]">
+  Clear Filters
+</a>
       </div>
     </div>
 
@@ -115,14 +104,19 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
           <th class="text-left font-extrabold px-2 py-1">Product Name</th>
           <th class="text-left font-extrabold px-2 py-1">Status</th>
           <th class="text-left font-extrabold px-2 py-1">
-            <a href="Inventory.php?<?= http_build_query(['search' => $searchTerm, 'status' => $statusFilter, 'sort' => $sortOrder === 'asc' ? 'desc' : 'asc']) ?>"
+            <a href="Inventory.php?<?= http_build_query([
+  'search' => $searchTerm,
+  'status' => $statusFilter,
+  'sort' => $sortOrder === 'asc' ? 'desc' : 'asc',
+  'page' => $page
+]) ?>"
               class="inline-flex items-center space-x-1 hover:underline">
               <span>Price</span>
-              <?php if ($sortOrder === 'asc'): ?>
-                <i class="fas fa-arrow-up text-xs"></i>
-              <?php elseif ($sortOrder === 'desc'): ?>
-                <i class="fas fa-arrow-down text-xs"></i>
-              <?php endif; ?>
+<?php if ($sortOrder === 'asc'): ?>
+  <i class="fas fa-arrow-up text-xs"></i>
+<?php elseif ($sortOrder === 'desc'): ?>
+  <i class="fas fa-arrow-down text-xs"></i>
+<?php endif; ?>
             </a>
           </th>
           <th class="text-left font-extrabold px-2 py-1 rounded-tr-md">Description</th>
@@ -169,20 +163,36 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
         <?php endif; ?>
       </tbody>
     </table>
-    <div class="mt-4 flex justify-center space-x-2 text-sm text-[#0f2e4d]">
+<!-- Pagination Controls -->
+<div class="mt-4 flex justify-center space-x-2 text-[#0f2e4d]">
+  <?php
+    $queryParams = [
+      'search' => $search ?? '',
+      'status' => $status ?? '',
+      'start_date' => $startDate ?? '',
+      'end_date' => $endDate ?? ''
+    ];
+  ?>
+
   <?php if ($page > 1): ?>
-    <a href="?<?= http_build_query(['search'=>$searchTerm, 'status'=>$statusFilter, 'sort'=>$sortOrder, 'page'=>$page-1]) ?>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Prev</a>
+    <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $page - 1])) ?>"
+       class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600">
+      Previous
+    </a>
   <?php endif; ?>
 
-  <?php for ($p = 1; $p <= $totalPages; $p++): ?>
-    <a href="?<?= http_build_query(['search'=>$searchTerm, 'status'=>$statusFilter, 'sort'=>$sortOrder, 'page'=>$p]) ?>"
-       class="px-3 py-1 rounded <?= $p === $page ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300' ?>">
-      <?= $p ?>
+  <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+    <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $i])) ?>"
+       class="px-3 py-1 rounded <?= $i === $page ? 'bg-blue-700 text-white' : 'bg-blue-100 hover:bg-blue-200' ?>">
+      <?= $i ?>
     </a>
   <?php endfor; ?>
 
   <?php if ($page < $totalPages): ?>
-    <a href="?<?= http_build_query(['search'=>$searchTerm, 'status'=>$statusFilter, 'sort'=>$sortOrder, 'page'=>$page+1]) ?>" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Next</a>
+    <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $page + 1])) ?>"
+       class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600">
+      Next
+    </a>
   <?php endif; ?>
 </div>
     <div class="fixed bottom-4 left-[375px] z-50">
