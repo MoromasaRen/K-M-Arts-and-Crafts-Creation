@@ -196,6 +196,16 @@
         </div>
 
         <!-- Fields -->
+         <div>
+          <p class="text-xs font-semibold tracking-widest">Address</p>
+          <p id="address-text" class="font-bold text-sm">123 Sample Street</p> <!-- Add this line -->
+          <input
+            id="address-input"
+            type="text"
+            class="hidden font-bold text-sm rounded-md p-1 w-full"
+            value="123 Sample Street"
+          />
+        </div>
         <div>
           <p class="text-xs font-semibold tracking-widest">Country</p>
           <p id="country-text" class="font-bold text-sm">Philippines</p>
@@ -370,7 +380,13 @@
       if (sectionId === 'personal-info') {
         // Update text fields with input values
         const firstName = document.getElementById('first-name-input').value;
+        const sidebarFirstName = document.getElementById('sidebar-first-name');
+        if (sidebarFirstName) sidebarFirstName.textContent = firstName;
+
         const lastName = document.getElementById('last-name-input').value;
+        const sidebarLastName = document.getElementById('sidebar-last-name');
+        if (sidebarLastName) sidebarLastName.textContent = lastName;
+
         const email = document.getElementById('email-input').value;
         const phone = document.getElementById('phone-input').value;
         const dobInput = document.getElementById('dob-input').value;
