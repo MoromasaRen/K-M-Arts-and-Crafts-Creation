@@ -152,6 +152,43 @@
     });
   });
 
+  
+function loadDeliveries() {
+  fetch('/K-M-Arts-and-Crafts-Creation/backend/deliveries/get_deliveries.php')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const tbody = document.querySelector('tbody');
+        tbody.innerHTML = ''; // Clear default rows
+
+        data.data.forEach(delivery => {
+          const row = document.createElement('tr');
+          row.classList.add('border-t', 'border-gray-200', 'h-10');
+
+          row.innerHTML = `
+            <td class="px-2 py-1">${delivery.delivery_id}</td>
+            <td class="px-2 py-1">${delivery.order_id}</td>
+            <td class="px-2 py-1">${delivery.staff_id}</td>
+            <td class="px-2 py-1">${delivery.scheduled_time}</td>
+            <td class="px-2 py-1">${delivery.delivery_status}</td>
+            <td class="px-2 py-1">${delivery.courier_type}</td>
+            <td class="px-2 py-1">${delivery.plate_number}</td>
+            <td></td>
+          `;
+          tbody.appendChild(row);
+        });
+      } else {
+        alert("Failed to load deliveries.");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching deliveries:", error);
+    });
+}
+
+// Call it when the page loads
+document.addEventListener("DOMContentLoaded", loadDeliveries);
+
 
 
 
