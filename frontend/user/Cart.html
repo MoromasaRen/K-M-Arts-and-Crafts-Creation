@@ -64,48 +64,7 @@
       <section class="bg-white border border-gray-300 rounded-lg p-6 w-full md:max-w-[28rem] shadow">
         <h2 class="font-semibold text-[#1c2f4a] mb-4 text-base">Items</h2>
         <ul class="space-y-4">
-          <!-- Item 1 -->
-          <li class="flex items-center border border-gray-300 rounded-lg p-3 gap-4 bg-[#f5f7fa]">
-            <img src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" alt="Flower no.1" class="w-16 h-16 object-cover rounded-md"/>
-            <div class="flex-grow">
-              <div class="font-semibold text-[#1c2f4a]">Flower no.1</div>
-              <div class="text-sm text-gray-500">₱250</div>
-            </div>
-            <button class="text-[#1c2f4a] font-bold text-lg hover:text-red-600 px-2">×</button>
-            <div class="flex items-center gap-1 font-bold text-sm text-gray-700 ml-4">
-              <button class="px-2 py-1 rounded hover:bg-gray-200">-</button>
-              <span>1</span>
-              <button class="px-2 py-1 rounded hover:bg-gray-200">+</button>
-            </div>
-          </li>
-          <!-- Item 2 -->
-          <li class="flex items-center border border-gray-300 rounded-lg p-3 gap-4 bg-[#f5f7fa]">
-            <img src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" alt="Flower no.2" class="w-16 h-16 object-cover rounded-md"/>
-            <div class="flex-grow">
-              <div class="font-semibold text-[#1c2f4a]">Flower no.2</div>
-              <div class="text-sm text-gray-500">₱150</div>
-            </div>
-            <button class="text-[#1c2f4a] font-bold text-lg hover:text-red-600 px-2">×</button>
-            <div class="flex items-center gap-1 font-bold text-sm text-gray-700 ml-4">
-              <button class="px-2 py-1 rounded hover:bg-gray-200">-</button>
-              <span>1</span>
-              <button class="px-2 py-1 rounded hover:bg-gray-200">+</button>
-            </div>
-          </li>
-          <!-- Item 3 -->
-          <li class="flex items-center border border-gray-300 rounded-lg p-3 gap-4 bg-[#f5f7fa]">
-            <img src="https://storage.googleapis.com/a1aa/image/f2a719d7-b50e-4e9e-0f22-a7abdca4f1eb.jpg" alt="Flower no.3" class="w-16 h-16 object-cover rounded-md"/>
-            <div class="flex-grow">
-              <div class="font-semibold text-[#1c2f4a]">Flower no.3</div>
-              <div class="text-sm text-gray-500">₱100</div>
-            </div>
-            <button class="text-[#1c2f4a] font-bold text-lg hover:text-red-600 px-2">×</button>
-            <div class="flex items-center gap-1 font-bold text-sm text-gray-700 ml-4">
-              <button class="px-2 py-1 rounded hover:bg-gray-200">-</button>
-              <span>1</span>
-              <button class="px-2 py-1 rounded hover:bg-gray-200">+</button>
-            </div>
-          </li>
+          <ul id="cart-list" class="space-y-4"></ul>
         </ul>
       </section>
     
@@ -118,18 +77,10 @@
                 class="w-full border border-gray-400 rounded px-4 py-2 text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#1c2f4a]"/>
         </div>
         <!-- Price Details -->
-        <div class="bg-white border border-gray-300 rounded-lg p-4 shadow">
-          <h2 class="font-semibold text-[#1c2f4a] mb-2 text-base">Price Details</h2>
-          <div class="mb-2 text-sm">1 Item</div>
-          <div class="flex justify-between text-sm mb-1">
-            <span>Flower no. 1</span>
-            <span>₱100</span>
-          </div>
-          <hr class="my-2"/>
-          <div class="flex justify-between font-bold text-base">
-            <span>Total Amount</span>
-            <span>₱100</span>
-          </div>
+        <div class="flex justify-between font-bold text-base">
+          <span>Total Amount</span>
+          <span id="total-amount">₱0.00</span>
+        </div>
           <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.html">
             <button class="mt-4 w-full bg-white border border-gray-400 rounded py-2 font-bold text-[#1c2f4a] hover:bg-[#c6d9f7] transition">NEXT</button>
           </a>
@@ -192,6 +143,71 @@
       </a>
     `;
   }
+
+
+
+  const cartList = document.getElementById("cart-list");
+  const totalAmountSpan = document.getElementById("total-amount");
+  const itemCountSpan = document.getElementById("item-count");
+
+  function loadCart() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cartList.innerHTML = "";
+
+    let totalItems = 0;
+    let totalPrice = 0;
+
+    cart.forEach((item, index) => {
+      totalItems += item.quantity;
+      totalPrice += item.quantity * parseFloat(item.price);
+
+      const li = document.createElement("li");
+      li.className = "flex items-center border border-gray-300 rounded-lg p-3 gap-4 bg-[#f5f7fa]";
+      li.innerHTML = `
+        <img src="${item.img}" alt="${item.name}" class="w-16 h-16 object-cover rounded-md"/>
+        <div class="flex-grow">
+          <div class="font-semibold text-[#1c2f4a]">${item.name}</div>
+          <div class="text-sm text-gray-500">₱${item.price}</div>
+        </div>
+        <button onclick="removeItem(${index})" class="text-[#1c2f4a] font-bold text-lg hover:text-red-600 px-2">×</button>
+        <div class="flex items-center gap-1 font-bold text-sm text-gray-700 ml-4">
+          <button onclick="decreaseQty(${index})" class="px-2 py-1 rounded hover:bg-gray-200">-</button>
+          <span>${item.quantity}</span>
+          <button onclick="increaseQty(${index})" class="px-2 py-1 rounded hover:bg-gray-200">+</button>
+        </div>
+      `;
+      cartList.appendChild(li);
+    });
+
+    itemCountSpan.textContent = totalItems + " item" + (totalItems !== 1 ? "s" : "");
+    totalAmountSpan.textContent = "₱" + totalPrice.toFixed(2);
+  }
+
+  function removeItem(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+  }
+
+  function decreaseQty(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart[index].quantity > 1) {
+      cart[index].quantity -= 1;
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+  }
+
+  function increaseQty(index) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart[index].quantity += 1;
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+  }
+
+  // Load the cart on page load
+  loadCart();
 
 
 
