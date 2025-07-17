@@ -10,21 +10,44 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
+// Read the incoming JSON
 $data = json_decode(file_get_contents("php://input"));
 
-if (!$data || !isset($data->user_id) || !isset($data->items) || !isset($data->order_details) || !isset($data->total_amount)) {
+// Validate required fields
+if (
+    !$data ||
+    !isset($data->user_id) ||
+    !isset($data->items) ||
+    !isset($data->order_details) ||
+    !isset($data->total_amount)
+) {
     echo json_encode(['success' => false, 'message' => 'Invalid input']);
     exit;
 }
 
+$user_id = $data->user_id;
+$order_details = $data->order_details;
+$total_amount = $data->total_amount;
+$items = $data->items;
+
 try {
+    // Check if user_id exists in users table before inserting
+    $userCheck = $pdo->prepare("SELECT COUNT(*) FROM users WHERE user_id = ?");
+    $userCheck->execute([$user_id]);
+    $userExists = $userCheck->fetchColumn();
+
+    if ($userExists == 0) {
+        echo json_encode(['success' => false, 'message' => 'User ID does not exist']);
+        exit;
+    }
+
     // Insert into orders table
     $stmt = $pdo->prepare("INSERT INTO orders (user_id, order_details, total_amount, status) VALUES (?, ?, ?, 'pending')");
-    $stmt->execute([$data->user_id, $data->order_details, $data->total_amount]);
+    $stmt->execute([$user_id, $order_details, $total_amount]);
     $order_id = $pdo->lastInsertId();
 
-    // Insert each item into order_items table
-    foreach ($data->items as $item) {
+    // Insert items into order_items table
+    foreach ($items as $item) {
         $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price, total_units) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([
             $order_id,
