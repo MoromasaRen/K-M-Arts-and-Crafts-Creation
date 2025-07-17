@@ -217,6 +217,21 @@
   // Load the cart on page load
   loadCart();
 
+   // Get user_id from localStorage
+   const userId = localStorage.getItem('user_id');
+
+// If user_id is missing, optionally redirect to login
+if (!userId) {
+  alert("You must be logged in to view your cart!");
+  window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
+}
+
+// Use userId for any AJAX calls, for displaying user info, etc.
+// Example: Show user ID in the cart
+const profileDiv = document.createElement('div');
+profileDiv.style.margin = "16px";
+profileDiv.textContent = `Logged in as User ID: ${userId}`;
+document.body.insertBefore(profileDiv, document.body.firstChild);
 
 </script>
 
