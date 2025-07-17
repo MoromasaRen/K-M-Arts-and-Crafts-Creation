@@ -40,9 +40,9 @@ CREATE TABLE orders (
 
 
 
---Payment Table
+-- Payment Table
 CREATE TABLE Payment (
-    Payment_ID INT(11) PRIMARY KEY AUTO_INCREMENT,
+    Payment_ID INT(11)  AUTO_INCREMENT PRIMARY KEY,
     Order_ID INT(11),
     Mode_of_payment ENUM('Cash On Delivery', 'To Be Implemented'),
     Amount_paid DECIMAL(10, 2),
