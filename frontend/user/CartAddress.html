@@ -274,30 +274,9 @@ window.addEventListener("DOMContentLoaded", () => {
     window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
   }
 
-  // Step 3: Optionally display user info
   const profileDiv = document.createElement('div');
-  profileDiv.style.margin = "16px";
-  profileDiv.textContent = `Logged in as User ID: ${userId}`;
   document.body.insertBefore(profileDiv, document.body.firstChild);
 
-  // Step 4: Use userId for any backend requests (e.g., saving address)
-  // Example:
-  // When you submit the address form, include userId in your AJAX request:
-  /*
-  function submitAddress() {
-    const address = ...; // get from form fields
-    fetch('/K-M-Arts-and-Crafts-Creation/backend/user/save_address.php', {
-      method: 'POST',
-      body: new URLSearchParams({
-        user_id: userId,
-        address: address
-      })
-    }).then(resp => resp.json())
-      .then(data => {
-        // handle response
-      });
-  }
-  */
 </script>
 
 </html>
