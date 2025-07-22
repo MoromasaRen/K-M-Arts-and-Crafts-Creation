@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: /K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html");
+  exit();
+}
+?>
+
+!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
