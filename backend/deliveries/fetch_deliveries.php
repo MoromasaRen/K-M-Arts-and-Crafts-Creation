@@ -10,19 +10,14 @@ try {
 
     // Build the query with proper JOINs
     $sql = "SELECT 
-                d.delivery_id,
-                d.order_id,
-                d.user_id,
-                d.scheduled_time,
-                d.delivery_status,
-                d.courier_type,
-                d.plate_number,
-                CONCAT(u.first_name, ' ', u.last_name) as user_info,
+                d.*,
+                CONCAT('#', d.user_id, ' - ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, '')) as user_info,
                 u.first_name,
                 u.last_name,
                 o.order_details,
-                o.order_details as order_info,
-                o.status as order_status
+                CONCAT('Order #', d.order_id, ' - ', COALESCE(o.order_details, ''), ' (', COALESCE(o.status, ''), ')') as order_info,
+                o.status as order_status,
+                o.total_amount
             FROM deliveries d
             LEFT JOIN users u ON d.user_id = u.user_id
             LEFT JOIN orders o ON d.order_id = o.order_id";
@@ -78,9 +73,14 @@ try {
     ]);
     
 } catch (Exception $e) {
+    error_log("Error in fetch_deliveries.php: " . $e->getMessage());
+    error_log("SQL Query: " . $sql);
+    error_log("Parameters: " . print_r($params, true));
+    
     echo json_encode([
         'success' => false,
-        'error' => $e->getMessage()
+        'error' => 'Failed to fetch deliveries. Check server logs for details.',
+        'debug' => $e->getMessage() // Only in development, remove in production
     ]);
 }
 ?>
