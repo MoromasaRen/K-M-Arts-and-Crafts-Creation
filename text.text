@@ -67,6 +67,6 @@ PROBLEM SA
 
 
 
-
 4. Cart
--Place Holder for cart items
+- Create a limit cap sa cart based sa product quantity
+- tas ig place order via cart kay mu decrement ang product quantity based sa no. of orders gipalit sa user
