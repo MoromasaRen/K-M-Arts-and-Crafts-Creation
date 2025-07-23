@@ -201,7 +201,8 @@ if (!isset($_SESSION['user_id'])) {
                 }));
           
                 const totalAmount = items.reduce((sum, item) => sum + item.total_units, 0);
-                const orderDetails = items.map(i => `#${i.product_id} x${i.quantity}`).join(", ");
+                const orderDetails = cart.map(i => `${i.name} x${i.quantity}`).join(", ");
+
           
                 // Debug: log order data before sending
                 console.log("Order Data:", {
