@@ -5,11 +5,17 @@ require_once '../config/database.php';
 try {
     $response = [];
     
-    // 1. New Orders (Today)
-    $today = date('Y-m-d');
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM orders WHERE DATE(order_date) = :today");
-    $stmt->execute(['today' => $today]);
+    // 1. New Orders (Last 24 hours)
+    $last24Hours = date('Y-m-d H:i:s', strtotime('-24 hours'));
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM orders WHERE order_date >= :last24Hours");
+    $stmt->execute(['last24Hours' => $last24Hours]);
     $response['new_orders'] = (int)$stmt->fetchColumn();
+    
+    // Add debug timestamp information
+    $response['debug_timestamp'] = [
+        'server_time' => date('Y-m-d H:i:s'),
+        'last_24_hours_from' => $last24Hours
+    ];
     
     // Add debug information
     $stmt = $pdo->prepare("
