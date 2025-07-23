@@ -84,11 +84,11 @@
         <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
           <label class="flex flex-col">
             Delivery ID
-            <input name="delivery_id" id="delivery_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+            <input name="delivery_id" id="delivery_id" class="rounded border px-2 py-1 text-[13px] font-normal bg-gray-100" readonly>
           </label>
           <label class="flex flex-col">
             Order ID
-            <input name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+            <input name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal bg-gray-100" readonly>
           </label>
           <label class="flex flex-col">
             Scheduled Time
@@ -96,11 +96,19 @@
           </label>
           <label class="flex flex-col">
             Status
-            <input name="delivery_status" id="delivery_status" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+            <select name="delivery_status" id="delivery_status" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+              <option value="scheduled">Scheduled</option>
+              <option value="in_transit">In Transit</option>
+              <option value="delivered">Delivered</option>
+            </select>
           </label>
           <label class="flex flex-col">
             Courier
-            <input name="courier_type" id="courier_type" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+            <select name="courier_type" id="courier_type" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+              <option value="Move It">Move It</option>
+              <option value="Maxim">Maxim</option>
+              <option value="Motor">Motor</option>
+            </select>
           </label>
           <label class="flex flex-col col-span-2">
             Plate Number
@@ -133,7 +141,7 @@
 row.className = 'border-t border-gray-200';
 row.innerHTML = `
   <td class="px-2 py-1">${d.delivery_id}</td>
-  <td class="px-2 py-1">${d.order_details}</td>
+  <td class="px-2 py-1">${d.order_details || d.order_id}</td>
   <td class="px-2 py-1">${d.scheduled_time}</td>
   <td class="px-2 py-1">${d.delivery_status}</td>
   <td class="px-2 py-1">${d.courier_type}</td>
@@ -211,7 +219,9 @@ row.innerHTML = `
     modal.onclick = e => { if (e.target === modal) modal.classList.add('hidden'); };
 
     window.addEventListener('DOMContentLoaded', () => loadPage());
-    function handleDelete(button) {
+
+
+   function handleDelete(button) {
   const id = button.getAttribute('data-id');
 
   if (confirm("Are you sure you want to delete this delivery?")) {
@@ -220,23 +230,31 @@ row.innerHTML = `
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: `id=${encodeURIComponent(id)}`
+      body: `delivery_id=${encodeURIComponent(id)}`  // Changed from 'id' to 'delivery_id'
     })
-    .then(res => res.json())
-    .then(data => {
+    .then(res => res.text())
+    .then(text => {
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.error('Server response:', text);
+        throw new Error('Server response was not valid JSON');
+      }
       if (data.success) {
         alert("Delivery deleted successfully.");
-        loadPage(currentPage); // reload the current page
+        loadPage(currentPage);
       } else {
-        alert(data.error || "Failed to delete delivery.");
+        throw new Error(data.error || "Failed to delete delivery.");
       }
     })
     .catch(err => {
-      console.error(err);
-      alert("An error occurred while deleting.");
+      console.error('Delete error:', err);
+      alert(err.message || "An error occurred while deleting.");
     });
   }
 }
-  </script>
+
+</script>
 </body>
 </html>
