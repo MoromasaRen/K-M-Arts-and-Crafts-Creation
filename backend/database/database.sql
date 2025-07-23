@@ -67,14 +67,12 @@ CREATE TABLE order_items (
 CREATE TABLE deliveries (
     delivery_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
-    staff_id INT,
     scheduled_time DATETIME,
     actual_delivery_time DATETIME,
     delivery_status ENUM('scheduled', 'in_transit', 'delivered') DEFAULT 'scheduled',
     courier_type ENUM('Move It', 'Maxim', 'Motor') DEFAULT 'Motor',
     plate_number VARCHAR(20),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (staff_id) REFERENCES users(user_id)
 );
 
 -- Insert Products
@@ -258,25 +256,25 @@ INSERT INTO orders (user_id, order_details, order_date, order_quantity, total_am
 
 
 INSERT INTO deliveries (
-    order_id, staff_id, scheduled_time, actual_delivery_time, delivery_status, courier_type, plate_number
+    order_id, scheduled_time, actual_delivery_time, delivery_status, courier_type, plate_number
 ) VALUES
-(1,  4, '2025-07-17 17:29:05', '2025-07-17 19:29:05', 'in_transit', 'Maxim',   'ABC123'),
-(2,  1, '2025-07-19 14:45:40', '2025-07-19 17:45:40', 'delivered',  'Motor',   'XYZ789'),
-(3,  2, '2025-07-11 16:31:42', '2025-07-11 18:31:42', 'scheduled',  'Move It', 'MNO456'),
-(4,  4, '2025-07-10 08:16:53', '2025-07-10 11:16:53', 'delivered',  'Move It', 'JKL321'),
-(5,  2, '2025-07-20 19:59:48', '2025-07-20 21:59:48', 'scheduled',  'Maxim',   'QWE987'),
-(6,  4, '2025-07-21 06:50:18', '2025-07-21 08:50:18', 'delivered',  'Move It', 'ZXC654'),
-(7,  3, '2025-07-20 10:57:13', '2025-07-20 11:57:13', 'delivered',  'Move It', 'RTY321'),
-(8,  4, '2025-07-19 20:50:39', '2025-07-20 00:50:39', 'in_transit', 'Motor',   'GHJ852'),
-(9,  5, '2025-07-19 12:34:13', '2025-07-19 13:34:13', 'in_transit', 'Motor',   'BNM963'),
-(10, 2, '2025-07-13 08:56:55', '2025-07-13 10:56:55', 'in_transit', 'Motor',   'PLM741'),
-(11, 5, '2025-07-11 09:30:22', '2025-07-11 11:30:22', 'scheduled',  'Move It', 'LMN654'),
-(12, 2, '2025-07-21 15:20:10', '2025-07-21 17:20:10', 'in_transit', 'Motor',   'TYU321'),
-(13, 4, '2025-07-18 06:46:33', '2025-07-18 09:46:33', 'delivered',  'Maxim',   'UIO963'),
-(14, 1, '2025-07-11 07:15:00', '2025-07-11 09:15:00', 'in_transit', 'Move It', 'GHF852'),
-(15, 5, '2025-07-13 18:27:45', '2025-07-13 20:27:45', 'delivered',  'Motor',   'VBN789'),
-(16, 3, '2025-07-12 13:48:50', '2025-07-12 15:48:50', 'scheduled',  'Maxim',   'WER456'),
-(17, 2, '2025-07-15 10:17:33', '2025-07-15 12:17:33', 'in_transit', 'Move It', 'ASE159'),
-(18, 1, '2025-07-14 21:09:18', '2025-07-15 00:09:18', 'delivered',  'Motor',   'KLM741'),
-(19, 5, '2025-07-09 09:12:31', '2025-07-09 11:12:31', 'scheduled',  'Move It', 'TRE963'),
-(20, 3, '2025-07-11 06:05:27', '2025-07-11 08:05:27', 'delivered',  'Maxim',   'DFG147');
+(1, '2025-07-17 17:29:05', '2025-07-17 19:29:05', 'in_transit', 'Maxim',   'ABC123'),
+(2, '2025-07-19 14:45:40', '2025-07-19 17:45:40', 'delivered',  'Motor',   'XYZ789'),
+(3, '2025-07-11 16:31:42', '2025-07-11 18:31:42', 'scheduled',  'Move It', 'MNO456'),
+(4, '2025-07-10 08:16:53', '2025-07-10 11:16:53', 'delivered',  'Move It', 'JKL321'),
+(5, '2025-07-20 19:59:48', '2025-07-20 21:59:48', 'scheduled',  'Maxim',   'QWE987'),
+(6, '2025-07-21 06:50:18', '2025-07-21 08:50:18', 'delivered',  'Move It', 'ZXC654'),
+(7, '2025-07-20 10:57:13', '2025-07-20 11:57:13', 'delivered',  'Move It', 'RTY321'),
+(8, '2025-07-19 20:50:39', '2025-07-20 00:50:39', 'in_transit', 'Motor',   'GHJ852'),
+(9, '2025-07-19 12:34:13', '2025-07-19 13:34:13', 'in_transit', 'Motor',   'BNM963'),
+(10, '2025-07-13 08:56:55', '2025-07-13 10:56:55', 'in_transit', 'Motor',   'PLM741'),
+(11, '2025-07-11 09:30:22', '2025-07-11 11:30:22', 'scheduled',  'Move It', 'LMN654'),
+(12, '2025-07-21 15:20:10', '2025-07-21 17:20:10', 'in_transit', 'Motor',   'TYU321'),
+(13, '2025-07-18 06:46:33', '2025-07-18 09:46:33', 'delivered',  'Maxim',   'UIO963'),
+(14, '2025-07-11 07:15:00', '2025-07-11 09:15:00', 'in_transit', 'Move It', 'GHF852'),
+(15, '2025-07-13 18:27:45', '2025-07-13 20:27:45', 'delivered',  'Motor',   'VBN789'),
+(16, '2025-07-12 13:48:50', '2025-07-12 15:48:50', 'scheduled',  'Maxim',   'WER456'),
+(17, '2025-07-15 10:17:33', '2025-07-15 12:17:33', 'in_transit', 'Move It', 'ASE159'),
+(18, '2025-07-14 21:09:18', '2025-07-15 00:09:18', 'delivered',  'Motor',   'KLM741'),
+(19, '2025-07-09 09:12:31', '2025-07-09 11:12:31', 'scheduled',  'Move It', 'TRE963'),
+(20, '2025-07-11 06:05:27', '2025-07-11 08:05:27', 'delivered',  'Maxim',   'DFG147');

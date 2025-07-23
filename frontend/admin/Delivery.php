@@ -57,8 +57,8 @@
   <thead>
     <tr>
       <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Delivery ID</th>
-      <th class="text-left font-extrabold px-2 py-1">Order ID</th>
-      <th class="text-left font-extrabold px-2 py-1">Staff ID</th>
+      <th class="text-left font-extrabold px-2 py-1">Order Details</th>
+      <!-- <th class="text-left font-extrabold px-2 py-1">Staff ID</th> -->
       <th class="text-left font-extrabold px-2 py-1">Scheduled Time</th>
       <th class="text-left font-extrabold px-2 py-1">Status</th>
       <th class="text-left font-extrabold px-2 py-1">Courier</th>
@@ -89,10 +89,6 @@
           <label class="flex flex-col">
             Order ID
             <input name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
-          </label>
-          <label class="flex flex-col">
-            Staff ID
-            <input name="staff_id" id="staff_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
           </label>
           <label class="flex flex-col">
             Scheduled Time
@@ -137,8 +133,7 @@
 row.className = 'border-t border-gray-200';
 row.innerHTML = `
   <td class="px-2 py-1">${d.delivery_id}</td>
-  <td class="px-2 py-1">${d.order_id}</td>
-  <td class="px-2 py-1">${d.staff_id}</td>
+  <td class="px-2 py-1">${d.order_details}</td>
   <td class="px-2 py-1">${d.scheduled_time}</td>
   <td class="px-2 py-1">${d.delivery_status}</td>
   <td class="px-2 py-1">${d.courier_type}</td>
@@ -201,7 +196,7 @@ row.innerHTML = `
       document.getElementById('modalTitle').innerText = title;
       form.action = action;
 
-      const fields = ['delivery_id', 'order_id', 'staff_id', 'scheduled_time', 'delivery_status', 'courier_type', 'plate_number'];
+      const fields = ['delivery_id', 'order_id', 'scheduled_time', 'delivery_status', 'courier_type', 'plate_number'];
       fields.forEach(f => {
         const input = document.getElementById(f);
         input.value = data[f] || '';
