@@ -29,7 +29,7 @@ if (!isset($_SESSION['user_id'])) {
 
       <!-- Navigation in the center -->
       <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
-        <a href="/K-M-Arts-and-Crafts-Creation/index.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+        <a href="/K-M-Arts-and-Crafts-Creation/index.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
         <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Shop.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
         <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Contacts.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
         <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/About.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
