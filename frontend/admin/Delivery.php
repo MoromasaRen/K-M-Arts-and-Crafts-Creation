@@ -123,6 +123,7 @@
               <option value="in_transit">In Transit</option>
               <option value="delivered">Delivered</option>
             </select>
+            <span id="statusNote" class="text-xs text-gray-600 mt-1"></span>
           </label>
           <label class="flex flex-col">
             Courier
@@ -161,10 +162,12 @@
       data.forEach(d => {
         const row = document.createElement('tr');
 row.className = 'border-t border-gray-200';
+const userInfo = d.user_info || '#' + d.user_id + ' - ' + (d.user_name || 'N/A');
+const orderDetails = d.order_details || 'Order #' + d.order_id;
 row.innerHTML = `
   <td class="px-2 py-1">${d.delivery_id}</td>
-  <td class="px-2 py-1">${d.user_info || '#' + d.user_id + ' - ' + (d.user_name || 'N/A')}</td>
-  <td class="px-2 py-1">${d.order_details || d.order_id}</td>
+  <td class="px-2 py-1">${userInfo}</td>
+  <td class="px-2 py-1">${orderDetails}</td>
   <td class="px-2 py-1">${d.scheduled_time}</td>
   <td class="px-2 py-1">${d.delivery_status}</td>
   <td class="px-2 py-1">${d.courier_type}</td>
@@ -235,11 +238,16 @@ row.innerHTML = `
 
       const fields = ['delivery_id', 'order_id', 'scheduled_time', 'delivery_status', 'courier_type', 'plate_number'];
       const isEdit = title.includes('Edit');
+      
+      // Reset status note
+      document.getElementById('statusNote').textContent = '';
 
       // Handle the order_id select differently for create vs edit
       const orderSelect = document.getElementById('order_id');
       if (isEdit) {
-        orderSelect.innerHTML = `<option value="${data.order_id}">Order #${data.order_id}</option>`;
+        const userInfo = data.user_info || `#${data.user_id} - ${data.user_name || 'N/A'}`;
+        const orderDetails = data.order_details || `Order #${data.order_id}`;
+        orderSelect.innerHTML = `<option value="${data.order_id}">${orderDetails} - ${userInfo}</option>`;
         orderSelect.disabled = true;
       } else {
         orderSelect.disabled = false;
@@ -375,11 +383,63 @@ row.innerHTML = `
         .catch(err => console.error('Error loading orders:', err));
     }
 
-    // Handle form submission
+    // Function to check and update delivery status based on scheduled time
+    function updateDeliveryStatus() {
+      const scheduledTimeInput = document.getElementById('scheduled_time');
+      const statusSelect = document.getElementById('delivery_status');
+      const statusNote = document.getElementById('statusNote');
+      
+      if (!scheduledTimeInput.value) return;
+
+      const scheduledTime = new Date(scheduledTimeInput.value);
+      const now = new Date();
+      
+      // If delivery is already marked as delivered, don't change it
+      if (statusSelect.value === 'delivered') {
+        statusNote.textContent = 'Delivery has been completed';
+        return;
+      }
+
+      // Compare dates (ignoring time for "in_transit" check)
+      const isToday = scheduledTime.toDateString() === now.toDateString();
+      
+      if (isToday) {
+        statusSelect.value = 'in_transit';
+        statusNote.textContent = 'Automatically set to In Transit (scheduled for today)';
+      } else if (scheduledTime > now) {
+        statusSelect.value = 'scheduled';
+        statusNote.textContent = 'Automatically set to Scheduled (future date)';
+      }
+    }
+
+    // Add event listener for scheduled time changes
+    document.getElementById('scheduled_time').addEventListener('change', updateDeliveryStatus);
+
+    // Handle form submission with status updates
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       
       const formData = new FormData(form);
+      const status = formData.get('delivery_status');
+      
+      // If status is being set to delivered, update the order status as well
+      if (status === 'delivered') {
+        const orderId = formData.get('order_id');
+        // Update order status to completed
+        fetch('../../backend/orders/update_order.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `order_id=${orderId}&status=completed`
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            throw new Error('Failed to update order status');
+          }
+        });
+      }
       
       fetch(form.action, {
         method: 'POST',
@@ -388,7 +448,7 @@ row.innerHTML = `
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          alert('Delivery saved successfully!');
+          alert('Delivery saved successfully!' + (status === 'delivered' ? ' Order status updated to completed.' : ''));
           modal.classList.add('hidden');
           loadPage(currentPage); // Reload the current page
         } else {

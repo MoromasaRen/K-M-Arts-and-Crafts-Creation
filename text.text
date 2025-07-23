@@ -67,6 +67,11 @@ PROBLEM SA
 
 
 
-4. Cart
-- Create a limit cap sa cart based sa product quantity
-- tas ig place order via cart kay mu decrement ang product quantity based sa no. of orders gipalit sa user
+4. Deliveries
+- make sure  The Scheduled Time and Delivery Status is interconnected with each other such that
+
+when the scheduled time is days before the actual schedule.
+ delivery status will be automatically set to "Scheduled" 
+ and when the scheduled time is equal to the actual schedule, delivery status will be automatically
+set to "In Transit". We will have to manually set the delivery status to "Delivered" when the delivery is done.
+- make sure the order status is updated automatically to Completed when the delivery is done.

@@ -254,9 +254,9 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
         <select name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal w-full">
           <option value="pending">Pending</option>
           <option value="confirmed">Confirmed</option>
-          <option value="completed">Completed</option>
         </select>
       </label>
+      <p class="text-xs text-gray-600 mt-1">Note: Order status can only be set to Pending or Confirmed</p>
     </div>
 
     <div class="mt-4 text-center space-x-3">
