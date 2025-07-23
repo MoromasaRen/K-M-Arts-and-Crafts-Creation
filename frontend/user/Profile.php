@@ -220,7 +220,7 @@ if (!isset($_SESSION['user_id'])) {
         <!-- Fields -->
          <div>
           <p class="text-xs font-semibold tracking-widest">Address</p>
-          <p id="address-text" class="font-bold text-sm">123 Sample Street</p> <!-- Add this line -->
+          <p id="address-text" class="font-bold text-sm"></p> <!-- Add this line -->
           <input
             id="address-input"
             type="text"
@@ -230,7 +230,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
         <div>
           <p class="text-xs font-semibold tracking-widest">Country</p>
-          <p id="country-text" class="font-bold text-sm">Philippines</p>
+          <p id="country-text" class="font-bold text-sm"></p>
           <input
             id="country-input"
             type="text"
@@ -240,7 +240,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
         <div>
           <p class="text-xs font-semibold tracking-widest">City</p>
-          <p id="city-text" class="font-bold text-sm">Cebu</p>
+          <p id="city-text" class="font-bold text-sm"></p>
           <input
             id="city-input"
             type="text"
@@ -250,7 +250,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
         <div>
           <p class="text-xs font-semibold tracking-widest">Postal Code</p>
-          <p id="postal-code-text" class="font-bold text-sm">6000</p>
+          <p id="postal-code-text" class="font-bold text-sm"></p>
           <input
             id="postal-code-input"
             type="text"
