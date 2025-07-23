@@ -431,9 +431,9 @@ if (!isset($_SESSION['user_id'])) {
       const postalCode = document.getElementById('postal-code-input').value;
 
       document.getElementById('address-text').textContent = address || 'Not provided';
-      document.getElementById('country-text').textContent = country;
-      document.getElementById('city-text').textContent = city;
-      document.getElementById('postal-code-text').textContent = postalCode;
+      document.getElementById('country-text').textContent = country || 'Not provided';
+      document.getElementById('city-text').textContent = city || 'Not provided';
+      document.getElementById('postal-code-text').textContent = postalCode || 'Not provided';
 
       const summaryAddr = document.getElementById('summary-address');
       if (summaryAddr) summaryAddr.textContent = `${country}, ${city} ${postalCode}`;
