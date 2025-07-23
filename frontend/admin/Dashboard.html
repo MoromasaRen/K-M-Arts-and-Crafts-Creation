@@ -125,7 +125,7 @@
             </div>
           </div>
           <p class="font-semibold text-gray-900 mb-1">
-            New Orders: <span class="font-normal">10</span>
+            New Orders: <span id="new-orders" class="font-normal">0</span>
           </p>
           <p
             onclick="openModal('orders')"
@@ -147,7 +147,7 @@
             </div>
           </div>
           <p class="font-semibold text-gray-900 mb-1">
-            Scheduled Deliveries: <span class="font-normal">10</span>
+            Scheduled Deliveries: <span id="scheduled-deliveries" class="font-normal">0</span>
           </p>
           <p
             onclick="openModal('deliveries')"
@@ -169,7 +169,7 @@
             </div>
           </div>
           <p class="font-semibold text-gray-900 mb-1">
-            Inventory Status: <span class="font-normal">Good</span>
+            Inventory Status: <span id="inventory-status" class="font-normal">Loading...</span>
           </p>
           <p
             onclick="openModal('inventory')"
@@ -189,7 +189,7 @@
     </div>
     <div>
       <p class="font-semibold text-gray-900">Pending Orders</p>
-      <p class="text-sm text-gray-600">5</p>
+      <p id="pending-orders" class="text-sm text-gray-600">0</p>
     </div>
   </div>
 
@@ -200,7 +200,7 @@
     </div>
     <div>
       <p class="font-semibold text-gray-900">Deliveries In Transit</p>
-      <p class="text-sm text-gray-600">3</p>
+      <p id="in-transit-deliveries" class="text-sm text-gray-600">0</p>
     </div>
   </div>
 
@@ -211,7 +211,7 @@
     </div>
     <div>
       <p class="font-semibold text-gray-900">Completed Orders</p>
-      <p class="text-sm text-gray-600">12</p>
+      <p id="completed-orders" class="text-sm text-gray-600">0</p>
     </div>
   </div>
 </div>
@@ -221,14 +221,7 @@
   <!-- Notifications Panel -->
   <div class="bg-white shadow-md rounded p-4 w-full lg:w-2/3">
   <div class="flex justify-between items-center mb-3">
-    <p class="font-semibold text-gray-900 text-lg">Notifications</p>
-    <button
-      aria-label="Refresh notifications"
-      onclick="fetchNotifications()"
-      class="text-gray-900 text-lg hover:text-blue-700 transition"
-    >
-      <i class="fas fa-sync-alt"></i>
-    </button>
+    <p class="font-semibold text-gray-900 text-lg">Latest Orders</p>
   </div>
 
   <!-- Notification List -->
@@ -420,7 +413,54 @@
 
   </body>
 <script>
+  function updateDashboardStats() {
+    console.log('Fetching dashboard statistics...');
+    fetch('/K-M-Arts-and-Crafts-Creation/backend/dashboard/get_statistics.php')
+      .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+      })
+      .then(result => {
+        console.log('API Response:', result);
+        if (result.success) {
+          const data = result.data;
+          console.log('Dashboard data:', data);
+          
+          // Update all statistics
+          document.getElementById('new-orders').textContent = data.new_orders || 0;
+          document.getElementById('scheduled-deliveries').textContent = data.scheduled_deliveries || 0;
+          document.getElementById('inventory-status').textContent = data.inventory_status || 'Unknown';
+          document.getElementById('pending-orders').textContent = data.pending_orders || 0;
+          document.getElementById('in-transit-deliveries').textContent = data.in_transit_deliveries || 0;
+          document.getElementById('completed-orders').textContent = data.completed_orders || 0;
+
+          // Log individual values for debugging
+          console.log('Individual values:', {
+            new_orders: data.new_orders,
+            scheduled_deliveries: data.scheduled_deliveries,
+            inventory_status: data.inventory_status,
+            pending_orders: data.pending_orders,
+            in_transit_deliveries: data.in_transit_deliveries,
+            completed_orders: data.completed_orders
+          });
+        } else {
+          console.error('API returned success: false', result.error);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching dashboard statistics:', error);
+        // Show error in dashboard for debugging
+        document.getElementById('inventory-status').textContent = 'Error loading data';
+      });
+  }
+
+  // Update stats every 30 seconds
+  setInterval(updateDashboardStats, 30000);
+
   window.addEventListener("DOMContentLoaded", function () {
+    // Load initial statistics
+    updateDashboardStats();
+    
     const userId = localStorage.getItem("user_id");
 
     if (!userId) {
