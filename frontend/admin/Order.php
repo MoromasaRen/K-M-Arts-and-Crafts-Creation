@@ -1,70 +1,87 @@
 <?php
 require_once '../../backend/config/database.php';
 
-function fetchOrders(PDO $pdo, int $limit, int $offset, ?string $search = '', ?string $status = '', ?string $startDate = '', ?string $endDate = ''): array {
-  try {
-      $query = "
-          SELECT 
-              o.order_id, 
-              oi.order_item_id,
-              o.user_id,
-              CONCAT(u.first_name, ' ', u.last_name) as user_name,
-              CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) as user_display,
-              o.order_details, 
-              o.order_date, 
-              o.total_amount, 
-              o.status 
-          FROM orders o
-          LEFT JOIN order_items oi ON o.order_id = oi.order_id
-          LEFT JOIN users u ON o.user_id = u.user_id
-          WHERE 1
-      ";
-      
-      if ($search) {
-          $query .= " AND (u.first_name LIKE :search OR u.last_name LIKE :search)";  // Search by user's name
-      }
-      
-      if ($status) {
-          $query .= " AND o.status = :status";
-      }
-      
-      if ($startDate && $endDate) {
-          $query .= " AND o.order_date BETWEEN :startDate AND :endDate";
-      }
+function fetchOrders(PDO $pdo, int $limit, int $offset, ?string $search = '', ?string $status = '', ?string $startDate = '', ?string $endDate = '', ?string $sortBy = 'order_date', ?string $sortOrder = 'DESC'): array {
+    try {
+        // Whitelist allowed sort columns to prevent SQL injection
+        $allowedSortColumns = ['order_date', 'total_amount', 'status', 'user_name', 'order_id'];
+        $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'order_date';
+        $sortOrder = strtoupper($sortOrder) === 'ASC' ? 'ASC' : 'DESC';
 
-      $query .= " ORDER BY o.order_date DESC LIMIT :limit OFFSET :offset";
+        $query = "
+            SELECT 
+                o.order_id, 
+                oi.order_item_id,
+                o.user_id,
+                CONCAT(u.first_name, ' ', u.last_name) as user_name,
+                CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) as user_display,
+                o.order_details, 
+                o.order_date, 
+                o.total_amount, 
+                o.status 
+            FROM orders o
+            LEFT JOIN order_items oi ON o.order_id = oi.order_id
+            LEFT JOIN users u ON o.user_id = u.user_id
+            WHERE 1
+        ";
+        
+        if ($search) {
+            $query .= " AND (u.first_name LIKE :search OR u.last_name LIKE :search OR CONCAT(u.first_name, ' ', u.last_name) LIKE :search)";
+        }
+        
+        if ($status) {
+            $query .= " AND o.status = :status";
+        }
+        
+        if ($startDate && $endDate) {
+            $query .= " AND o.order_date BETWEEN :startDate AND :endDate";
+        }
 
-      $stmt = $pdo->prepare($query);
-      $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-      $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-      
-      if ($search) {
-          $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
-      }
-      
-      if ($status) {
-          $stmt->bindValue(':status', $status, PDO::PARAM_STR);
-      }
-      
-      if ($startDate && $endDate) {
-          $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
-          $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
-      }
+        // Handle sorting for user_name (which is a computed column)
+        if ($sortBy === 'user_name') {
+            $query .= " ORDER BY CONCAT(u.first_name, ' ', u.last_name) {$sortOrder}";
+        } else {
+            $query .= " ORDER BY o.{$sortBy} {$sortOrder}";
+        }
+        
+        $query .= " LIMIT :limit OFFSET :offset";
 
-      $stmt->execute();
-      return $stmt->fetchAll(PDO::FETCH_ASSOC);
-  } catch (PDOException $e) {
-      echo "❌ Error fetching orders: " . $e->getMessage();
-      return [];
-  }
+        $stmt = $pdo->prepare($query);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        
+        if ($search) {
+            $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+        }
+        
+        if ($status) {
+            $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+        }
+        
+        if ($startDate && $endDate) {
+            $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+            $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "❌ Error fetching orders: " . $e->getMessage();
+        return [];
+    }
 }
 
 function countOrders(PDO $pdo, ?string $search = '', ?string $status = '', ?string $startDate = '', ?string $endDate = ''): int {
     try {
-        $query = "SELECT COUNT(*) FROM orders o LEFT JOIN order_items oi ON o.order_id = oi.order_id WHERE 1";
+        $query = "
+            SELECT COUNT(DISTINCT o.order_id) 
+            FROM orders o 
+            LEFT JOIN users u ON o.user_id = u.user_id 
+            WHERE 1
+        ";
         
         if ($search) {
-            $query .= " AND (o.order_id LIKE :search OR o.user_id LIKE :search OR o.order_details LIKE :search)";
+            $query .= " AND (u.first_name LIKE :search OR u.last_name LIKE :search OR CONCAT(u.first_name, ' ', u.last_name) LIKE :search)";
         }
 
         if ($status) {
@@ -109,10 +126,31 @@ $status = isset($_GET['status']) ? $_GET['status'] : '';
 $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : '';
 $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
+// Sorting parameters
+$sortBy = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'order_date';
+$sortOrder = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'DESC';
+
 $totalOrders = countOrders($pdo, $search, $status, $startDate, $endDate);
 $totalPages = ceil($totalOrders / $limit);
 
-$orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endDate);
+$orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endDate, $sortBy, $sortOrder);
+
+// Helper function to generate sort URLs
+function getSortUrl($column, $currentSort, $currentOrder) {
+    $newOrder = ($currentSort === $column && $currentOrder === 'ASC') ? 'DESC' : 'ASC';
+    $params = $_GET;
+    $params['sort_by'] = $column;
+    $params['sort_order'] = $newOrder;
+    return '?' . http_build_query($params);
+}
+
+// Helper function to get sort icon
+function getSortIcon($column, $currentSort, $currentOrder) {
+    if ($currentSort !== $column) {
+        return ' ↕';
+    }
+    return $currentOrder === 'ASC' ? ' ↑' : ' ↓';
+}
 ?>
 
 <!DOCTYPE html>
@@ -127,6 +165,13 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
     @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
     body {
       font-family: "Roboto Mono", monospace;
+    }
+    .sortable {
+      cursor: pointer;
+      user-select: none;
+    }
+    .sortable:hover {
+      background-color: #f3f4f6;
     }
   </style>
 </head>
@@ -172,31 +217,45 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
 
   <!-- Search and Filter Form -->
   <form class="flex space-x-4 mb-6" method="GET">
-  <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Search by User Name" class="px-3 py-2 border rounded-md w-1/3">
-  <select name="status" class="px-3 py-2 border rounded-md w-1/3">
-    <option value="">All Statuses</option>
-    <option value="pending" <?= $status === 'pending' ? 'selected' : '' ?>>Pending</option>
-    <option value="confirmed" <?= $status === 'confirmed' ? 'selected' : '' ?>>Confirmed</option>
-    <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Completed</option>
-  </select>
-  <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" class="px-3 py-2 border rounded-md">
-  <input type="date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" class="px-3 py-2 border rounded-md">
-  <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Filter</button>
-  <!-- Clear Filters Button -->
-  <a href="Order.php" class="px-3 py-2 bg-gray-300 hover:bg-gray-400 text-[#0f2e4d] text-sm font-semibold rounded">
-    Clear Filters
-  </a>
-</form>
-
+    <!-- Keep current sort parameters when filtering -->
+    <input type="hidden" name="sort_by" value="<?= htmlspecialchars($sortBy) ?>">
+    <input type="hidden" name="sort_order" value="<?= htmlspecialchars($sortOrder) ?>">
+    
+    <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Search by User Name" class="px-3 py-2 border rounded-md w-1/3">
+    <select name="status" class="px-3 py-2 border rounded-md w-1/3">
+      <option value="">All Statuses</option>
+      <option value="pending" <?= $status === 'pending' ? 'selected' : '' ?>>Pending</option>
+      <option value="confirmed" <?= $status === 'confirmed' ? 'selected' : '' ?>>Confirmed</option>
+      <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Completed</option>
+    </select>
+    <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" class="px-3 py-2 border rounded-md">
+    <input type="date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" class="px-3 py-2 border rounded-md">
+    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Filter</button>
+    <!-- Clear Filters Button -->
+    <a href="Order.php" class="px-3 py-2 bg-white hover:bg-gray-100 text-[#0f2e4d] text-sm font-semibold rounded">
+      Clear Filters
+    </a>
+  </form>
 
   <table class="w-full bg-white rounded-md shadow-md text-sm text-[#0f2e4d] border-separate border-spacing-1 mt-6">
     <thead>
       <tr>
-        <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">User Info</th>
+        <th class="text-left font-extrabold px-2 py-1 rounded-tl-md sortable" onclick="window.location='<?= getSortUrl('order_id', $sortBy, $sortOrder) ?>'">
+          Order ID<?= getSortIcon('order_id', $sortBy, $sortOrder) ?>
+        </th>
+        <th class="text-left font-extrabold px-2 py-1 sortable" onclick="window.location='<?= getSortUrl('user_name', $sortBy, $sortOrder) ?>'">
+          User Info<?= getSortIcon('user_name', $sortBy, $sortOrder) ?>
+        </th>
         <th class="text-left font-extrabold px-2 py-1">Order Details</th>
-        <th class="text-left font-extrabold px-2 py-1">Order Date</th>
-        <th class="text-left font-extrabold px-2 py-1">Total Amount</th>
-        <th class="text-left font-extrabold px-2 py-1">Status</th>
+        <th class="text-left font-extrabold px-2 py-1 sortable" onclick="window.location='<?= getSortUrl('order_date', $sortBy, $sortOrder) ?>'">
+          Order Date<?= getSortIcon('order_date', $sortBy, $sortOrder) ?>
+        </th>
+        <th class="text-left font-extrabold px-2 py-1 sortable" onclick="window.location='<?= getSortUrl('total_amount', $sortBy, $sortOrder) ?>'">
+          Total Amount<?= getSortIcon('total_amount', $sortBy, $sortOrder) ?>
+        </th>
+        <th class="text-left font-extrabold px-2 py-1 sortable" onclick="window.location='<?= getSortUrl('status', $sortBy, $sortOrder) ?>'">
+          Status<?= getSortIcon('status', $sortBy, $sortOrder) ?>
+        </th>
         <th class="rounded-tr-md"></th>
       </tr>
     </thead>
@@ -204,33 +263,33 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
       <?php if (count($orders) > 0): ?>
         <?php foreach ($orders as $order): ?>
           <tr class="border-t border-gray-200">
+            <td class="px-2 py-1">#<?= htmlspecialchars($order['order_id']) ?></td>
             <td class="px-2 py-1"><?= htmlspecialchars($order['user_display']) ?></td>
             <td class="px-2 py-1"><?= htmlspecialchars($order['order_details']) ?></td>
             <td class="px-2 py-1"><?= htmlspecialchars($order['order_date']) ?></td>
             <td class="px-2 py-1">₱<?= number_format($order['total_amount'], 2) ?></td>
             <td class="px-2 py-1 capitalize"><?= htmlspecialchars($order['status']) ?></td>
-<td class="px-2 py-1 text-center space-x-2">
-<button 
-  class="text-blue-600 hover:underline text-xs edit-btn" 
-  data-id="<?= $order['order_id'] ?>"
-  data-userid="<?= htmlspecialchars($order['user_id']) ?>"
-  data-details="<?= htmlspecialchars($order['order_details']) ?>"
-  data-date="<?= htmlspecialchars($order['order_date']) ?>"
-  data-amount="<?= $order['total_amount'] ?>"
-  data-status="<?= htmlspecialchars($order['status']) ?>"
->Edit</button>
-  <button 
-    class="text-red-600 hover:underline text-xs delete-btn" 
-    data-id="<?= $order['order_id'] ?>">
-    Delete
-  </button>
-</td>
+            <td class="px-2 py-1 text-center space-x-2">
+              <button 
+                class="text-blue-600 hover:underline text-xs edit-btn" 
+                data-id="<?= $order['order_id'] ?>"
+                data-userid="<?= htmlspecialchars($order['user_id']) ?>"
+                data-details="<?= htmlspecialchars($order['order_details']) ?>"
+                data-date="<?= htmlspecialchars($order['order_date']) ?>"
+                data-amount="<?= $order['total_amount'] ?>"
+                data-status="<?= htmlspecialchars($order['status']) ?>"
+              >Edit</button>
+              <button 
+                class="text-red-600 hover:underline text-xs delete-btn" 
+                data-id="<?= $order['order_id'] ?>">
+                Delete
+              </button>
             </td>
           </tr>
         <?php endforeach; ?>
       <?php else: ?>
         <tr>
-          <td colspan="6" class="text-center py-4">No orders found.</td>
+          <td colspan="7" class="text-center py-4">No orders found.</td>
         </tr>
       <?php endif; ?>
     </tbody>
@@ -265,7 +324,6 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
   </form>
 </div>
 
-
 <!-- Pagination Controls -->
 <div class="mt-4 flex justify-center space-x-2 text-[#0f2e4d]">
   <?php
@@ -273,7 +331,9 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
       'search' => $search ?? '',
       'status' => $status ?? '',
       'start_date' => $startDate ?? '',
-      'end_date' => $endDate ?? ''
+      'end_date' => $endDate ?? '',
+      'sort_by' => $sortBy,
+      'sort_order' => $sortOrder
     ];
   ?>
 
@@ -298,7 +358,6 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
     </a>
   <?php endif; ?>
 </div>
-
 
 </main>
 
@@ -329,49 +388,50 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
       }
     });
   });
+
   // Order Modal logic
-const orderModal = document.getElementById("manageOrderModal");
-const orderForm = document.getElementById("orderForm");
-const closeOrderModalBtn = document.getElementById("closeOrderModalBtn");
+  const orderModal = document.getElementById("manageOrderModal");
+  const orderForm = document.getElementById("orderForm");
+  const closeOrderModalBtn = document.getElementById("closeOrderModalBtn");
 
-document.querySelectorAll(".edit-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.getElementById("order_id").value = btn.dataset.id;
-    document.getElementById("user_id").value = btn.dataset.userid;
-    document.getElementById("order_details").value = btn.dataset.details;
-    const dateOnly = btn.dataset.date.split(':').slice(0, 2).join(':'); // removes seconds
-document.getElementById("order_date").value = dateOnly.replace(" ", "T");
-    document.getElementById("total_amount").value = btn.dataset.amount;
-    document.getElementById("status").value = btn.dataset.status;
+  document.querySelectorAll(".edit-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("order_id").value = btn.dataset.id;
+      document.getElementById("user_id").value = btn.dataset.userid;
+      document.getElementById("order_details").value = btn.dataset.details;
+      const dateOnly = btn.dataset.date.split(':').slice(0, 2).join(':'); // removes seconds
+      document.getElementById("order_date").value = dateOnly.replace(" ", "T");
+      document.getElementById("total_amount").value = btn.dataset.amount;
+      document.getElementById("status").value = btn.dataset.status;
 
-    orderModal.classList.remove("hidden");
+      orderModal.classList.remove("hidden");
+    });
   });
-});
 
-closeOrderModalBtn.addEventListener("click", () => {
-  orderModal.classList.add("hidden");
-});
+  closeOrderModalBtn.addEventListener("click", () => {
+    orderModal.classList.add("hidden");
+  });
 
-// Handle update via fetch
-orderForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-  const formData = new FormData(orderForm);
+  // Handle update via fetch
+  orderForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const formData = new FormData(orderForm);
 
-  fetch(orderForm.action, {
-    method: "POST",
-    body: new URLSearchParams(formData),
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("Order updated successfully!");
-        location.reload();
-      } else {
-        alert("Failed to update order: " + data.error);
-      }
+    fetch(orderForm.action, {
+      method: "POST",
+      body: new URLSearchParams(formData),
     })
-    .catch(() => alert("Error updating order."));
-});
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("Order updated successfully!");
+          location.reload();
+        } else {
+          alert("Failed to update order: " + data.error);
+        }
+      })
+      .catch(() => alert("Error updating order."));
+  });
 
   window.addEventListener("DOMContentLoaded", function () {
     const userId = localStorage.getItem("user_id");
@@ -381,7 +441,6 @@ orderForm.addEventListener("submit", function (e) {
       document.getElementById("admin-name").textContent = "";
       return;
     }
-
 
     fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
       .then((response) => response.json())
