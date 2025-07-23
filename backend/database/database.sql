@@ -67,12 +67,14 @@ CREATE TABLE order_items (
 CREATE TABLE deliveries (
     delivery_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
+    user_id INT,
     scheduled_time DATETIME,
     actual_delivery_time DATETIME,
     delivery_status ENUM('scheduled', 'in_transit', 'delivered') DEFAULT 'scheduled',
     courier_type ENUM('Move It', 'Maxim', 'Motor') DEFAULT 'Motor',
     plate_number VARCHAR(20),
     FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Insert Products
