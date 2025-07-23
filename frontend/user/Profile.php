@@ -185,10 +185,6 @@ if (!isset($_SESSION['user_id'])) {
                       value="sample@gmail.com"
                     />
                   </div>
-                  <div>
-                    <p class="text-xs font-semibold tracking-widest">User Role</p>
-                    <p class="font-bold text-sm">Admin</p>
-                  </div>
                 </div>
 
                 <!-- Address Section -->
