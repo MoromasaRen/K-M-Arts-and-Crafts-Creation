@@ -12,9 +12,9 @@
         font-family: "Roboto Mono", monospace;
       }
 
-      /* Hide scrollbar but keep scroll functionality */
+      
       #product-scroll {
-        scrollbar-width: none; /* Firefox */
+        scrollbar-width: none; 
         -ms-overflow-style: none; /* IE 10+ */
       }
       #product-scroll::-webkit-scrollbar {
