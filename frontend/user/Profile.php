@@ -545,10 +545,10 @@ if (!isset($_SESSION['user_id'])) {
         document.getElementById("email-text").textContent = data.email || '';
         document.getElementById("dob-text").textContent = dobDisplay || '';
         document.getElementById("phone-text").textContent = data.contact_number || '';
-        document.getElementById("address-text").textContent = data.address || 'Not provided';
-        document.getElementById("country-text").textContent = data.country || 'Philippines';
-        document.getElementById("city-text").textContent = data.city || 'Cebu';
-        document.getElementById("postal-code-text").textContent = data.postal_code || '6000';
+        document.getElementById("address-text").textContent = data.address || '';
+        document.getElementById("country-text").textContent = data.country || '';
+        document.getElementById("city-text").textContent = data.city || '';
+        document.getElementById("postal-code-text").textContent = data.postal_code || '';
 
         document.getElementById("first-name-input").value = data.first_name || '';
         document.getElementById("last-name-input").value = data.last_name || '';
@@ -556,14 +556,14 @@ if (!isset($_SESSION['user_id'])) {
         document.getElementById("dob-input").value = data.dateofbirth || '';
         document.getElementById("phone-input").value = data.contact_number || '';
         document.getElementById("address-input").value = data.address || '';
-        document.getElementById("country-input").value = data.country || 'Philippines';
-        document.getElementById("city-input").value = data.city || 'Cebu';
-        document.getElementById("postal-code-input").value = data.postal_code || '6000';
+        document.getElementById("country-input").value = data.country || '';
+        document.getElementById("city-input").value = data.city || '';
+        document.getElementById("postal-code-input").value = data.postal_code || '';
 
         document.getElementById("sidebar-first-name").textContent = data.first_name || '';
         document.getElementById("sidebar-last-name").textContent = data.last_name || '';
         document.getElementById("summary-username").textContent = `${data.first_name || ''} ${data.last_name || ''}`;
-        document.getElementById("summary-address").textContent = `${data.country || 'Philippines'}, ${data.city || 'Cebu'} ${data.postal_code || '6000'}`;
+        document.getElementById("summary-address").textContent = `${data.country || ''}, ${data.city || ''} ${data.postal_code || ''}`;
       });
       
   loadPreviousOrders(userId);
