@@ -235,12 +235,13 @@ if (!isset($_SESSION['user_id'])) {
                 .then(data => {
                   console.log("Order Response:", data);
                   if (data.success) {
-                    localStorage.removeItem("cart");
-                    showSuccessModal();
-                  } else {
-                    console.error("Error:", data);
-                    alert("Order failed: " + (data.error || "Unknown error"));
-                  }
+                localStorage.removeItem("cart");
+                showSuccessModal();
+              } else {
+                console.error("Error:", data);
+                alert("Order failed: " + (data.message || "Unknown error"));
+              }
+
                 })
                 .catch(err => {
                   console.error("Network error or fetch failed:", err);

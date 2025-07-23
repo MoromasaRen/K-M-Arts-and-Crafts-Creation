@@ -41,21 +41,52 @@ try {
         exit;
     }
 
+    // Check stock for all items first
+    foreach ($items as $item) {
+        $stockCheck = $pdo->prepare("SELECT product_name, product_quantity FROM products WHERE product_id = ?");
+        $stockCheck->execute([$item->product_id]);
+        $product = $stockCheck->fetch(PDO::FETCH_ASSOC);
+
+        if (!$product) {
+            echo json_encode([
+                'success' => false,
+                'message' => "Product ID {$item->product_id} not found."
+            ]);
+            exit;
+        }
+
+        $productName = $product['product_name'];
+        $availableStock = (int) $product['product_quantity'];
+
+        if ($availableStock <= 0) {
+            echo json_encode([
+                'success' => false,
+                'message' => "$productName is out of stock."
+            ]);
+            exit;
+        }
+
+        if ($item->quantity > $availableStock) {
+            echo json_encode([
+                'success' => false,
+                'message' => "Insufficient stock for $productName. Available: $availableStock, Requested: {$item->quantity}"
+            ]);
+            exit;
+        }
+    }
+
     // Insert into orders table
     $stmt = $pdo->prepare("INSERT INTO orders (user_id, order_details, total_amount, status) VALUES (?, ?, ?, 'pending')");
     $stmt->execute([$user_id, $order_details, $total_amount]);
     $order_id = $pdo->lastInsertId();
 
-    // Insert items into order_items table
+    // Insert each item into order_items and update stock
     foreach ($items as $item) {
-        $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price, total_units) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([
-            $order_id,
-            $item->product_id,
-            $item->quantity,
-            $item->price,
-            $item->total_units
-        ]);
+        $insertItem = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity) VALUES (?, ?, ?)");
+        $insertItem->execute([$order_id, $item->product_id, $item->quantity]);
+
+        $updateStock = $pdo->prepare("UPDATE products SET product_quantity = product_quantity - ? WHERE product_id = ?");
+        $updateStock->execute([$item->quantity, $item->product_id]);
     }
 
     echo json_encode(['success' => true, 'order_id' => $order_id]);
