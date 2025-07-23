@@ -520,7 +520,7 @@
           localStorage.removeItem("user_id");
           localStorage.removeItem("user_type");
           localStorage.removeItem("username");
-          window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
+          window.location.href = "/K-M-Arts-and-Crafts-Creation/index.php";
         })
         .catch(err => {
           console.error("Logout failed:", err);
@@ -534,7 +534,7 @@
 
         if (!userId) {
           alert("Please log in to view your profile.");
-          window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
+          window.location.href = "/K-M-Arts-and-Crafts-Creation/index.php";
           return;
         }
 
