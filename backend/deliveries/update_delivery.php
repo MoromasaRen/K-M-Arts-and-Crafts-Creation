@@ -2,7 +2,7 @@
 require_once '../../backend/config/database.php';
 
 $data = $_POST;
-$fields = ['delivery_id','order_id','staff_id','scheduled_time','delivery_status','courier_type','plate_number'];
+$fields = ['delivery_id','order_id','scheduled_time','delivery_status','courier_type','plate_number'];
 
 try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

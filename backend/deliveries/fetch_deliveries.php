@@ -1,105 +1,86 @@
 <?php
-header('Content-Type: application/json');
-require_once '../config/database.php';
-
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 15;
-$offset = ($page - 1) * $limit;
-$status = isset($_GET['status']) ? $_GET['status'] : '';
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-
-
-
-
+require_once '../../backend/config/database.php';
 
 try {
-    // Base query
-    $sql = "SELECT d.*, o.order_details, o.user_id,
-            CONCAT('Order #', o.order_id, ' - ', o.order_details) as order_info,
-            CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) as user_info,
-            CONCAT(u.first_name, ' ', u.last_name) as user_name
-            FROM deliveries d 
-            LEFT JOIN orders o ON d.order_id = o.order_id
-            LEFT JOIN users u ON o.user_id = u.user_id
-            WHERE 1=1";
-    $countSql = "SELECT COUNT(*) as total FROM deliveries d 
-                 LEFT JOIN orders o ON d.order_id = o.order_id 
-                 LEFT JOIN users u ON o.user_id = u.user_id
-                 WHERE 1=1";
+    $page = (int)($_GET['page'] ?? 1);
+    $limit = (int)($_GET['limit'] ?? 15);
+    $offset = ($page - 1) * $limit;
+    $status = $_GET['status'] ?? '';
+    $search = $_GET['search'] ?? '';
 
-    // Add status filter if provided
-    if ($status !== '') {
-        $sql .= " AND d.delivery_status = :status";
-        $countSql .= " AND d.delivery_status = :status";
-    }
-
-    // Add search if provided
-    if ($search !== '') {
-        $sql .= " AND (d.delivery_id LIKE :search1 
-                 OR d.plate_number LIKE :search2 
-                 OR o.order_details LIKE :search3
-                 OR u.first_name LIKE :search4
-                 OR u.last_name LIKE :search5)";
-        $countSql .= " AND (d.delivery_id LIKE :search1 
-                      OR d.plate_number LIKE :search2
-                      OR u.first_name LIKE :search4
-                      OR u.last_name LIKE :search5)";
-    }
-
-    // Get total count
-    $stmt = $pdo->prepare($countSql);
+    // Build the query with proper JOINs
+    $sql = "SELECT 
+                d.delivery_id,
+                d.order_id,
+                d.user_id,
+                d.scheduled_time,
+                d.delivery_status,
+                d.courier_type,
+                d.plate_number,
+                CONCAT(u.first_name, ' ', u.last_name) as user_info,
+                u.first_name,
+                u.last_name,
+                o.order_details,
+                o.order_details as order_info,
+                o.status as order_status
+            FROM deliveries d
+            LEFT JOIN users u ON d.user_id = u.user_id
+            LEFT JOIN orders o ON d.order_id = o.order_id";
     
-    // Bind parameters for count query
-    if ($status !== '') {
-        $stmt->bindValue(':status', $status, PDO::PARAM_STR);
-    }
-    if ($search !== '') {
-        $searchParam = "%$search%";
-        $stmt->bindValue(':search1', $searchParam, PDO::PARAM_STR);
-        $stmt->bindValue(':search2', $searchParam, PDO::PARAM_STR);
-        $stmt->bindValue(':search4', $searchParam, PDO::PARAM_STR);
-        $stmt->bindValue(':search5', $searchParam, PDO::PARAM_STR);
+    $params = [];
+    $conditions = [];
+    
+    if ($status) {
+        $conditions[] = "d.delivery_status = :status";
+        $params[':status'] = $status;
     }
     
-    $stmt->execute();
-    $totalCount = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-    // Add pagination
+    if ($search) {
+        $conditions[] = "(u.first_name LIKE :search OR u.last_name LIKE :search OR o.order_details LIKE :search OR d.delivery_id LIKE :search)";
+        $params[':search'] = "%$search%";
+    }
+    
+    if ($conditions) {
+        $sql .= " WHERE " . implode(' AND ', $conditions);
+    }
+    
     $sql .= " ORDER BY d.delivery_id DESC LIMIT :limit OFFSET :offset";
-
-    // Get paginated results
+    
     $stmt = $pdo->prepare($sql);
-    
-    // Bind all parameters
-    if ($status !== '') {
-        $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value);
     }
-    if ($search !== '') {
-        $searchParam = "%$search%";
-        $stmt->bindValue(':search1', $searchParam, PDO::PARAM_STR);
-        $stmt->bindValue(':search2', $searchParam, PDO::PARAM_STR);
-        $stmt->bindValue(':search3', $searchParam, PDO::PARAM_STR);
-        $stmt->bindValue(':search4', $searchParam, PDO::PARAM_STR);
-        $stmt->bindValue(':search5', $searchParam, PDO::PARAM_STR);
-    }
-    
-    // Bind pagination parameters as integers
-    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-    
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
+    
     $deliveries = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
+    // Get total count for pagination
+    $countSql = "SELECT COUNT(*) FROM deliveries d LEFT JOIN users u ON d.user_id = u.user_id LEFT JOIN orders o ON d.order_id = o.order_id";
+    if ($conditions) {
+        $countSql .= " WHERE " . implode(' AND ', $conditions);
+    }
+    
+    $countStmt = $pdo->prepare($countSql);
+    foreach ($params as $key => $value) {
+        if ($key !== ':limit' && $key !== ':offset') {
+            $countStmt->bindValue($key, $value);
+        }
+    }
+    $countStmt->execute();
+    $total = $countStmt->fetchColumn();
+    
     echo json_encode([
         'success' => true,
         'data' => $deliveries,
-        'total' => $totalCount,
-        'page' => $page,
-        'limit' => $limit
+        'total' => (int)$total
     ]);
-} catch (PDOException $e) {
+    
+} catch (Exception $e) {
     echo json_encode([
         'success' => false,
-        'error' => 'Database error: ' . $e->getMessage()
+        'error' => $e->getMessage()
     ]);
 }
+?>

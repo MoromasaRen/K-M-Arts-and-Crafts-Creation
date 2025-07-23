@@ -185,6 +185,17 @@
         .then(data => {
           console.log('Deliveries response:', data);
           if (!data.success) return alert(data.error || 'Failed to load deliveries');
+          
+          // Debug: Check if any deliveries have null user_info
+          data.data.forEach(delivery => {
+            if (!delivery.user_info || delivery.user_info === 'null') {
+              console.warn('Delivery with null user_info:', delivery);
+            }
+            if (!delivery.order_details || delivery.order_details === 'null') {
+              console.warn('Delivery with null order_details:', delivery);
+            }
+          });
+          
           populateTable(data.data, page, data.total);
           currentPage = page;
         })
@@ -576,26 +587,44 @@
           throw new Error(deliveryResult.error || deliveryResult.message || 'Failed to save delivery');
         }
         
+        console.log('Delivery saved successfully');
+        
         // If delivery status is "delivered", update order status to "completed"
         if (status === 'delivered') {
           try {
             console.log('Updating order status to completed for order:', orderId);
+            const orderUpdateData = new URLSearchParams();
+            orderUpdateData.append('order_id', orderId);
+            orderUpdateData.append('status', 'completed');
+            
             const orderResponse = await fetch('../../backend/orders/update_order.php', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
               },
-              body: `order_id=${orderId}&status=completed`
+              body: orderUpdateData
             });
             
-            const orderResult = await orderResponse.json();
-            if (!orderResult.success) {
+            const orderResponseText = await orderResponse.text();
+            console.log('Order update response:', orderResponseText);
+            
+            let orderResult;
+            try {
+              orderResult = JSON.parse(orderResponseText);
+            } catch (e) {
+              console.warn('Could not parse order response as JSON:', orderResponseText);
+              // Continue anyway, the delivery was saved successfully
+            }
+            
+            if (orderResult && !orderResult.success) {
               console.warn('Order status update failed:', orderResult.error);
+              // Don't throw error here, delivery was successful
             } else {
               console.log('Order status updated successfully');
             }
           } catch (orderError) {
             console.warn('Error updating order status:', orderError);
+            // Don't throw error here, delivery was successful
           }
         }
         
