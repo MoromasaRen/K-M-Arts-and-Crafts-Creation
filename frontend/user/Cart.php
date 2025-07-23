@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-  echo "<script>alert('You must be logged in to access the cart.'); window.location.href='/K-M-Arts-and-Crafts-Creation/frontend/auth/Login.html';</script>";
+  echo "<script>alert('You must be logged in to access the cart.'); window.location.href='/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html';</script>";
   exit;
 }
 ?>
