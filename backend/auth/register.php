@@ -15,7 +15,7 @@ if (
 $hashedPassword = password_hash($data->password, PASSWORD_BCRYPT);
 
 try {
-    $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, contact_number, email, password, user_type) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO users (first_name, last_name, contact_number, email, password, user_type) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->execute([
         $data->first_name,
         $data->last_name,
