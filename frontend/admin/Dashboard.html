@@ -32,12 +32,35 @@
         .animate-fadeIn {
           animation: fadeIn 0.3s ease-out forwards;
         }
+
+        /* Overlay for sidebar */
+        .sidebar-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 20;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .sidebar-overlay.active {
+          opacity: 1;
+          visibility: visible;
+          transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
       </style>
   </head>
 
-  <body class="bg-[#d3e1f9] min-h-screen flex">
+  <body class="bg-[#d3e1f9] min-h-screen">
+    <!-- Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
     <!-- Sidebar -->
-    <aside id="sidebar" class="bg-white w-[350px] flex flex-col p-6 fixed h-full z-30 transition-transform duration-300 ease-in-out transform -translate-x-full md:translate-x-0 shadow-lg">
+    <aside id="sidebar" class="bg-white w-[350px] flex flex-col p-6 fixed h-full z-30 transition-transform duration-300 ease-in-out transform -translate-x-full shadow-lg">
       <div class="mb-6">
         <img
           src="/K-M-Arts-and-Crafts-Creation/assets/Logo.png"
@@ -97,8 +120,8 @@
       </nav>
     </aside>
 
-    <!-- Main content -->
-    <main class="flex-1 p-6 flex flex-col gap-6 md:ml-[350px] transition-all duration-300">
+    <!-- Main content - Now always full width -->
+    <main class="flex-1 p-6 flex flex-col gap-6 w-full transition-all duration-300">
       <!-- Top bar -->
       <div class="flex items-center gap-3 mb-2">
         <button 
@@ -132,12 +155,6 @@
           <p class="font-semibold text-gray-900 mb-1">
             New Orders: <span id="new-orders" class="font-normal">0</span>
           </p>
-          <p
-            onclick="openModal('orders')"
-            class="text-xs text-gray-600 cursor-pointer hover:underline"
-          >
-            More info
-          </p>
         </div>
 
         <!-- Deliveries -->
@@ -154,12 +171,6 @@
           <p class="font-semibold text-gray-900 mb-1">
             Scheduled Deliveries: <span id="scheduled-deliveries" class="font-normal">0</span>
           </p>
-          <p
-            onclick="openModal('deliveries')"
-            class="text-xs text-gray-600 cursor-pointer hover:underline"
-          >
-            More info
-          </p>
         </div>
 
         <!-- Inventory -->
@@ -175,12 +186,6 @@
           </div>
           <p class="font-semibold text-gray-900 mb-1">
             Inventory Status: <span id="inventory-status" class="font-normal">Loading...</span>
-          </p>
-          <p
-            onclick="openModal('inventory')"
-            class="text-xs text-gray-600 cursor-pointer hover:underline"
-          >
-            More info
           </p>
         </div>
       </div>
@@ -246,21 +251,23 @@
     href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Order.php"
     class="text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white w-full text-center"
   >
-    See Orders
+    Open Orders
   </a>
-  <button
-    data-type="delivery"
-    class="openManageModal text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white w-full"
+  <a
+    href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Delivery.php"
+    class="text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white w-full text-center"
   >
-    Schedule a Delivery
-  </button>
-  <button
-    data-type="inventory"
-    class="openManageModal text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white w-full"
+    Open Deliveries
+  </a>
+ <a
+    href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Inventory.php"
+    class="text-blue-900 font-semibold text-lg px-6 py-4 rounded-full shadow hover:shadow-lg transition bg-white w-full text-center"
   >
-    Add to Inventory
-  </button>
+    Open Inventory
+    </a>
+  </div>
 </div>
+    </main>
 
     <!-- Manage Modal -->
     <div id="manageModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
@@ -353,71 +360,13 @@
         </div>
       </form>
     </div>
-
-    <!-- Info Modal -->
-    <div
-      id="infoModal"
-      class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden justify-center items-center"
-    >
-      <div class="bg-white rounded-lg p-6 max-w-md w-full shadow-lg relative">
-        <button
-          onclick="closeModal()"
-          class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
-        >
-          <i class="fas fa-times"></i>
-        </button>
-        <h2 id="modalTitle" class="text-lg font-bold mb-2 text-[#0f2e4d]">
-          More Info
-        </h2>
-        <p id="modalContent" class="text-gray-700 text-sm mb-4">Loading...</p>
-        <a
-          id="modalLink"
-          href="#"
-          class="inline-block px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition"
-          >Go to Page</a
-        >
-      </div>
-    </div>
-
-    <!-- Welcome Modal -->
-    <div
-      id="welcomeModal"
-      class="fixed inset-0 z-60 bg-black bg-opacity-60 hidden justify-center items-center"
-    >
-      <div
-        class="bg-white rounded-lg p-8 max-w-sm w-full shadow-lg relative text-center"
-      >
-        <button
-          onclick="closeWelcomeModal()"
-          class="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
-          aria-label="Close Welcome Modal"
-        >
-          <i class="fas fa-times fa-lg"></i>
-        </button>
-        <h2 class="text-2xl font-bold mb-4 text-[#0f2e4d]">Welcome!</h2>
-        <p class="text-gray-700 mb-6">
-          Welcome to the Dashboard. Have a productive day Admin!
-        </p>
-        <button
-          onclick="closeWelcomeModal()"
-          class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-
-
     <!-- External JavaScript -->
-    <script src="/K-M-Arts-and-Crafts-Creation/frontend/admin/js/modal-manage.js"></script>
-    <script src="/K-M-Arts-and-Crafts-Creation/frontend/admin/js/modal-info.js"></script>
-    <script src="/K-M-Arts-and-Crafts-Creation/frontend/admin/js/modal-welcome.js"></script>
     <script src="/K-M-Arts-and-Crafts-Creation/frontend/admin/js/init.js"></script>
     <script src="/K-M-Arts-and-Crafts-Creation/frontend/admin/js/animations.js"></script>
     <script src="/K-M-Arts-and-Crafts-Creation/frontend/admin/js/notifications.js"></script>
-
   </body>
 <script>
+  
   function updateDashboardStats() {
     console.log('Fetching dashboard statistics...');
     fetch('/K-M-Arts-and-Crafts-Creation/backend/dashboard/get_statistics.php')
@@ -463,40 +412,42 @@
   setInterval(updateDashboardStats, 30000);
 
   // Sidebar Toggle Function
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const main = document.querySelector('main');
-    
-    // Toggle sidebar
-    if (sidebar.classList.contains('-translate-x-full')) {
-      sidebar.classList.remove('-translate-x-full');
-      if (window.innerWidth >= 768) { // Only adjust margin on desktop
-        main.classList.add('md:ml-[350px]');
-        main.classList.remove('ml-0');
-      }
-    } else {
-      sidebar.classList.add('-translate-x-full');
-      if (window.innerWidth >= 768) { // Only adjust margin on desktop
-        main.classList.remove('md:ml-[350px]');
-        main.classList.add('ml-0');
-      }
-    }
-  }
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
 
-  // Close sidebar when clicking outside or on content elements on mobile
-  document.addEventListener('click', function(e) {
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const isClickingMainContent = document.querySelector('main').contains(e.target);
-    
-    if ((!sidebar.contains(e.target) || isClickingMainContent) && 
-        !sidebarToggle.contains(e.target) && 
-        !sidebar.classList.contains('-translate-x-full') && 
-        window.innerWidth < 768) {
-      toggleSidebar();
-    }
+  const isOpen = sidebar.classList.contains("translate-x-0");
+
+  if (isOpen) {
+    // Close sidebar
+    sidebar.classList.remove("translate-x-0");
+    sidebar.classList.add("-translate-x-full");
+    overlay.classList.remove("active");
+  } else {
+    // Open sidebar
+    sidebar.classList.remove("-translate-x-full");
+    sidebar.classList.add("translate-x-0");
+    overlay.classList.add("active");
+  }
+}
+
+  // Close sidebar when clicking on overlay
+  document.getElementById('sidebarOverlay').addEventListener('click', function() {
+    toggleSidebar();
   });
 
+  // Close sidebar when pressing Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('translate-x-0')) {
+        toggleSidebar();
+      }
+    }
+  });
+document.getElementById('sidebarOverlay').addEventListener('click', function () {
+  toggleSidebar();
+});
   window.addEventListener("DOMContentLoaded", function () {
     // Load initial statistics
     updateDashboardStats();
