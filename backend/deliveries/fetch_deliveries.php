@@ -11,7 +11,7 @@ try {
     // Build the query with proper JOINs
     $sql = "SELECT 
                 d.*,
-                CONCAT('#', d.user_id, ' - ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, '')) as user_info,
+                CONCAT('#', d.user_id, ' - ', COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, ''), ' User') as user_info,
                 u.first_name,
                 u.last_name,
                 o.order_details,
