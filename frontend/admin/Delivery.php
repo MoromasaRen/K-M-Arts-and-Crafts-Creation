@@ -45,11 +45,33 @@
 
   <main class="flex-1 p-6 relative">
     <!-- Header -->
-    <div class="flex items-center mb-4 text-[#0f2e4d]">
-      <button class="text-2xl mr-3">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h2 class="font-extrabold text-lg border-b border-[#0f2e4d] pb-1">Deliveries</h2>
+    <div class="flex items-center justify-between mb-4 text-[#0f2e4d]">
+      <div class="flex items-center">
+        <button class="text-2xl mr-3">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h2 class="font-extrabold text-lg border-b border-[#0f2e4d] pb-1">Deliveries</h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <input type="text" id="searchInput" placeholder="Search deliveries..." 
+                 class="rounded-md px-3 py-1 pr-8 text-sm border focus:outline-none focus:border-blue-500">
+          <button id="searchBtn" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="flex rounded-md shadow-sm">
+          <button class="status-filter px-3 py-1 text-xs font-bold border-r" data-status="scheduled">
+            Scheduled
+          </button>
+          <button class="status-filter px-3 py-1 text-xs font-bold border-r" data-status="in_transit">
+            In Transit
+          </button>
+          <button class="status-filter px-3 py-1 text-xs font-bold" data-status="delivered">
+            Delivered
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Table -->
@@ -82,13 +104,12 @@
         <button type="button" id="closeModalBtn" class="absolute top-2 right-2 font-bold text-xl text-[#0f2e4d]">&times;</button>
         <h3 id="modalTitle" class="bg-[#a9c5ff] inline-block px-3 py-1 font-extrabold text-sm mb-4">Manage Delivery</h3>
         <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
-          <label class="flex flex-col">
-            Delivery ID
-            <input name="delivery_id" id="delivery_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
-          </label>
-          <label class="flex flex-col">
+          <input type="hidden" name="delivery_id" id="delivery_id">
+          <label class="flex flex-col col-span-2">
             Order ID
-            <input name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+            <select name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+              <option value="">Select an order</option>
+            </select>
           </label>
           <label class="flex flex-col">
             Scheduled Time
@@ -96,11 +117,19 @@
           </label>
           <label class="flex flex-col">
             Status
-            <input name="delivery_status" id="delivery_status" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+            <select name="delivery_status" id="delivery_status" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+              <option value="scheduled">Scheduled</option>
+              <option value="in_transit">In Transit</option>
+              <option value="delivered">Delivered</option>
+            </select>
           </label>
           <label class="flex flex-col">
             Courier
-            <input name="courier_type" id="courier_type" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+            <select name="courier_type" id="courier_type" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+              <option value="Move It">Move It</option>
+              <option value="Maxim">Maxim</option>
+              <option value="Motor">Motor</option>
+            </select>
           </label>
           <label class="flex flex-col col-span-2">
             Plate Number
@@ -133,20 +162,26 @@
 row.className = 'border-t border-gray-200';
 row.innerHTML = `
   <td class="px-2 py-1">${d.delivery_id}</td>
-  <td class="px-2 py-1">${d.order_details}</td>
+  <td class="px-2 py-1">${d.order_details || d.order_id}</td>
   <td class="px-2 py-1">${d.scheduled_time}</td>
   <td class="px-2 py-1">${d.delivery_status}</td>
   <td class="px-2 py-1">${d.courier_type}</td>
   <td class="px-2 py-1">${d.plate_number}</td>
   <td class="px-2 py-1 text-right">
     <button class="editBtn text-blue-600 text-xs mr-2" data='${JSON.stringify(d)}'>Edit</button>
-    <button
-      class="deleteBtn text-red-600 text-xs"
-      data-id="${d.delivery_id}"
-      onclick="handleDelete(this)"
+    
+    
+    <form
+      method = "POST"
+      action="../../backend/deliveries/delete_delivery.php"
+      class="inline"
+      onsubmit="return confirm('Are you sure you want to delete this delivery?')"
     >
+    <input type="hidden" name="delivery_id" value="${d.delivery_id}">
+    <button type="submit" class="deleteBtn text-red-600 text-xs">
       Delete
     </button>
+    </form>
   </td>`;
         tbody.appendChild(row);
       });
@@ -197,10 +232,28 @@ row.innerHTML = `
       form.action = action;
 
       const fields = ['delivery_id', 'order_id', 'scheduled_time', 'delivery_status', 'courier_type', 'plate_number'];
+      const isEdit = title.includes('Edit');
+
+      // Handle the order_id select differently for create vs edit
+      const orderSelect = document.getElementById('order_id');
+      if (isEdit) {
+        orderSelect.innerHTML = `<option value="${data.order_id}">Order #${data.order_id}</option>`;
+        orderSelect.disabled = true;
+      } else {
+        orderSelect.disabled = false;
+        loadOrders(); // Reload orders for new delivery
+      }
+
       fields.forEach(f => {
         const input = document.getElementById(f);
-        input.value = data[f] || '';
-        input.readOnly = (f === 'delivery_id' && title.includes('Edit'));
+        if (f === 'delivery_id') {
+          input.value = data[f] || '';
+          input.readOnly = isEdit;
+        } else if (f === 'order_id' && isEdit) {
+          // Skip order_id as it's handled above
+        } else {
+          input.value = data[f] || '';
+        }
       });
 
       modal.classList.remove('hidden');
@@ -210,33 +263,115 @@ row.innerHTML = `
     document.getElementById('closeModalBtn').onclick = () => modal.classList.add('hidden');
     modal.onclick = e => { if (e.target === modal) modal.classList.add('hidden'); };
 
-    window.addEventListener('DOMContentLoaded', () => loadPage());
-    function handleDelete(button) {
-  const id = button.getAttribute('data-id');
+    // Add these variables at the top of your script
+    let currentStatus = '';
+    let searchQuery = '';
 
-  if (confirm("Are you sure you want to delete this delivery?")) {
-    fetch(`../../backend/deliveries/delete_delivery.php`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: `id=${encodeURIComponent(id)}`
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("Delivery deleted successfully.");
-        loadPage(currentPage); // reload the current page
-      } else {
-        alert(data.error || "Failed to delete delivery.");
+    function applyStatusFilter(status) {
+      currentStatus = status;
+      document.querySelectorAll('.status-filter').forEach(btn => {
+        if (btn.dataset.status === status) {
+          btn.classList.add('bg-blue-500', 'text-white');
+        } else {
+          btn.classList.remove('bg-blue-500', 'text-white');
+        }
+      });
+      loadPage(1);
+    }
+
+    // Update loadPage function to include status and search
+    function loadPage(page = 1) {
+      const params = new URLSearchParams({
+        page: page,
+        limit: limit
+      });
+      
+      if (currentStatus) {
+        params.append('status', currentStatus);
       }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("An error occurred while deleting.");
+      
+      if (searchQuery) {
+        params.append('search', searchQuery);
+      }
+
+      fetch(`../../backend/deliveries/fetch_deliveries.php?${params}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) return alert(data.error || 'Failed to load deliveries');
+          populateTable(data.data, page, data.total);
+        });
+    }
+
+    // Add event listeners for search and filter
+    document.querySelectorAll('.status-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const status = btn.dataset.status;
+        applyStatusFilter(status === currentStatus ? '' : status);
+      });
     });
-  }
-}
-  </script>
+
+    document.getElementById('searchBtn').addEventListener('click', () => {
+      searchQuery = document.getElementById('searchInput').value.trim();
+      loadPage(1);
+    });
+
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchQuery = e.target.value.trim();
+        loadPage(1);
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadPage();
+      loadOrders();
+    });
+
+    function loadOrders() {
+      fetch('../../backend/orders/get_confirmed_orders.php')
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            console.error('Failed to load orders:', data.error);
+            return;
+          }
+          const orderSelect = document.getElementById('order_id');
+          orderSelect.innerHTML = '<option value="">Select an order</option>';
+          data.data.forEach(order => {
+            const option = document.createElement('option');
+            option.value = order.order_id;
+            option.textContent = `Order #${order.order_id} - ${order.order_details} (₱${order.total_amount})`;
+            orderSelect.appendChild(option);
+          });
+        })
+        .catch(err => console.error('Error loading orders:', err));
+    }
+
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Delivery saved successfully!');
+          modal.classList.add('hidden');
+          loadPage(currentPage); // Reload the current page
+        } else {
+          throw new Error(data.error || 'Failed to save delivery');
+        }
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        alert(err.message || 'An error occurred while saving');
+      });
+    });
+</script>
 </body>
 </html>
