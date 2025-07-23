@@ -216,12 +216,30 @@ if (!isset($_SESSION['user_id'])) {
     loadCart();
   }
 
-  function increaseQty(index) {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart[index].quantity += 1;
-    localStorage.setItem("cart", JSON.stringify(cart));
-    loadCart();
-  }
+ function increaseQty(index) {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const productId = cart[index].id;
+  const currentQty = cart[index].quantity;
+
+  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_product_quantity.php?product_id=${productId}`)
+    .then(response => response.json())
+    .then(data => {
+      const availableQuantity = data.quantity;
+
+      if (currentQty < availableQuantity) {
+        cart[index].quantity += 1;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      } else {
+        alert(`Stock limit reached. Only ${availableQuantity} available.`);
+      }
+    })
+    .catch(error => {
+      console.error("Error checking stock:", error);
+      alert("Error fetching stock.");
+    });
+}
+
 
   // Load the cart on page load
   loadCart();
@@ -234,13 +252,47 @@ if (!userId) {
   alert("You must be logged in to view your cart!");
   window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
 }
-
-// Use userId for any AJAX calls, for displaying user info, etc.
-// Example: Show user ID in the cart
 const profileDiv = document.createElement('div');
-// profileDiv.style.margin = "16px";
-// profileDiv.textContent = `Logged in as User ID: ${userId}`;
 document.body.insertBefore(profileDiv, document.body.firstChild);
+
+function addToCart(productId, productName, productPrice, productImg) {
+  const userId = localStorage.getItem('user_id'); // Optional: Use for logging or auth
+
+  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_product_quantity.php?product_id=${productId}`)
+    .then(response => response.json())
+    .then(data => {
+      const availableStock = data.quantity;
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const existingItem = cart.find(item => item.id === productId);
+
+      let currentQuantity = existingItem ? existingItem.quantity : 0;
+
+      if (currentQuantity < availableStock) {
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            img: productImg,
+            quantity: 1
+          });
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart(); // refresh UI
+        alert("Item added to cart!");
+      } else {
+        alert("Sorry, not enough stock available!");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching product quantity:", error);
+      alert("Error checking stock.");
+    });
+}
+
 
 </script>
 
