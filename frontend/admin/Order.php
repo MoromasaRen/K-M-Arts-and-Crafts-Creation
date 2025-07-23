@@ -10,19 +10,22 @@ function fetchOrders(PDO $pdo, int $limit, int $offset, ?string $search = '', ?s
 
         $query = "
             SELECT 
-                o.order_id, 
-                oi.order_item_id,
-                o.user_id,
-                CONCAT(u.first_name, ' ', u.last_name) as user_name,
-                CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) as user_display,
-                o.order_details, 
-                o.order_date, 
-                o.total_amount, 
-                o.status 
-            FROM orders o
-            LEFT JOIN order_items oi ON o.order_id = oi.order_id
-            LEFT JOIN users u ON o.user_id = u.user_id
-            WHERE 1
+    o.order_id, 
+    o.user_id,
+    CONCAT(u.first_name, ' ', u.last_name) AS user_name,
+    CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) AS user_display,
+    o.order_details, -- ✅ bring this back
+    GROUP_CONCAT(CONCAT(p.product_name, ' x', oi.quantity) SEPARATOR ', ') AS order_items,
+    o.order_date, 
+    o.total_amount, 
+    o.status
+FROM orders o
+LEFT JOIN order_items oi ON o.order_id = oi.order_id
+LEFT JOIN products p ON oi.product_id = p.product_id
+LEFT JOIN users u ON o.user_id = u.user_id
+GROUP BY o.order_id
+ORDER BY o.order_date DESC;
+
         ";
         
         if ($search) {
