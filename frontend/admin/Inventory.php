@@ -123,7 +123,6 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
           </a>
         </th>
         <th class="text-left font-extrabold px-2 py-1 rounded-tr-md">Description</th>
-        <th class="text-right font-extrabold px-2 py-1">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -171,11 +170,11 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
 <!-- Pagination Controls -->
 <div class="mt-4 flex justify-center space-x-2 text-[#0f2e4d]">
   <?php
+    // Fixed: Use the correct variable names that are defined above
     $queryParams = [
-      'search' => $search ?? '',
-      'status' => $status ?? '',
-      'start_date' => $startDate ?? '',
-      'end_date' => $endDate ?? ''
+      'search' => $searchTerm,
+      'status' => $statusFilter,
+      'sort' => $sortOrder
     ];
   ?>
 
@@ -186,12 +185,36 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
     </a>
   <?php endif; ?>
 
-  <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-    <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $i])) ?>"
-       class="px-3 py-1 rounded <?= $i === $page ? 'bg-blue-700 text-white' : 'bg-blue-100 hover:bg-blue-200' ?>">
-      <?= $i ?>
-    </a>
-  <?php endfor; ?>
+  <?php 
+    // Show pagination numbers with ellipsis for better UX
+    $start = max(1, $page - 2);
+    $end = min($totalPages, $page + 2);
+    
+    // Show first page if we're not starting from 1
+    if ($start > 1): ?>
+      <a href="?<?= http_build_query(array_merge($queryParams, ['page' => 1])) ?>"
+         class="px-3 py-1 rounded bg-blue-100 hover:bg-blue-200">1</a>
+      <?php if ($start > 2): ?>
+        <span class="px-3 py-1">...</span>
+      <?php endif; ?>
+    <?php endif; ?>
+
+    <?php for ($i = $start; $i <= $end; $i++): ?>
+      <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $i])) ?>"
+         class="px-3 py-1 rounded <?= $i === $page ? 'bg-blue-700 text-white' : 'bg-blue-100 hover:bg-blue-200' ?>">
+        <?= $i ?>
+      </a>
+    <?php endfor; ?>
+
+    <?php 
+    // Show last page if we're not ending at the last page
+    if ($end < $totalPages): ?>
+      <?php if ($end < $totalPages - 1): ?>
+        <span class="px-3 py-1">...</span>
+      <?php endif; ?>
+      <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $totalPages])) ?>"
+         class="px-3 py-1 rounded bg-blue-100 hover:bg-blue-200"><?= $totalPages ?></a>
+    <?php endif; ?>
 
   <?php if ($page < $totalPages): ?>
     <a href="?<?= http_build_query(array_merge($queryParams, ['page' => $page + 1])) ?>"
