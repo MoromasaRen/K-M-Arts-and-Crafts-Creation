@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: /K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html");
+  exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,13 +52,13 @@
 
     <!-- Navigation in the center -->
     <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
-      <a href="/K-M-Arts-and-Crafts-Creation/index.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Shop.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Contacts.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/About.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/OrderProcess.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/GalleryAndReviews.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/index.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Shop.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Contacts.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/About.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/OrderProcess.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/GalleryAndReviews.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
     </nav>
 
     <!-- Login button on the right -->
@@ -507,7 +515,7 @@
     })
     .then(() => {
       localStorage.clear();
-      window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html";
+      window.location.href = "/K-M-Arts-and-Crafts-Creation/index.php";
     })
     .catch(() => alert("Something went wrong during logout."));
   });
@@ -520,7 +528,7 @@
   window.addEventListener("DOMContentLoaded", function () {
     if (!userId) {
       alert("Please log in to view your profile.");
-      return (window.location.href = "/K-M-Arts-and-Crafts-Creation/index.html");
+      return (window.location.href = "/K-M-Arts-and-Crafts-Creation/index.php");
     }
 
     fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)

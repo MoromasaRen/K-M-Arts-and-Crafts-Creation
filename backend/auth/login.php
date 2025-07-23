@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 require __DIR__ . '/../config/database.php';
 
@@ -14,7 +15,12 @@ $stmt->execute([$data->email]);
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
 if ($user && password_verify($data->password, $user['password'])) {
+    $_SESSION['user_id'] = $user['user_id']; // ✅ this stores login status
+    $_SESSION['user_type'] = $user['user_type']; // optional
+    $_SESSION['first_name'] = $user['first_name']; // optional
+
     echo json_encode([
         'success' => true,
         'user_id' => $user['user_id'],

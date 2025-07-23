@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+  echo "<script>alert('You must be logged in to access the cart.'); window.location.href='/K-M-Arts-and-Crafts-Creation/frontend/auth/Login.html';</script>";
+  exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,13 +32,13 @@
 
     <!-- Navigation in the center -->
     <nav class="flex gap-8 text-[17px] font-semibold justify-center flex-wrap flex-grow">
-      <a href="/K-M-Arts-and-Crafts-Creation/index.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Shop.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Contacts.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/About.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/OrderProcess.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/GalleryAndReviews.html" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.html" class="bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/index.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Home</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Shop.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Shop</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Contacts.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Contact</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/About.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">About Us</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/OrderProcess.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Order Process</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/GalleryAndReviews.php" class="hover:bg-[#c7d9f9] px-3 py-1 rounded">Gallery & Reviews</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.php" class="bg-[#c7d9f9] px-3 py-1 rounded">Cart</a>
     </nav>
 
     <!-- Login button on the right -->
@@ -40,17 +49,17 @@
   <section class="bg-[#1c2f4a] text-white flex justify-center p-3 font-bold text-sm">
     <div class="flex items-center gap-6">
       <div class="flex flex-col items-center gap-1">
-        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.html" class="w-8 h-8 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">1</a>
+        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.php" class="w-8 h-8 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">1</a>
         <span>Cart</span>
       </div>
       <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.html" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">2</a>
+        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.php" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">2</a>
         <span>Address</span>
       </div>
       <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartPayment.html" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">3</a>
+        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartPayment.php" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">3</a>
         <span>Payment</span>
       </div>
     </div>
@@ -88,7 +97,7 @@
                 <span id="total-amount" class="text-[#1c2f4a] font-bold">₱0.00</span>
               </div>
             </div>
-          <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.html">
+          <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.php">
             <button class="mt-4 w-full bg-white border border-gray-400 rounded py-2 font-bold text-[#1c2f4a] hover:bg-[#c6d9f7] transition">NEXT</button>
           </a>
         </div>
@@ -129,7 +138,7 @@
   if (isLoggedIn) {
     // Show profile icon
     authButton.innerHTML = `
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Profile.html">
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Profile.php">
         <img
           src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
           alt="Profile"
@@ -217,6 +226,21 @@
   // Load the cart on page load
   loadCart();
 
+   // Get user_id from localStorage
+   const userId = localStorage.getItem('user_id');
+
+// If user_id is missing, optionally redirect to login
+if (!userId) {
+  alert("You must be logged in to view your cart!");
+  window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
+}
+
+// Use userId for any AJAX calls, for displaying user info, etc.
+// Example: Show user ID in the cart
+const profileDiv = document.createElement('div');
+// profileDiv.style.margin = "16px";
+// profileDiv.textContent = `Logged in as User ID: ${userId}`;
+document.body.insertBefore(profileDiv, document.body.firstChild);
 
 </script>
 
