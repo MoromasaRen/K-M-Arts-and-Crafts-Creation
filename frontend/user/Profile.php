@@ -80,7 +80,7 @@ if (!isset($_SESSION['user_id'])) {
 
               <div class="space-y-4">
                 <!-- User Summary Card -->
-                <div class="bg-[#e3f6ff] rounded-xl p-4 shadow-md flex items-center justify-between">
+                <div class="bg-white rounded-xl p-4 shadow-md flex items-center justify-between">
                   <img
                     src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
                     alt="User"
@@ -107,7 +107,7 @@ if (!isset($_SESSION['user_id'])) {
                 </div>
 
                 <!-- Personal Info Section -->
-                <div id="personal-info" class="bg-[#e3f6ff]  rounded-xl p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
+                <div id="personal-info" class="bg-white  rounded-xl p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
                   <div class="col-span-full flex justify-between items-center mb-2">
                     <p class="font-bold text-sm tracking-widest border-b border-[#0f2e4d] pb-1">
                       Personal Information
@@ -189,7 +189,7 @@ if (!isset($_SESSION['user_id'])) {
 
                 <!-- Address Section -->
         <!-- Address Section -->
-        <div id="address-info" class="bg-[#e3f6ff] rounded-xl p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
+        <div id="address-info" class="bg-white rounded-xl p-4 shadow-md grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-6">
         <!-- Header Row: Title + Buttons -->
         <div class="col-span-full flex justify-between items-center mb-2">
           <p class="font-bold text-sm tracking-widest border-b border-[#0f2e4d] pb-1">
