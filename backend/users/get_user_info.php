@@ -29,9 +29,9 @@ try {
             'contact_number' => $user['contact_number'] ?? '',
             'dateofbirth' => $user['dateofbirth'] ?? '',
             'address' => $user['address'] ?? '',
-            'country' => $user['country'] ?? 'Philippines',
-            'city' => $user['city'] ?? 'Cebu',
-            'postal_code' => $user['postal_code'] ?? '6000'
+            'country' => $user['country'] ?? '',
+            'city' => $user['city'] ?? '',
+            'postal_code' => $user['postal_code'] ?? ''
         ]);
     } else {
         echo json_encode(['success' => false, 'message' => 'User not found']);
