@@ -52,14 +52,14 @@ if (!isset($_SESSION['user_id'])) {
         <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.php" class="w-8 h-8 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">1</a>
         <span>Cart</span>
       </div>
-      <div class="h-[1px] w-12 bg-white"></div>
+      <!-- <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
         <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.php" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">2</a>
         <span>Address</span>
-      </div>
+      </div> -->
       <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartPayment.php" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">3</a>
+        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartPayment.php" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold">2</a>
         <span>Payment</span>
       </div>
     </div>
@@ -97,7 +97,7 @@ if (!isset($_SESSION['user_id'])) {
                 <span id="total-amount" class="text-[#1c2f4a] font-bold">₱0.00</span>
               </div>
             </div>
-          <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.php">
+          <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartPayment.php">
             <button class="mt-4 w-full bg-white border border-gray-400 rounded py-2 font-bold text-[#1c2f4a] hover:bg-[#c6d9f7] transition">NEXT</button>
           </a>
         </div>
