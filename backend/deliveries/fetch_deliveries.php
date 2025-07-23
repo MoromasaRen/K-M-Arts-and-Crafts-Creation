@@ -8,6 +8,10 @@ $offset = ($page - 1) * $limit;
 $status = isset($_GET['status']) ? $_GET['status'] : '';
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
+
+
+
+
 try {
     // Base query
     $sql = "SELECT d.*, o.order_details, o.user_id,

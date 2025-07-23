@@ -81,11 +81,11 @@
       <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Delivery ID</th>
       <th class="text-left font-extrabold px-2 py-1">User Info</th>
       <th class="text-left font-extrabold px-2 py-1">Order Details</th>
-      <!-- <th class="text-left font-extrabold px-2 py-1">Staff ID</th> -->
       <th class="text-left font-extrabold px-2 py-1">Scheduled Time</th>
       <th class="text-left font-extrabold px-2 py-1">Status</th>
       <th class="text-left font-extrabold px-2 py-1">Courier</th>
       <th class="text-left font-extrabold px-2 py-1">Plate #</th>
+      <th class="text-left font-extrabold px-2 py-1">Actions</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -101,21 +101,32 @@
 
     <!-- Modal -->
     <div id="manageModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
-      <form id="deliveryForm" method="POST" class="bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[360px] relative">
+      <form id="deliveryForm" method="POST" class="bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[400px] relative">
         <button type="button" id="closeModalBtn" class="absolute top-2 right-2 font-bold text-xl text-[#0f2e4d]">&times;</button>
         <h3 id="modalTitle" class="bg-[#a9c5ff] inline-block px-3 py-1 font-extrabold text-sm mb-4">Manage Delivery</h3>
         <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
+          <!-- Hidden fields -->
           <input type="hidden" name="delivery_id" id="delivery_id">
           <input type="hidden" name="user_id" id="user_id">
-          <input type="hidden" name="order_id" id="order_id">
+          
+          <!-- Order Selection (visible in create mode, hidden in edit mode) -->
           <div id="orderSelectContainer" class="flex flex-col col-span-2">
-            <label class="flex flex-col">
+            <label>
               Order ID
-              <select id="orderSelect" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+              <select name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal">
                 <option value="">Select an order</option>
               </select>
             </label>
           </div>
+          
+          <!-- Order Info Display (visible in edit mode only) -->
+          <div id="orderInfoDisplay" class="flex flex-col col-span-2" style="display: none;">
+            <label class="text-gray-600">
+              Order Information
+              <div id="orderInfoText" class="bg-gray-100 px-2 py-1 rounded text-[13px] font-normal border"></div>
+            </label>
+          </div>
+          
           <label class="flex flex-col">
             Scheduled Time
             <input name="scheduled_time" id="scheduled_time" type="datetime-local" class="rounded border px-2 py-1 text-[13px] font-normal" required>
@@ -143,7 +154,7 @@
           </label>
         </div>
         <div class="mt-4 text-center">
-          <button type="submit" class="bg-lime-400 text-white px-3 py-1 rounded text-xs font-extrabold shadow-md">Save</button>
+          <button type="submit" id="saveBtn" class="bg-lime-400 hover:bg-lime-500 text-white px-4 py-2 rounded text-sm font-extrabold shadow-md transition-colors">Save</button>
         </div>
       </form>
     </div>
@@ -151,6 +162,9 @@
 
   <script>
     let currentPage = 1, limit = 15;
+    let currentStatus = '';
+    let searchQuery = '';
+
     function loadPage(page = 1) {
       const params = new URLSearchParams({
         page: page,
@@ -165,12 +179,18 @@
         params.append('search', searchQuery);
       }
 
+      console.log('Fetching deliveries...');
       fetch(`../../backend/deliveries/fetch_deliveries.php?${params}`)
         .then(res => res.json())
         .then(data => {
+          console.log('Deliveries response:', data);
           if (!data.success) return alert(data.error || 'Failed to load deliveries');
           populateTable(data.data, page, data.total);
           currentPage = page;
+        })
+        .catch(err => {
+          console.error('Error loading deliveries:', err);
+          alert('Error loading deliveries. Please check the console.');
         });
     }
 
@@ -180,35 +200,53 @@
       data.forEach(d => {
         const row = document.createElement('tr');
         row.className = 'border-t border-gray-200';
-        // Always use order_info and user_info from the database if available
-        const userInfo = d.user_info || (d.user_name ? `#${d.user_id} - ${d.user_name}` : `#${d.user_id}`);
+        
+        // Safely handle user info and order details
+        const userInfo = d.user_info || (d.user_name ? `#${d.user_id} - ${d.user_name}` : `User #${d.user_id}`);
         const orderDetails = d.order_info || d.order_details || `Order #${d.order_id}`;
+        
         row.innerHTML = `
           <td class="px-2 py-1">${d.delivery_id}</td>
           <td class="px-2 py-1">${userInfo}</td>
           <td class="px-2 py-1">${orderDetails}</td>
-          <td class="px-2 py-1">${d.scheduled_time}</td>
-          <td class="px-2 py-1">${d.delivery_status}</td>
+          <td class="px-2 py-1">${formatDateTime(d.scheduled_time)}</td>
+          <td class="px-2 py-1">
+            <span class="px-2 py-1 rounded text-xs ${getStatusColor(d.delivery_status)}">
+              ${d.delivery_status}
+            </span>
+          </td>
           <td class="px-2 py-1">${d.courier_type}</td>
           <td class="px-2 py-1">${d.plate_number}</td>
           <td class="px-2 py-1 text-right">
-            <button class="editBtn text-blue-600 text-xs mr-2" data='${JSON.stringify(d)}'>Edit</button>
-            <form
-              method = "POST"
-              action="../../backend/deliveries/delete_delivery.php"
-              class="inline"
-              onsubmit="return confirm('Are you sure you want to delete this delivery?')"
-            >
-            <input type="hidden" name="delivery_id" value="${d.delivery_id}">
-            <button type="submit" class="deleteBtn text-red-600 text-xs">
-              Delete
-            </button>
+            <button class="editBtn text-blue-600 text-xs mr-2 hover:underline" data-delivery='${JSON.stringify(d)}'>Edit</button>
+            <form method="POST" action="../../backend/deliveries/delete_delivery.php" class="inline" onsubmit="return confirm('Are you sure you want to delete this delivery?')">
+              <input type="hidden" name="delivery_id" value="${d.delivery_id}">
+              <button type="submit" class="deleteBtn text-red-600 text-xs hover:underline">Delete</button>
             </form>
           </td>`;
         tbody.appendChild(row);
       });
       renderPagination(total, page);
       attachEditButtons();
+    }
+
+    function formatDateTime(dateTimeStr) {
+      if (!dateTimeStr) return 'N/A';
+      try {
+        const date = new Date(dateTimeStr);
+        return date.toLocaleString();
+      } catch (e) {
+        return dateTimeStr;
+      }
+    }
+
+    function getStatusColor(status) {
+      switch (status) {
+        case 'scheduled': return 'bg-yellow-100 text-yellow-800';
+        case 'in_transit': return 'bg-blue-100 text-blue-800';
+        case 'delivered': return 'bg-green-100 text-green-800';
+        default: return 'bg-gray-100 text-gray-800';
+      }
     }
 
     function renderPagination(total, page) {
@@ -240,8 +278,14 @@
     function attachEditButtons() {
       document.querySelectorAll('.editBtn').forEach(btn => {
         btn.onclick = () => {
-          const data = JSON.parse(btn.getAttribute('data'));
-          openModal('Edit Delivery', '../../backend/deliveries/update_delivery.php', data);
+          try {
+            const data = JSON.parse(btn.getAttribute('data-delivery'));
+            console.log('Edit data:', data);
+            openModal('Edit Delivery', '../../backend/deliveries/update_delivery.php', data);
+          } catch (err) {
+            console.error('Error parsing delivery data:', err);
+            alert('Error loading delivery data. Please try again.');
+          }
         };
       });
     }
@@ -250,60 +294,88 @@
     const form = document.getElementById('deliveryForm');
 
     function openModal(title, action, data = {}) {
+      console.log('Opening modal:', title, data);
+      
       document.getElementById('modalTitle').innerText = title;
       form.action = action;
-
-      const fields = ['delivery_id', 'order_id', 'user_id', 'scheduled_time', 'delivery_status', 'courier_type', 'plate_number'];
+      
       const isEdit = title.includes('Edit');
       
-      // Reset status note
+      // Reset form
+      form.reset();
       document.getElementById('statusNote').textContent = '';
-
-      // Handle the order selection differently for create vs edit
+      
+      // Show/hide appropriate containers
       const orderSelectContainer = document.getElementById('orderSelectContainer');
-      const orderSelect = document.getElementById('orderSelect');
-      const orderIdInput = document.getElementById('order_id');
+      const orderInfoDisplay = document.getElementById('orderInfoDisplay');
       
       if (isEdit) {
-        // Hide the order select container in edit mode
+        // Edit mode - hide order select, show order info
         orderSelectContainer.style.display = 'none';
-        // Set the hidden order_id value
-        orderIdInput.value = data.order_id;
-      } else {
-        // Show the order select container in create mode
-        orderSelectContainer.style.display = 'block';
-        orderIdInput.value = '';
-        loadOrders(); // Reload orders for new delivery
+        orderInfoDisplay.style.display = 'block';
         
-        // Add change event listener to update hidden input
-        orderSelect.onchange = function() {
-          orderIdInput.value = this.value;
-        };
-      }
-
-      fields.forEach(f => {
-        const input = document.getElementById(f);
-        if (f === 'delivery_id') {
-          input.value = data[f] || '';
-          input.readOnly = isEdit;
-        } else if (f === 'order_id' && isEdit) {
-          // For editing, make sure we keep the order_id
-          input.value = data[f] || '';
-        } else {
-          input.value = data[f] || '';
+        // Populate all fields with existing data
+        document.getElementById('delivery_id').value = data.delivery_id || '';
+        document.getElementById('user_id').value = data.user_id || '';
+        
+        // Set order info display
+        const userInfo = data.user_info || (data.user_name ? `#${data.user_id} - ${data.user_name}` : `User #${data.user_id}`);
+        const orderDetails = data.order_info || data.order_details || `Order #${data.order_id}`;
+        document.getElementById('orderInfoText').textContent = `${orderDetails} - ${userInfo}`;
+        
+        // Create a hidden input for order_id in edit mode
+        let orderIdInput = document.getElementById('order_id_hidden');
+        if (!orderIdInput) {
+          orderIdInput = document.createElement('input');
+          orderIdInput.type = 'hidden';
+          orderIdInput.name = 'order_id';
+          orderIdInput.id = 'order_id_hidden';
+          form.appendChild(orderIdInput);
         }
-      });
+        orderIdInput.value = data.order_id || '';
+        
+        // Format scheduled time for datetime-local input
+        if (data.scheduled_time) {
+          const date = new Date(data.scheduled_time);
+          const localDateTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+          document.getElementById('scheduled_time').value = localDateTime;
+        }
+        
+        document.getElementById('delivery_status').value = data.delivery_status || 'scheduled';
+        document.getElementById('courier_type').value = data.courier_type || 'Motor';
+        document.getElementById('plate_number').value = data.plate_number || '';
+        
+      } else {
+        // Create mode - show order select, hide order info
+        orderSelectContainer.style.display = 'block';
+        orderInfoDisplay.style.display = 'none';
+        
+        // Remove hidden order_id input if it exists
+        const existingHidden = document.getElementById('order_id_hidden');
+        if (existingHidden) {
+          existingHidden.remove();
+        }
+        
+        // Load orders for selection
+        loadOrders();
+        
+        // Set default datetime to current time
+        const now = new Date();
+        const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        document.getElementById('scheduled_time').value = localDateTime;
+        
+        // Set defaults
+        document.getElementById('delivery_status').value = 'scheduled';
+        document.getElementById('courier_type').value = 'Motor';
+      }
 
       modal.classList.remove('hidden');
     }
 
+    // Event listeners
     document.getElementById('createBtn').onclick = () => openModal('Create Delivery', '../../backend/deliveries/add_delivery.php');
     document.getElementById('closeModalBtn').onclick = () => modal.classList.add('hidden');
     modal.onclick = e => { if (e.target === modal) modal.classList.add('hidden'); };
-
-    // Add these variables at the top of your script
-    let currentStatus = '';
-    let searchQuery = '';
 
     function applyStatusFilter(status) {
       currentStatus = status;
@@ -337,53 +409,62 @@
       }
     });
 
-    window.addEventListener('DOMContentLoaded', () => {
+    // Load admin info
+    window.addEventListener("DOMContentLoaded", function () {
+      console.log('Page loaded, initializing...');
       loadPage();
-      loadOrders();
+      
+      const userId = localStorage.getItem("user_id");
+      if (!userId) {
+        document.getElementById("admin-role").textContent = "";
+        document.getElementById("admin-name").textContent = "";
+        return;
+      }
+
+      fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            document.getElementById("admin-role").textContent = data.first_name;
+            document.getElementById("admin-name").textContent = data.last_name;
+          } else {
+            document.getElementById("admin-role").textContent = "";
+            document.getElementById("admin-name").textContent = "";
+          }
+        })
+        .catch(() => {
+          document.getElementById("admin-role").textContent = "Error";
+          document.getElementById("admin-name").textContent = "Name";
+        });
     });
 
-    window.addEventListener("DOMContentLoaded", function () {
-    const userId = localStorage.getItem("user_id");
-
-    if (!userId) {
-      document.getElementById("admin-role").textContent = "";
-      document.getElementById("admin-name").textContent = "";
-      return;
-    }
-
-    fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          document.getElementById("admin-role").textContent = data.first_name;
-          document.getElementById("admin-name").textContent = data.last_name;
-        } else {
-          document.getElementById("admin-role").textContent = "";
-          document.getElementById("admin-name").textContent = "";
-        }
-      })
-      .catch(() => {
-        document.getElementById("admin-role").textContent = "Error";
-        document.getElementById("admin-name").textContent = "Name";
-      });
-  });
-
     function loadOrders() {
+      console.log('Loading orders...');
       fetch('../../backend/orders/get_confirmed_orders.php')
         .then(res => res.json())
         .then(data => {
+          console.log('Orders loaded:', data);
           if (!data.success) {
             console.error('Failed to load orders:', data.error);
             return;
           }
-          const orderSelect = document.getElementById('orderSelect');
+          const orderSelect = document.getElementById('order_id');
           orderSelect.innerHTML = '<option value="">Select an order</option>';
           data.data.forEach(order => {
             const option = document.createElement('option');
             option.value = order.order_id;
             option.textContent = `Order #${order.order_id} - ${order.order_details} (₱${order.total_amount})`;
+            option.dataset.userId = order.user_id; // Store user_id for later use
             orderSelect.appendChild(option);
           });
+          
+          // Add change event listener to set user_id when order is selected
+          orderSelect.onchange = function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption && selectedOption.dataset.userId) {
+              document.getElementById('user_id').value = selectedOption.dataset.userId;
+            }
+          };
         })
         .catch(err => console.error('Error loading orders:', err));
     }
@@ -420,45 +501,85 @@
     // Add event listener for scheduled time changes
     document.getElementById('scheduled_time').addEventListener('change', updateDeliveryStatus);
 
-    // Handle form submission with status updates
+    // Handle form submission
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      // Disable the submit button to prevent double submission
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving...';
       
       try {
         const formData = new FormData(form);
         const status = formData.get('delivery_status');
-        const orderId = formData.get('order_id');
         const deliveryId = formData.get('delivery_id');
+        const isEdit = !!deliveryId;
         
-        // First update the delivery
+        console.log('Form submission data:', Object.fromEntries(formData));
+        
+        // Get order_id from the right source
+        let orderId;
+        if (isEdit) {
+          // In edit mode, get from hidden input
+          const hiddenOrderInput = document.getElementById('order_id_hidden');
+          orderId = hiddenOrderInput ? hiddenOrderInput.value : formData.get('order_id');
+          
+          // Ensure order_id is in the FormData for backend
+          if (orderId) {
+            formData.set('order_id', orderId);
+          }
+        } else {
+          orderId = formData.get('order_id');
+        }
+        
+        console.log('Order ID:', orderId, 'Is Edit:', isEdit);
+        
+        if (!orderId) {
+          throw new Error('Order ID is required');
+        }
+        
+        // Validate required fields - but skip order_id validation for edit mode since it's hidden
+        if (!formData.get('scheduled_time')) throw new Error('Scheduled time is required');
+        if (!formData.get('delivery_status')) throw new Error('Status is required');
+        if (!formData.get('courier_type')) throw new Error('Courier is required');
+        if (!formData.get('plate_number')) throw new Error('Plate number is required');
+        
+        console.log('Submitting delivery update/create to:', form.action);
+        console.log('Final FormData:', Object.fromEntries(formData));
+        
+        // Submit delivery form
         const deliveryResponse = await fetch(form.action, {
           method: 'POST',
-          body: formData,
-          headers: {
-            'Accept': 'application/json'
-          }
+          body: formData
         });
-        
-        if (!deliveryResponse.ok) {
-          throw new Error('Network response was not ok');
-        }
         
         let deliveryResult;
         try {
-          deliveryResult = await deliveryResponse.json();
-        } catch (error) {
-          const text = await deliveryResponse.text();
-          console.error('Response text:', text);
-          throw new Error('Invalid JSON response from server');
+          const responseText = await deliveryResponse.text();
+          console.log('Raw response:', responseText);
+          
+          // Try to parse as JSON
+          if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
+            deliveryResult = JSON.parse(responseText);
+          } else {
+            // If not JSON, treat as error
+            throw new Error('Server returned non-JSON response: ' + responseText.substring(0, 100));
+          }
+        } catch (parseError) {
+          console.error('JSON parse error:', parseError);
+          throw new Error('Invalid response from server. Check backend logs.');
         }
         
         if (!deliveryResult.success) {
-          throw new Error(deliveryResult.error || 'Failed to save delivery');
+          throw new Error(deliveryResult.error || deliveryResult.message || 'Failed to save delivery');
         }
         
-        // If delivery was successfully updated and status is "delivered", update order status
+        // If delivery status is "delivered", update order status to "completed"
         if (status === 'delivered') {
           try {
+            console.log('Updating order status to completed for order:', orderId);
             const orderResponse = await fetch('../../backend/orders/update_order.php', {
               method: 'POST',
               headers: {
@@ -467,29 +588,60 @@
               body: `order_id=${orderId}&status=completed`
             });
             
-            if (!orderResponse.ok) {
-              console.error('Order status update failed but delivery was updated');
+            const orderResult = await orderResponse.json();
+            if (!orderResult.success) {
+              console.warn('Order status update failed:', orderResult.error);
             } else {
-              const orderResult = await orderResponse.json();
-              if (!orderResult.success) {
-                console.error('Order status update returned error but delivery was updated');
-              }
+              console.log('Order status updated successfully');
             }
           } catch (orderError) {
-            console.error('Error updating order status:', orderError);
-            // Don't throw here as delivery was already updated
+            console.warn('Error updating order status:', orderError);
           }
         }
         
-        alert('Delivery saved successfully!' + (status === 'delivered' ? ' Order status updated to completed.' : ''));
+        alert(`Delivery ${isEdit ? 'updated' : 'created'} successfully!` + (status === 'delivered' ? ' Order status updated to completed.' : ''));
         modal.classList.add('hidden');
-        loadPage(currentPage); // Reload the current page to show updated data
+        loadPage(currentPage);
         
       } catch (err) {
-        console.error('Error:', err);
+        console.error('Form submission error:', err);
         alert(err.message || 'An error occurred while saving');
+      } finally {
+        // Re-enable the submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
       }
     });
+
+    // Add click event listener to submit button as backup
+    document.addEventListener('DOMContentLoaded', function() {
+      const submitBtn = document.querySelector('#saveBtn');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', function(e) {
+          console.log('Submit button clicked');
+          // Check if form is valid
+          const form = document.getElementById('deliveryForm');
+          console.log('Form validity:', form.checkValidity());
+        });
+      }
+    });
+
+    // Debug function to check form state
+    function debugFormState() {
+      const form = document.getElementById('deliveryForm');
+      const formData = new FormData(form);
+      console.log('Current form data:', Object.fromEntries(formData));
+      console.log('Form valid:', form.checkValidity());
+      
+      // Check each required field
+      const requiredFields = form.querySelectorAll('[required]');
+      requiredFields.forEach(field => {
+        console.log(`Field ${field.name}: value="${field.value}", valid=${field.validity.valid}`);
+      });
+    }
+
+    // Add this function to window for debugging
+    window.debugFormState = debugFormState;
 </script>
 </body>
 </html>
