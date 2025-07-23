@@ -61,108 +61,113 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
   </aside>
 
   <main class="flex-1 p-6 relative">
-    <div class="flex items-center mb-4 text-[#0f2e4d]">
-      <button aria-label="Menu" class="text-2xl mr-3">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h2 class="font-extrabold text-lg border-b border-[#0f2e4d] pb-1">Inventory</h2>
-    </div>
+  <!-- Page Header -->
+  <div class="flex items-center mb-4 text-[#0f2e4d]">
+    <button aria-label="Menu" class="text-2xl mr-3">
+      <i class="fas fa-bars"></i>
+    </button>
+    <h2 class="font-extrabold text-lg border-b border-[#0f2e4d] pb-1">Inventory</h2>
+  </div>
+
+  <!-- Search & Filter Form -->
+  <form class="flex flex-wrap md:flex-nowrap space-y-2 md:space-y-0 md:space-x-4 mb-6" method="GET" action="Inventory.php">
+    <!-- Preserve current sort value -->
+    <input type="hidden" name="sort" value="<?= htmlspecialchars($sortOrder) ?>" />
     
-    <div class="mb-4 flex items-center space-x-4">
-    <form method="GET" action="Inventory.php" class="flex items-center space-x-2 flex-grow">
-  <input
-    type="text"
-    name="search"
-    placeholder="Search by product name..."
-    value="<?= htmlspecialchars($searchTerm) ?>"
-    class="px-3 py-1 rounded border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 flex-grow"
-  />
-  
-  <!-- Status Filter Dropdown -->
-  <select name="status" class="px-3 py-1 rounded border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
-    <option value="" <?= $statusFilter === '' ? 'selected' : '' ?>>All Status</option>
-    <option value="In Stock" <?= $statusFilter === 'In Stock' ? 'selected' : '' ?>>In Stock</option>
-    <option value="Low Stock" <?= $statusFilter === 'Low Stock' ? 'selected' : '' ?>>Low Stock</option>
-    <option value="No Stock" <?= $statusFilter === 'No Stock' ? 'selected' : '' ?>>No Stock</option>
-  </select>
+    <!-- Search -->
+    <input
+      type="text"
+      name="search"
+      placeholder="Search by Product Name"
+      value="<?= htmlspecialchars($searchTerm) ?>"
+      class="px-3 py-2 border rounded-md w-full md:w-1/3"
+    />
 
-  <input type="hidden" name="sort" value="<?= htmlspecialchars($sortOrder) ?>" />
-  
-  <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">Search</button>
-</form>
+    <!-- Status Filter -->
+    <select name="status" class="px-3 py-2 border rounded-md w-full md:w-1/4">
+      <option value="" <?= $statusFilter === '' ? 'selected' : '' ?>>All Status</option>
+      <option value="In Stock" <?= $statusFilter === 'In Stock' ? 'selected' : '' ?>>In Stock</option>
+      <option value="Low Stock" <?= $statusFilter === 'Low Stock' ? 'selected' : '' ?>>Low Stock</option>
+      <option value="No Stock" <?= $statusFilter === 'No Stock' ? 'selected' : '' ?>>No Stock</option>
+    </select>
 
-<a href="Inventory.php?sort=asc&page=1" class="text-sm px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded font-semibold text-[#0f2e4d]">
-  Clear Filters
-</a>
-      </div>
-    </div>
+    <!-- Submit and Clear Buttons -->
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+      Filter
+    </button>
+    <a href="Inventory.php?sort=asc&page=1" class="px-3 py-2 bg-white hover:bg-gray-100 text-[#0f2e4d] text-sm font-semibold rounded-md">
+      Clear Filters
+    </a>
+  </form>
 
-    <table class="w-full bg-white rounded-md shadow-md text-sm text-[#0f2e4d] border-separate border-spacing-1 mt-6">
-      <thead>
+  <!-- Inventory Table -->
+  <table class="w-full bg-white rounded-md shadow-md text-sm text-[#0f2e4d] border-separate border-spacing-1 mt-6">
+    <thead>
+      <tr>
+        <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Product ID</th>
+        <th class="text-left font-extrabold px-2 py-1">Product Name</th>
+        <th class="text-left font-extrabold px-2 py-1">Status</th>
+        <th class="text-left font-extrabold px-2 py-1">
+          <a href="Inventory.php?<?= http_build_query([
+            'search' => $searchTerm,
+            'status' => $statusFilter,
+            'sort' => $sortOrder === 'asc' ? 'desc' : 'asc',
+            'page' => $page
+          ]) ?>" class="inline-flex items-center space-x-1 hover:underline">
+            <span>Price</span>
+            <?php if ($sortOrder === 'asc'): ?>
+              <i class="fas fa-arrow-up text-xs"></i>
+            <?php elseif ($sortOrder === 'desc'): ?>
+              <i class="fas fa-arrow-down text-xs"></i>
+            <?php endif; ?>
+          </a>
+        </th>
+        <th class="text-left font-extrabold px-2 py-1 rounded-tr-md">Description</th>
+        <th class="text-right font-extrabold px-2 py-1">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php if (!empty($products)) : ?>
+        <?php foreach ($products as $product) : ?>
+          <tr class="border-t border-gray-200 h-10">
+            <td class="px-2 py-1"><?= htmlspecialchars($product['product_id']) ?></td>
+            <td class="px-2 py-1"><?= htmlspecialchars($product['product_name']) ?></td>
+            <td class="px-2 py-1"><?= htmlspecialchars($product['status']) ?></td>
+            <td class="px-2 py-1"><?= htmlspecialchars($product['base_price']) ?></td>
+            <td class="px-2 py-1"><?= htmlspecialchars($product['product_description']) ?></td>
+            <td class="px-4 py-2 text-right align-middle">
+              <div class="inline-flex gap-2 items-center justify-end">
+                <button
+                  class="editBtn text-blue-600 hover:underline text-xs font-semibold"
+                  data-id="<?= htmlspecialchars($product['product_id']) ?>"
+                  data-name="<?= htmlspecialchars($product['product_name']) ?>"
+                  data-quantity="<?= htmlspecialchars($product['product_quantity'] ?? 0) ?>"
+                  data-price="<?= htmlspecialchars($product['base_price']) ?>"
+                  data-description="<?= htmlspecialchars($product['product_description']) ?>"
+                >
+                  Edit
+                </button>
+                <form
+                  method="POST"
+                  action="/K-M-Arts-and-Crafts-Creation/backend/products/delete_product.php"
+                  class="inline"
+                  onsubmit="return confirm('Are you sure you want to delete this product?');"
+                >
+                  <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']) ?>" />
+                  <button type="submit" class="text-red-600 hover:underline text-xs font-semibold">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      <?php else : ?>
         <tr>
-          <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Product ID</th>
-          <th class="text-left font-extrabold px-2 py-1">Product Name</th>
-          <th class="text-left font-extrabold px-2 py-1">Status</th>
-          <th class="text-left font-extrabold px-2 py-1">
-            <a href="Inventory.php?<?= http_build_query([
-  'search' => $searchTerm,
-  'status' => $statusFilter,
-  'sort' => $sortOrder === 'asc' ? 'desc' : 'asc',
-  'page' => $page
-]) ?>"
-              class="inline-flex items-center space-x-1 hover:underline">
-              <span>Price</span>
-<?php if ($sortOrder === 'asc'): ?>
-  <i class="fas fa-arrow-up text-xs"></i>
-<?php elseif ($sortOrder === 'desc'): ?>
-  <i class="fas fa-arrow-down text-xs"></i>
-<?php endif; ?>
-            </a>
-          </th>
-          <th class="text-left font-extrabold px-2 py-1 rounded-tr-md">Description</th>
+          <td colspan="6" class="text-center py-4 text-gray-500">No products found.</td>
         </tr>
-      </thead>
+      <?php endif; ?>
+    </tbody>
+  </table>
 
-      <tbody>
-        <?php if (!empty($products)) : ?>
-          <?php foreach ($products as $product) : ?>
-            <tr class="border-t border-gray-200 h-10">
-             <td class="px-2 py-1"><?= htmlspecialchars($product['product_id']) ?></td>
-              <td class="px-2 py-1"><?= htmlspecialchars($product['product_name']) ?></td>
-              <td class="px-2 py-1"><?= htmlspecialchars($product['status']) ?></td>
-              <td class="px-2 py-1"><?= htmlspecialchars($product['base_price']) ?></td>
-              <td class="px-2 py-1"><?= htmlspecialchars($product['product_description']) ?></td>
-               <td class="px-4 py-2 text-right align-middle">
-                <div class="inline-flex gap-2 items-center justify-end">
-                  <button
-                    class="editBtn text-blue-600 hover:underline text-xs font-semibold"
-                    data-id="<?= htmlspecialchars($product['product_id']) ?>"
-                    data-name="<?= htmlspecialchars($product['product_name']) ?>"
-                    data-quantity="<?= htmlspecialchars($product['product_quantity'] ?? 0) ?>"
-                    data-price="<?= htmlspecialchars($product['base_price']) ?>"
-                    data-description="<?= htmlspecialchars($product['product_description']) ?>"
-                  >
-                    Edit
-                  </button>
-            
-                  <form
-                    method="POST"
-                    action="/K-M-Arts-and-Crafts-Creation/backend/products/delete_product.php"
-                    class="inline"
-                    onsubmit="return confirm('Are you sure you want to delete this product?');"
-                  >
-                    <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']) ?>" />
-                    <button type="submit" class="text-red-600 hover:underline text-xs font-semibold">Delete</button>
-                  </form>
-                </div>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        <?php else : ?>
-          <tr><td colspan="6" class="text-center py-4 text-gray-500">No products found.</td></tr>
-        <?php endif; ?>
-      </tbody>
-    </table>
 <!-- Pagination Controls -->
 <div class="mt-4 flex justify-center space-x-2 text-[#0f2e4d]">
   <?php
