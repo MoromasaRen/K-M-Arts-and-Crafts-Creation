@@ -71,7 +71,7 @@ if (!isset($_SESSION['user_id'])) {
         <div class="address-book-item mb-4 p-4 border-b border-gray-300 last:border-b-0 flex justify-between items-start">
           <div>
             <p><strong>Laurenz Palanas</strong> | 09123455678</p>
-            <p>25 Santolan Street, Barangay San Roque, Marikina City, Metro Manila</p>
+            <p> SLT Compound 9W27+JV4, Florencio Drive, Cebu City, 6000 Cebu </p>
           </div>
           <button 
               class="use-address border border-gray-400 rounded px-4 py-1 text-sm hover:bg-gray-100 transition"

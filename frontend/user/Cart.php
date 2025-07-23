@@ -188,7 +188,9 @@ if (!isset($_SESSION['user_id'])) {
         <button onclick="removeItem(${index})" class="text-[#1c2f4a] font-bold text-lg hover:text-red-600 px-2">×</button>
         <div class="flex items-center gap-1 font-bold text-sm text-gray-700 ml-4">
           <button onclick="decreaseQty(${index})" class="px-2 py-1 rounded hover:bg-gray-200">-</button>
-          <span>${item.quantity}</span>
+          <input type="number" min="1" max="30" value="${item.quantity}" 
+  onchange="updateQty(${index}, this.value)" 
+  class="w-12 text-center border border-gray-300 rounded" />
           <button onclick="increaseQty(${index})" class="px-2 py-1 rounded hover:bg-gray-200">+</button>
         </div>
       `;
@@ -239,7 +241,35 @@ if (!isset($_SESSION['user_id'])) {
       alert("Error fetching stock.");
     });
 }
+function updateQty(index, newQty) {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const quantity = parseInt(newQty);
 
+  if (isNaN(quantity) || quantity < 1) {
+    alert("Quantity must be at least 1.");
+    return;
+  }
+
+  const productId = cart[index].id;
+
+  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_product_quantity.php?product_id=${productId}`)
+    .then(response => response.json())
+    .then(data => {
+      const available = data.quantity;
+
+      if (quantity > available) {
+        alert(`Only ${available} items are in stock.`);
+      } else {
+        cart[index].quantity = quantity;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      }
+    })
+    .catch(error => {
+      console.error("Error checking stock:", error);
+      alert("Error checking stock.");
+    });
+}
 
   // Load the cart on page load
   loadCart();
