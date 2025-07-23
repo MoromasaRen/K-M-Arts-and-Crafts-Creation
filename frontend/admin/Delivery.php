@@ -106,12 +106,16 @@
         <h3 id="modalTitle" class="bg-[#a9c5ff] inline-block px-3 py-1 font-extrabold text-sm mb-4">Manage Delivery</h3>
         <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
           <input type="hidden" name="delivery_id" id="delivery_id">
-          <label class="flex flex-col col-span-2">
-            Order ID
-            <select name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
-              <option value="">Select an order</option>
-            </select>
-          </label>
+          <input type="hidden" name="user_id" id="user_id">
+          <input type="hidden" name="order_id" id="order_id">
+          <div id="orderSelectContainer" class="flex flex-col col-span-2">
+            <label class="flex flex-col">
+              Order ID
+              <select id="orderSelect" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+                <option value="">Select an order</option>
+              </select>
+            </label>
+          </div>
           <label class="flex flex-col">
             Scheduled Time
             <input name="scheduled_time" id="scheduled_time" type="datetime-local" class="rounded border px-2 py-1 text-[13px] font-normal" required>
@@ -148,11 +152,25 @@
   <script>
     let currentPage = 1, limit = 15;
     function loadPage(page = 1) {
-      fetch(`../../backend/deliveries/fetch_deliveries.php?page=${page}&limit=${limit}`)
+      const params = new URLSearchParams({
+        page: page,
+        limit: limit
+      });
+      
+      if (currentStatus) {
+        params.append('status', currentStatus);
+      }
+      
+      if (searchQuery) {
+        params.append('search', searchQuery);
+      }
+
+      fetch(`../../backend/deliveries/fetch_deliveries.php?${params}`)
         .then(res => res.json())
         .then(data => {
           if (!data.success) return alert(data.error || 'Failed to load deliveries');
           populateTable(data.data, page, data.total);
+          currentPage = page;
         });
     }
 
@@ -161,33 +179,32 @@
       tbody.innerHTML = '';
       data.forEach(d => {
         const row = document.createElement('tr');
-row.className = 'border-t border-gray-200';
-const userInfo = d.user_info || '#' + d.user_id + ' - ' + (d.user_name || 'N/A');
-const orderDetails = d.order_details || 'Order #' + d.order_id;
-row.innerHTML = `
-  <td class="px-2 py-1">${d.delivery_id}</td>
-  <td class="px-2 py-1">${userInfo}</td>
-  <td class="px-2 py-1">${orderDetails}</td>
-  <td class="px-2 py-1">${d.scheduled_time}</td>
-  <td class="px-2 py-1">${d.delivery_status}</td>
-  <td class="px-2 py-1">${d.courier_type}</td>
-  <td class="px-2 py-1">${d.plate_number}</td>
-  <td class="px-2 py-1 text-right">
-    <button class="editBtn text-blue-600 text-xs mr-2" data='${JSON.stringify(d)}'>Edit</button>
-    
-    
-    <form
-      method = "POST"
-      action="../../backend/deliveries/delete_delivery.php"
-      class="inline"
-      onsubmit="return confirm('Are you sure you want to delete this delivery?')"
-    >
-    <input type="hidden" name="delivery_id" value="${d.delivery_id}">
-    <button type="submit" class="deleteBtn text-red-600 text-xs">
-      Delete
-    </button>
-    </form>
-  </td>`;
+        row.className = 'border-t border-gray-200';
+        // Always use order_info and user_info from the database if available
+        const userInfo = d.user_info || (d.user_name ? `#${d.user_id} - ${d.user_name}` : `#${d.user_id}`);
+        const orderDetails = d.order_info || d.order_details || `Order #${d.order_id}`;
+        row.innerHTML = `
+          <td class="px-2 py-1">${d.delivery_id}</td>
+          <td class="px-2 py-1">${userInfo}</td>
+          <td class="px-2 py-1">${orderDetails}</td>
+          <td class="px-2 py-1">${d.scheduled_time}</td>
+          <td class="px-2 py-1">${d.delivery_status}</td>
+          <td class="px-2 py-1">${d.courier_type}</td>
+          <td class="px-2 py-1">${d.plate_number}</td>
+          <td class="px-2 py-1 text-right">
+            <button class="editBtn text-blue-600 text-xs mr-2" data='${JSON.stringify(d)}'>Edit</button>
+            <form
+              method = "POST"
+              action="../../backend/deliveries/delete_delivery.php"
+              class="inline"
+              onsubmit="return confirm('Are you sure you want to delete this delivery?')"
+            >
+            <input type="hidden" name="delivery_id" value="${d.delivery_id}">
+            <button type="submit" class="deleteBtn text-red-600 text-xs">
+              Delete
+            </button>
+            </form>
+          </td>`;
         tbody.appendChild(row);
       });
       renderPagination(total, page);
@@ -236,22 +253,32 @@ row.innerHTML = `
       document.getElementById('modalTitle').innerText = title;
       form.action = action;
 
-      const fields = ['delivery_id', 'order_id', 'scheduled_time', 'delivery_status', 'courier_type', 'plate_number'];
+      const fields = ['delivery_id', 'order_id', 'user_id', 'scheduled_time', 'delivery_status', 'courier_type', 'plate_number'];
       const isEdit = title.includes('Edit');
       
       // Reset status note
       document.getElementById('statusNote').textContent = '';
 
-      // Handle the order_id select differently for create vs edit
-      const orderSelect = document.getElementById('order_id');
+      // Handle the order selection differently for create vs edit
+      const orderSelectContainer = document.getElementById('orderSelectContainer');
+      const orderSelect = document.getElementById('orderSelect');
+      const orderIdInput = document.getElementById('order_id');
+      
       if (isEdit) {
-        const userInfo = data.user_info || `#${data.user_id} - ${data.user_name || 'N/A'}`;
-        const orderDetails = data.order_details || `Order #${data.order_id}`;
-        orderSelect.innerHTML = `<option value="${data.order_id}">${orderDetails} - ${userInfo}</option>`;
-        orderSelect.disabled = true;
+        // Hide the order select container in edit mode
+        orderSelectContainer.style.display = 'none';
+        // Set the hidden order_id value
+        orderIdInput.value = data.order_id;
       } else {
-        orderSelect.disabled = false;
+        // Show the order select container in create mode
+        orderSelectContainer.style.display = 'block';
+        orderIdInput.value = '';
         loadOrders(); // Reload orders for new delivery
+        
+        // Add change event listener to update hidden input
+        orderSelect.onchange = function() {
+          orderIdInput.value = this.value;
+        };
       }
 
       fields.forEach(f => {
@@ -260,7 +287,8 @@ row.innerHTML = `
           input.value = data[f] || '';
           input.readOnly = isEdit;
         } else if (f === 'order_id' && isEdit) {
-          // Skip order_id as it's handled above
+          // For editing, make sure we keep the order_id
+          input.value = data[f] || '';
         } else {
           input.value = data[f] || '';
         }
@@ -287,29 +315,6 @@ row.innerHTML = `
         }
       });
       loadPage(1);
-    }
-
-    // Update loadPage function to include status and search
-    function loadPage(page = 1) {
-      const params = new URLSearchParams({
-        page: page,
-        limit: limit
-      });
-      
-      if (currentStatus) {
-        params.append('status', currentStatus);
-      }
-      
-      if (searchQuery) {
-        params.append('search', searchQuery);
-      }
-
-      fetch(`../../backend/deliveries/fetch_deliveries.php?${params}`)
-        .then(res => res.json())
-        .then(data => {
-          if (!data.success) return alert(data.error || 'Failed to load deliveries');
-          populateTable(data.data, page, data.total);
-        });
     }
 
     // Add event listeners for search and filter
@@ -371,7 +376,7 @@ row.innerHTML = `
             console.error('Failed to load orders:', data.error);
             return;
           }
-          const orderSelect = document.getElementById('order_id');
+          const orderSelect = document.getElementById('orderSelect');
           orderSelect.innerHTML = '<option value="">Select an order</option>';
           data.data.forEach(order => {
             const option = document.createElement('option');
@@ -416,49 +421,74 @@ row.innerHTML = `
     document.getElementById('scheduled_time').addEventListener('change', updateDeliveryStatus);
 
     // Handle form submission with status updates
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      const formData = new FormData(form);
-      const status = formData.get('delivery_status');
-      
-      // If status is being set to delivered, update the order status as well
-      if (status === 'delivered') {
+      try {
+        const formData = new FormData(form);
+        const status = formData.get('delivery_status');
         const orderId = formData.get('order_id');
-        // Update order status to completed
-        fetch('../../backend/orders/update_order.php', {
+        const deliveryId = formData.get('delivery_id');
+        
+        // First update the delivery
+        const deliveryResponse = await fetch(form.action, {
           method: 'POST',
+          body: formData,
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `order_id=${orderId}&status=completed`
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (!data.success) {
-            throw new Error('Failed to update order status');
+            'Accept': 'application/json'
           }
         });
-      }
-      
-      fetch(form.action, {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert('Delivery saved successfully!' + (status === 'delivered' ? ' Order status updated to completed.' : ''));
-          modal.classList.add('hidden');
-          loadPage(currentPage); // Reload the current page
-        } else {
-          throw new Error(data.error || 'Failed to save delivery');
+        
+        if (!deliveryResponse.ok) {
+          throw new Error('Network response was not ok');
         }
-      })
-      .catch(err => {
+        
+        let deliveryResult;
+        try {
+          deliveryResult = await deliveryResponse.json();
+        } catch (error) {
+          const text = await deliveryResponse.text();
+          console.error('Response text:', text);
+          throw new Error('Invalid JSON response from server');
+        }
+        
+        if (!deliveryResult.success) {
+          throw new Error(deliveryResult.error || 'Failed to save delivery');
+        }
+        
+        // If delivery was successfully updated and status is "delivered", update order status
+        if (status === 'delivered') {
+          try {
+            const orderResponse = await fetch('../../backend/orders/update_order.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: `order_id=${orderId}&status=completed`
+            });
+            
+            if (!orderResponse.ok) {
+              console.error('Order status update failed but delivery was updated');
+            } else {
+              const orderResult = await orderResponse.json();
+              if (!orderResult.success) {
+                console.error('Order status update returned error but delivery was updated');
+              }
+            }
+          } catch (orderError) {
+            console.error('Error updating order status:', orderError);
+            // Don't throw here as delivery was already updated
+          }
+        }
+        
+        alert('Delivery saved successfully!' + (status === 'delivered' ? ' Order status updated to completed.' : ''));
+        modal.classList.add('hidden');
+        loadPage(currentPage); // Reload the current page to show updated data
+        
+      } catch (err) {
         console.error('Error:', err);
         alert(err.message || 'An error occurred while saving');
-      });
+      }
     });
 </script>
 </body>
