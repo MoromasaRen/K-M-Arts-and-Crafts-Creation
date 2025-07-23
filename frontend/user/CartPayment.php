@@ -53,12 +53,7 @@ if (!isset($_SESSION['user_id'])) {
       </div>
       <div class="h-[1px] w-12 bg-white"></div>
       <div class="flex flex-col items-center gap-1">
-        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.php" class="w-8 h-8 border-2 border-white text-white rounded-lg flex items-center justify-center font-bold hover:bg-white hover:text-[#1c2f4a] transition">2</a>
-        <span>Address</span>
-      </div>
-      <div class="h-[1px] w-12 bg-white"></div>
-      <div class="flex flex-col items-center gap-1">
-        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartPayment.php" class="w-8 h-8 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">3</a>
+        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartPayment.php" class="w-8 h-8 bg-white text-[#1c2f4a] rounded-lg flex items-center justify-center font-bold hover:bg-[#c7d9f9] hover:text-[#1a3550] transition">2</a>
         <span>Payment</span>
       </div>
     </div>
@@ -93,7 +88,7 @@ if (!isset($_SESSION['user_id'])) {
         <span id="payment-total">₱0.00</span>
       </div>
       <div class="flex justify-between mt-2">
-        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.php" class="bg-white text-[#1f3a5f] font-semibold py-2 px-6 rounded border border-gray-300 hover:bg-gray-100 transition duration-300 ease-in-out">Back</a>
+        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.php" class="bg-white text-[#1f3a5f] font-semibold py-2 px-6 rounded border border-gray-300 hover:bg-gray-100 transition duration-300 ease-in-out">Back</a>
         <button id="submitOrderBtn" class="bg-[#f2f7fd] border border-gray-300 rounded py-2 px-6 font-semibold text-[#1c2f4a] hover:bg-[#c7d9f9] transition">
           Place Order
         </button>
