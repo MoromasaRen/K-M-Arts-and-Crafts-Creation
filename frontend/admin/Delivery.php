@@ -45,11 +45,33 @@
 
   <main class="flex-1 p-6 relative">
     <!-- Header -->
-    <div class="flex items-center mb-4 text-[#0f2e4d]">
-      <button class="text-2xl mr-3">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h2 class="font-extrabold text-lg border-b border-[#0f2e4d] pb-1">Deliveries</h2>
+    <div class="flex items-center justify-between mb-4 text-[#0f2e4d]">
+      <div class="flex items-center">
+        <button class="text-2xl mr-3">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h2 class="font-extrabold text-lg border-b border-[#0f2e4d] pb-1">Deliveries</h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <input type="text" id="searchInput" placeholder="Search deliveries..." 
+                 class="rounded-md px-3 py-1 pr-8 text-sm border focus:outline-none focus:border-blue-500">
+          <button id="searchBtn" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="flex rounded-md shadow-sm">
+          <button class="status-filter px-3 py-1 text-xs font-bold border-r" data-status="scheduled">
+            Scheduled
+          </button>
+          <button class="status-filter px-3 py-1 text-xs font-bold border-r" data-status="in_transit">
+            In Transit
+          </button>
+          <button class="status-filter px-3 py-1 text-xs font-bold" data-status="delivered">
+            Delivered
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Table -->
@@ -240,6 +262,65 @@ row.innerHTML = `
     document.getElementById('createBtn').onclick = () => openModal('Create Delivery', '../../backend/deliveries/add_delivery.php');
     document.getElementById('closeModalBtn').onclick = () => modal.classList.add('hidden');
     modal.onclick = e => { if (e.target === modal) modal.classList.add('hidden'); };
+
+    // Add these variables at the top of your script
+    let currentStatus = '';
+    let searchQuery = '';
+
+    function applyStatusFilter(status) {
+      currentStatus = status;
+      document.querySelectorAll('.status-filter').forEach(btn => {
+        if (btn.dataset.status === status) {
+          btn.classList.add('bg-blue-500', 'text-white');
+        } else {
+          btn.classList.remove('bg-blue-500', 'text-white');
+        }
+      });
+      loadPage(1);
+    }
+
+    // Update loadPage function to include status and search
+    function loadPage(page = 1) {
+      const params = new URLSearchParams({
+        page: page,
+        limit: limit
+      });
+      
+      if (currentStatus) {
+        params.append('status', currentStatus);
+      }
+      
+      if (searchQuery) {
+        params.append('search', searchQuery);
+      }
+
+      fetch(`../../backend/deliveries/fetch_deliveries.php?${params}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) return alert(data.error || 'Failed to load deliveries');
+          populateTable(data.data, page, data.total);
+        });
+    }
+
+    // Add event listeners for search and filter
+    document.querySelectorAll('.status-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const status = btn.dataset.status;
+        applyStatusFilter(status === currentStatus ? '' : status);
+      });
+    });
+
+    document.getElementById('searchBtn').addEventListener('click', () => {
+      searchQuery = document.getElementById('searchInput').value.trim();
+      loadPage(1);
+    });
+
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchQuery = e.target.value.trim();
+        loadPage(1);
+      }
+    });
 
     window.addEventListener('DOMContentLoaded', () => {
       loadPage();
