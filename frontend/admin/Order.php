@@ -8,17 +8,20 @@ function fetchOrders(PDO $pdo, int $limit, int $offset, ?string $search = '', ?s
               o.order_id, 
               oi.order_item_id,
               o.user_id,
+              CONCAT(u.first_name, ' ', u.last_name) as user_name,
+              CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) as user_display,
               o.order_details, 
               o.order_date, 
               o.total_amount, 
               o.status 
           FROM orders o
           LEFT JOIN order_items oi ON o.order_id = oi.order_id
+          LEFT JOIN users u ON o.user_id = u.user_id
           WHERE 1
       ";
       
       if ($search) {
-          $query .= " AND o.user_id LIKE :search";  // Only search by user_id
+          $query .= " AND (u.first_name LIKE :search OR u.last_name LIKE :search)";  // Search by user's name
       }
       
       if ($status) {
@@ -169,7 +172,7 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
 
   <!-- Search and Filter Form -->
   <form class="flex space-x-4 mb-6" method="GET">
-  <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Search by User ID" class="px-3 py-2 border rounded-md w-1/3">
+  <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Search by User Name" class="px-3 py-2 border rounded-md w-1/3">
   <select name="status" class="px-3 py-2 border rounded-md w-1/3">
     <option value="">All Statuses</option>
     <option value="pending" <?= $status === 'pending' ? 'selected' : '' ?>>Pending</option>
@@ -189,7 +192,7 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
   <table class="w-full bg-white rounded-md shadow-md text-sm text-[#0f2e4d] border-separate border-spacing-1 mt-6">
     <thead>
       <tr>
-        <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">User ID</th>
+        <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">User Info</th>
         <th class="text-left font-extrabold px-2 py-1">Order Details</th>
         <th class="text-left font-extrabold px-2 py-1">Order Date</th>
         <th class="text-left font-extrabold px-2 py-1">Total Amount</th>
@@ -201,7 +204,7 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
       <?php if (count($orders) > 0): ?>
         <?php foreach ($orders as $order): ?>
           <tr class="border-t border-gray-200">
-            <td class="px-2 py-1"><?= htmlspecialchars($order['user_id']) ?></td>
+            <td class="px-2 py-1"><?= htmlspecialchars($order['user_display']) ?></td>
             <td class="px-2 py-1"><?= htmlspecialchars($order['order_details']) ?></td>
             <td class="px-2 py-1"><?= htmlspecialchars($order['order_date']) ?></td>
             <td class="px-2 py-1">₱<?= number_format($order['total_amount'], 2) ?></td>
@@ -237,34 +240,18 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
 <div id="manageOrderModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
   <form id="orderForm" action="../../backend/orders/update_order.php" method="POST" class="bg-[#d7e4ff] rounded-lg p-6 shadow-md w-[360px] relative">
     <button id="closeOrderModalBtn" type="button" class="absolute top-2 right-2 text-[#0f2e4d] text-xl font-bold">&times;</button>
-    <h3 id="modalOrderTitle" class="bg-[#a9c5ff] rounded-md px-3 py-1 font-extrabold text-[15px] mb-4 inline-block">Edit Order</h3>
+    <h3 id="modalOrderTitle" class="bg-[#a9c5ff] rounded-md px-3 py-1 font-extrabold text-[15px] mb-4 inline-block">Update Order Status</h3>
 
-    <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
+    <div class="text-[13px] font-extrabold text-[#1e2f4a]">
       <input type="hidden" name="order_id" id="order_id" />
-
-      <label class="flex flex-col gap-1 col-span-2">
-        User ID
-        <input name="user_id" id="user_id" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="text" required />
-      </label>
-
-      <label class="flex flex-col gap-1 col-span-2">
-        Order Details
-        <textarea name="order_details" id="order_details" class="rounded-md border px-2 py-1 text-[13px] font-normal w-full" rows="2" required></textarea>
-      </label>
-
-      <label class="flex flex-col gap-1 col-span-2">
-        Order Date
-        <input name="order_date" id="order_date" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="datetime-local" required />
-      </label>
-
-      <label class="flex flex-col gap-1">
-        Total
-        <input name="total_amount" id="total_amount" class="rounded-md border px-2 py-1 text-[13px] font-normal" type="number" step="0.01" required />
-      </label>
+      <input type="hidden" name="user_id" id="user_id" />
+      <input type="hidden" name="order_details" id="order_details" />
+      <input type="hidden" name="order_date" id="order_date" />
+      <input type="hidden" name="total_amount" id="total_amount" />
 
       <label class="flex flex-col gap-1">
         Status
-        <select name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal">
+        <select name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal w-full">
           <option value="pending">Pending</option>
           <option value="confirmed">Confirmed</option>
           <option value="completed">Completed</option>
@@ -273,7 +260,7 @@ $orders = fetchOrders($pdo, $limit, $offset, $search, $status, $startDate, $endD
     </div>
 
     <div class="mt-4 text-center space-x-3">
-      <button type="submit" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Save</button>
+      <button type="submit" class="bg-lime-400 text-white font-extrabold text-xs rounded px-3 py-1 shadow-md">Update Status</button>
     </div>
   </form>
 </div>

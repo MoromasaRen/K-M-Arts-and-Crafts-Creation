@@ -10,12 +10,17 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 
 try {
     // Base query
-    $sql = "SELECT d.*, o.order_details, CONCAT('Order #', o.order_id, ' - ', o.order_details) as order_info 
+    $sql = "SELECT d.*, o.order_details, o.user_id,
+            CONCAT('Order #', o.order_id, ' - ', o.order_details) as order_info,
+            CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) as user_info,
+            CONCAT(u.first_name, ' ', u.last_name) as user_name
             FROM deliveries d 
             LEFT JOIN orders o ON d.order_id = o.order_id
+            LEFT JOIN users u ON o.user_id = u.user_id
             WHERE 1=1";
     $countSql = "SELECT COUNT(*) as total FROM deliveries d 
                  LEFT JOIN orders o ON d.order_id = o.order_id 
+                 LEFT JOIN users u ON o.user_id = u.user_id
                  WHERE 1=1";
 
     // Add status filter if provided
@@ -26,8 +31,15 @@ try {
 
     // Add search if provided
     if ($search !== '') {
-        $sql .= " AND (d.delivery_id LIKE :search1 OR d.plate_number LIKE :search2 OR o.order_details LIKE :search3)";
-        $countSql .= " AND (d.delivery_id LIKE :search1 OR d.plate_number LIKE :search2)";
+        $sql .= " AND (d.delivery_id LIKE :search1 
+                 OR d.plate_number LIKE :search2 
+                 OR o.order_details LIKE :search3
+                 OR u.first_name LIKE :search4
+                 OR u.last_name LIKE :search5)";
+        $countSql .= " AND (d.delivery_id LIKE :search1 
+                      OR d.plate_number LIKE :search2
+                      OR u.first_name LIKE :search4
+                      OR u.last_name LIKE :search5)";
     }
 
     // Get total count
@@ -41,6 +53,8 @@ try {
         $searchParam = "%$search%";
         $stmt->bindValue(':search1', $searchParam, PDO::PARAM_STR);
         $stmt->bindValue(':search2', $searchParam, PDO::PARAM_STR);
+        $stmt->bindValue(':search4', $searchParam, PDO::PARAM_STR);
+        $stmt->bindValue(':search5', $searchParam, PDO::PARAM_STR);
     }
     
     $stmt->execute();
@@ -61,6 +75,8 @@ try {
         $stmt->bindValue(':search1', $searchParam, PDO::PARAM_STR);
         $stmt->bindValue(':search2', $searchParam, PDO::PARAM_STR);
         $stmt->bindValue(':search3', $searchParam, PDO::PARAM_STR);
+        $stmt->bindValue(':search4', $searchParam, PDO::PARAM_STR);
+        $stmt->bindValue(':search5', $searchParam, PDO::PARAM_STR);
     }
     
     // Bind pagination parameters as integers

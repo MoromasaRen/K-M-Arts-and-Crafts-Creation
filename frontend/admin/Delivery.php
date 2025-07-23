@@ -79,6 +79,7 @@
   <thead>
     <tr>
       <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Delivery ID</th>
+      <th class="text-left font-extrabold px-2 py-1">User Info</th>
       <th class="text-left font-extrabold px-2 py-1">Order Details</th>
       <!-- <th class="text-left font-extrabold px-2 py-1">Staff ID</th> -->
       <th class="text-left font-extrabold px-2 py-1">Scheduled Time</th>
@@ -162,6 +163,7 @@
 row.className = 'border-t border-gray-200';
 row.innerHTML = `
   <td class="px-2 py-1">${d.delivery_id}</td>
+  <td class="px-2 py-1">${d.user_info || '#' + d.user_id + ' - ' + (d.user_name || 'N/A')}</td>
   <td class="px-2 py-1">${d.order_details || d.order_id}</td>
   <td class="px-2 py-1">${d.scheduled_time}</td>
   <td class="px-2 py-1">${d.delivery_status}</td>
@@ -326,6 +328,32 @@ row.innerHTML = `
       loadPage();
       loadOrders();
     });
+
+    window.addEventListener("DOMContentLoaded", function () {
+    const userId = localStorage.getItem("user_id");
+
+    if (!userId) {
+      document.getElementById("admin-role").textContent = "";
+      document.getElementById("admin-name").textContent = "";
+      return;
+    }
+
+    fetch(`/K-M-Arts-and-Crafts-Creation/backend/users/get_user_info.php?user_id=${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          document.getElementById("admin-role").textContent = data.first_name;
+          document.getElementById("admin-name").textContent = data.last_name;
+        } else {
+          document.getElementById("admin-role").textContent = "";
+          document.getElementById("admin-name").textContent = "";
+        }
+      })
+      .catch(() => {
+        document.getElementById("admin-role").textContent = "Error";
+        document.getElementById("admin-name").textContent = "Name";
+      });
+  });
 
     function loadOrders() {
       fetch('../../backend/orders/get_confirmed_orders.php')
