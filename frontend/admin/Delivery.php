@@ -82,13 +82,12 @@
         <button type="button" id="closeModalBtn" class="absolute top-2 right-2 font-bold text-xl text-[#0f2e4d]">&times;</button>
         <h3 id="modalTitle" class="bg-[#a9c5ff] inline-block px-3 py-1 font-extrabold text-sm mb-4">Manage Delivery</h3>
         <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-[13px] font-extrabold text-[#1e2f4a]">
-          <label class="flex flex-col">
-            Delivery ID
-            <input name="delivery_id" id="delivery_id" class="rounded border px-2 py-1 text-[13px] font-normal bg-gray-100" readonly>
-          </label>
-          <label class="flex flex-col">
+          <input type="hidden" name="delivery_id" id="delivery_id">
+          <label class="flex flex-col col-span-2">
             Order ID
-            <input name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal bg-gray-100" readonly>
+            <select name="order_id" id="order_id" class="rounded border px-2 py-1 text-[13px] font-normal" required>
+              <option value="">Select an order</option>
+            </select>
           </label>
           <label class="flex flex-col">
             Scheduled Time
@@ -148,13 +147,19 @@ row.innerHTML = `
   <td class="px-2 py-1">${d.plate_number}</td>
   <td class="px-2 py-1 text-right">
     <button class="editBtn text-blue-600 text-xs mr-2" data='${JSON.stringify(d)}'>Edit</button>
-    <button
-      class="deleteBtn text-red-600 text-xs"
-      data-id="${d.delivery_id}"
-      onclick="handleDelete(this)"
+    
+    
+    <form
+      method = "POST"
+      action="../../backend/deliveries/delete_delivery.php"
+      class="inline"
+      onsubmit="return confirm('Are you sure you want to delete this delivery?')"
     >
+    <input type="hidden" name="delivery_id" value="${d.delivery_id}">
+    <button type="submit" class="deleteBtn text-red-600 text-xs">
       Delete
     </button>
+    </form>
   </td>`;
         tbody.appendChild(row);
       });
@@ -205,10 +210,28 @@ row.innerHTML = `
       form.action = action;
 
       const fields = ['delivery_id', 'order_id', 'scheduled_time', 'delivery_status', 'courier_type', 'plate_number'];
+      const isEdit = title.includes('Edit');
+
+      // Handle the order_id select differently for create vs edit
+      const orderSelect = document.getElementById('order_id');
+      if (isEdit) {
+        orderSelect.innerHTML = `<option value="${data.order_id}">Order #${data.order_id}</option>`;
+        orderSelect.disabled = true;
+      } else {
+        orderSelect.disabled = false;
+        loadOrders(); // Reload orders for new delivery
+      }
+
       fields.forEach(f => {
         const input = document.getElementById(f);
-        input.value = data[f] || '';
-        input.readOnly = (f === 'delivery_id' && title.includes('Edit'));
+        if (f === 'delivery_id') {
+          input.value = data[f] || '';
+          input.readOnly = isEdit;
+        } else if (f === 'order_id' && isEdit) {
+          // Skip order_id as it's handled above
+        } else {
+          input.value = data[f] || '';
+        }
       });
 
       modal.classList.remove('hidden');
@@ -218,43 +241,56 @@ row.innerHTML = `
     document.getElementById('closeModalBtn').onclick = () => modal.classList.add('hidden');
     modal.onclick = e => { if (e.target === modal) modal.classList.add('hidden'); };
 
-    window.addEventListener('DOMContentLoaded', () => loadPage());
-
-
-   function handleDelete(button) {
-  const id = button.getAttribute('data-id');
-
-  if (confirm("Are you sure you want to delete this delivery?")) {
-    fetch(`../../backend/deliveries/delete_delivery.php`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: `delivery_id=${encodeURIComponent(id)}`  // Changed from 'id' to 'delivery_id'
-    })
-    .then(res => res.text())
-    .then(text => {
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (e) {
-        console.error('Server response:', text);
-        throw new Error('Server response was not valid JSON');
-      }
-      if (data.success) {
-        alert("Delivery deleted successfully.");
-        loadPage(currentPage);
-      } else {
-        throw new Error(data.error || "Failed to delete delivery.");
-      }
-    })
-    .catch(err => {
-      console.error('Delete error:', err);
-      alert(err.message || "An error occurred while deleting.");
+    window.addEventListener('DOMContentLoaded', () => {
+      loadPage();
+      loadOrders();
     });
-  }
-}
 
+    function loadOrders() {
+      fetch('../../backend/orders/get_confirmed_orders.php')
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            console.error('Failed to load orders:', data.error);
+            return;
+          }
+          const orderSelect = document.getElementById('order_id');
+          orderSelect.innerHTML = '<option value="">Select an order</option>';
+          data.data.forEach(order => {
+            const option = document.createElement('option');
+            option.value = order.order_id;
+            option.textContent = `Order #${order.order_id} - ${order.order_details} (₱${order.total_amount})`;
+            orderSelect.appendChild(option);
+          });
+        })
+        .catch(err => console.error('Error loading orders:', err));
+    }
+
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Delivery saved successfully!');
+          modal.classList.add('hidden');
+          loadPage(currentPage); // Reload the current page
+        } else {
+          throw new Error(data.error || 'Failed to save delivery');
+        }
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        alert(err.message || 'An error occurred while saving');
+      });
+    });
 </script>
 </body>
 </html>
