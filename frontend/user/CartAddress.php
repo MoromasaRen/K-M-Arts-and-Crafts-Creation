@@ -114,7 +114,7 @@ if (!isset($_SESSION['user_id'])) {
     </section>
 
     <div class="mt-6 flex justify-between">
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.php" class="bg-gray-300 text-[#1f2d47] font-semibold py-2 px-6 rounded hover:bg-gray-400 transition duration-300 ease-in-out">Back</a>
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Cart.php" class="bg-white text-[#1f2d47] font-semibold py-2 px-6 rounded hover:bg-gray-100 transition duration-300 ease-in-out">Back</a>
       <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartPayment.php" class="bg-[#1f2d47] text-white font-semibold py-2 px-6 rounded hover:bg-[#0f1a2a] transition duration-300 ease-in-out">Next</a>
     </div>
 

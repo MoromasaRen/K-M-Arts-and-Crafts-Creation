@@ -93,8 +93,8 @@ if (!isset($_SESSION['user_id'])) {
         <span id="payment-total">₱0.00</span>
       </div>
       <div class="flex justify-between mt-2">
-        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.php" class="bg-gray-300 text-[#1f3a5f] font-semibold py-2 px-6 rounded hover:bg-gray-400 transition duration-300 ease-in-out">Back</a>
-        <button id="submitOrderBtn" class="bg-[#f2f7fd] border border-gray-400 rounded py-2 px-6 font-semibold text-[#1c2f4a] hover:bg-[#c7d9f9] transition">
+        <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/CartAddress.php" class="bg-white text-[#1f3a5f] font-semibold py-2 px-6 rounded border border-gray-300 hover:bg-gray-100 transition duration-300 ease-in-out">Back</a>
+        <button id="submitOrderBtn" class="bg-[#f2f7fd] border border-gray-300 rounded py-2 px-6 font-semibold text-[#1c2f4a] hover:bg-[#c7d9f9] transition">
           Place Order
         </button>
       </div>
