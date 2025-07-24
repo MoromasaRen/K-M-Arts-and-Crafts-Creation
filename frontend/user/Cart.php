@@ -1,11 +1,23 @@
 <?php
 session_start();
 
+$timeout_duration = 900;
+
 if (!isset($_SESSION['user_id'])) {
   echo "<script>alert('You must be logged in to access the cart.'); window.location.href='/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html';</script>";
   exit;
 }
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+  session_unset();
+  session_destroy();
+  echo "<script>alert('Your session has expired. Please log in again.'); window.location.href='/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html';</script>";
+  exit;
+}
+
+$_SESSION['LAST_ACTIVITY'] = time();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

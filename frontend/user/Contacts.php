@@ -1,3 +1,4 @@
+<?php require_once '../../backend/session_keep_alive.php'; ?>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
