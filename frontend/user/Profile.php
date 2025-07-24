@@ -259,22 +259,29 @@
     <!-- My Orders Section -->
     <section class="max-w-6xl mx-auto mt-12 mb-12">
       <h2 class="text-2xl font-semibold text-left mb-4">My Orders</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Orders to Pay Card -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="font-semibold mb-2">Orders to Pay</h3>
+          <ul id="orders-to-pay-list" class="list-none space-y-7">
+            <li>Loading...</li>
+          </ul>
+        </div>
+        
+        <!-- Confirmed Orders Card -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="font-semibold mb-2">Confirmed Orders</h3>
+          <ul id="confirmed-orders-list" class="list-none space-y-7">
+            <li>Loading...</li>
+          </ul>
+        </div>
+        
         <!-- Previous Orders Card -->
         <div class="bg-white rounded-lg shadow-md p-6">
           <h3 class="font-semibold mb-2">Previous Orders</h3>
             <ul id="previous-orders-list" class="list-none space-y-7">
               <li>Loading...</li>
             </ul>
-
-        </div>
-        <!-- Orders to Pay Card -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-          <h3 class="font-semibold mb-2">Orders to Pay</h3>
-          <ul id="orders-to-pay-list" class="list-none space-y-7">
-
-            <li>Loading...</l
-          </ul>
         </div>
       </div>
     </section>
@@ -513,10 +520,6 @@
     .catch(() => alert("Something went wrong during logout."));
   });
 
-
-
-
-  
   // Load user data
   window.addEventListener("DOMContentLoaded", function () {
     if (!userId) {
@@ -563,117 +566,70 @@
         document.getElementById("summary-address").textContent = `${data.country || ''}, ${data.city || ''} ${data.postal_code || ''}`;
       });
       
-  loadPreviousOrders(userId);
-  loadOrdersToPay(userId); // ← Add this line
+  loadAllOrders(userId);
   });
 
-  function loadPreviousOrders(userId) {
-  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_user_orders.php?user_id=${userId}`)
-    .then(res => res.json())
-    .then(data => {
-      const previousList = document.getElementById("previous-orders-list");
-      previousList.innerHTML = "";
+  function loadAllOrders(userId) {
+    fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/orders/get_user_orders.php?user_id=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        const previousOrdersList = document.getElementById("previous-orders-list");
+        const ordersToPayList = document.getElementById("orders-to-pay-list");
+        const confirmedOrdersList = document.getElementById("confirmed-orders-list");
 
-      const completedOrders = data.orders.filter(order =>
-  order.order_status === "completed"
-);
+        // Clear existing content
+        previousOrdersList.innerHTML = "";
+        ordersToPayList.innerHTML = "";
+        confirmedOrdersList.innerHTML = "";
 
-      if (completedOrders.length === 0) {
-        previousList.innerHTML = "<li>No completed orders.</li>";
-        return;
-      }
+        if (!data.success || data.orders.length === 0) {
+          previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
+          ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
+          confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
+          return;
+        }
 
-      completedOrders.forEach(order => {
-        const li = document.createElement("li");
-        li.textContent = `You ordered ${order.order_details}.`;
-        previousList.appendChild(li);
+        data.orders.forEach(order => {
+          const [name, quantity] = order.order_details.split(" x");
+
+          const li = document.createElement("li");
+          li.className = "border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-sm text-sm text-gray-800 font-medium";
+
+          li.innerHTML = `
+            <div class="font-medium">${name?.trim() || "Unknown Item"}</div>
+            <div class="text-sm text-gray-600">Quantity: ${quantity || 1}</div>
+            <div class="text-sm text-gray-800 font-semibold">Total: ₱${parseFloat(order.total_amount).toFixed(2)}</div>
+            <div class="text-xs text-gray-500 mt-1">Order Date: ${new Date(order.order_date).toLocaleDateString()}</div>
+          `;
+
+          // Sort orders based on status
+          if (order.order_status === "completed") {
+            previousOrdersList.appendChild(li);
+          } else if (order.order_status === "confirmed") {
+            confirmedOrdersList.appendChild(li);
+          } else if (order.order_status === "pending") {
+            ordersToPayList.appendChild(li);
+          }
+        });
+
+        // Show "No orders" message if specific categories are empty
+        if (previousOrdersList.innerHTML === "") {
+          previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
+        }
+        if (ordersToPayList.innerHTML === "") {
+          ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
+        }
+        if (confirmedOrdersList.innerHTML === "") {
+          confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
+        }
+      })
+      .catch(error => {
+        console.error("Error loading orders:", error);
+        document.getElementById("previous-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
+        document.getElementById("orders-to-pay-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
+        document.getElementById("confirmed-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
       });
-    });
-}
-
-function loadOrdersToPay(userId) {
-  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_user_orders.php?user_id=${userId}`)
-    .then(res => res.json())
-    .then(data => {
-      const pendingList = document.getElementById("orders-to-pay-list");
-      pendingList.innerHTML = "";
-
-      const pendingOrders = data.orders.filter(order =>
-  order.order_status === "pending"
-);
-
-      if (pendingOrders.length === 0) {
-        pendingList.innerHTML = "<li>No pending orders.</li>";
-        return;
-      }
-
-      pendingOrders.forEach(order => {
-        const li = document.createElement("li");
-        li.textContent = `You ordered ${order.order_details}.`;
-        pendingList.appendChild(li);
-      });
-    });
-}
-const previousOrdersList = document.getElementById("previous-orders-list");
-const ordersToPayList = document.getElementById("orders-to-pay-list");
-
-// Clear loading indicators
-previousOrdersList.innerHTML = "";
-ordersToPayList.innerHTML = "";
-
-data.orders.forEach(order => {
-  const li = document.createElement("li");
-  li.className = "border border-gray-300 p-4 rounded-lg bg-white shadow";
-
-  li.textContent = `You ordered ${order.order_details}.`;
-
-  if (order.order_status === "completed") {
-    previousOrdersList.appendChild(li);
-  } else {
-    ordersToPayList.appendChild(li);
   }
-});
-
-
-
-fetch(`/K-M-Arts-and-Crafts-Creation/backend/orders/get_user_orders.php?user_id=${userId}`)
-  .then(response => response.json())
-  .then(data => {
-    const previousOrdersList = document.getElementById("previous-orders-list");
-    const ordersToPayList = document.getElementById("orders-to-pay-list");
-
-    // Clear existing content
-    previousOrdersList.innerHTML = "";
-    ordersToPayList.innerHTML = "";
-
-    if (!data.success || data.orders.length === 0) {
-      previousOrdersList.innerHTML = "<li>No completed orders yet.</li>";
-      ordersToPayList.innerHTML = "<li>No pending orders yet.</li>";
-      return;
-    }
-
-    data.orders.forEach(order => {
-      const [name, quantity] = order.order_details.split(" x");
-
-      const li = document.createElement("li");
-      li.className = "border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-sm text-sm text-gray-800 font-medium";
-
-      li.innerHTML = `
-        <div class="font-medium">${name?.trim() || "Unknown Item"}</div>
-        <div class="text-sm text-gray-600">Quantity: ${quantity || 1}</div>
-        <div class="text-sm text-gray-800 font-semibold">Total: ₱${parseFloat(order.total_amount).toFixed(2)}</div>
-      `;
-
-      if (order.order_status === "completed") {
-        previousOrdersList.appendChild(li);
-      } else {
-        ordersToPayList.appendChild(li);
-      }
-    });
-  })
-  .catch(error => {
-    console.error("Error loading orders:", error);
-  });
 </script>
 
 </body>
