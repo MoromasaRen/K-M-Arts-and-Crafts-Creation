@@ -218,8 +218,7 @@
         });
     }
 
-// Updated populateTable function - simplified to show only User ID
-function populateTable(data, page, total) {
+    function populateTable(data, page, total) {
   const tbody = document.querySelector('tbody');
   tbody.innerHTML = '';
   
@@ -227,31 +226,30 @@ function populateTable(data, page, total) {
     const row = document.createElement('tr');
     row.className = 'border-t border-gray-200';
     
-    // ✅ SIMPLIFIED: Only show User ID
+    // ✅ Improved user ID handling with order information
     let userId = 'N/A';
-    if (d.user_id && d.user_id !== 'null') {
-      userId = d.user_id;
-    }
-    
-    // ✅ Keep order details handling as before
-    let orderDetails = 'Unknown Order';
-    
-    if (d.order_info && d.order_info !== 'null' && d.order_info.trim() !== '') {
-      orderDetails = d.order_info;
-    } else if (d.order_details && d.order_details !== 'null' && d.order_details.trim() !== '') {
-      orderDetails = d.order_details;
+    if (d.user_id) {
+      userId = `#${d.user_id}`;
     } else if (d.order_id) {
-      orderDetails = `Order #${d.order_id}`;
-      // Add total amount if available
-      if (d.total_amount) {
-        orderDetails += ` (₱${d.total_amount})`;
-      }
+      // Try to get user ID from order_details if available
+      console.log('Attempting to find user ID from order:', d.order_id);
+      fetch(`../../backend/orders/get_order.php?order_id=${d.order_id}`)
+        .then(res => res.json())
+        .then(orderData => {
+          if (orderData.success && orderData.data.user_id) {
+            const userIdCell = row.querySelector('.user-id-cell');
+            if (userIdCell) {
+              userIdCell.textContent = `#${orderData.data.user_id}`;
+            }
+          }
+        })
+        .catch(err => console.error('Error fetching order details:', err));
     }
     
     row.innerHTML = `
       <td class="px-2 py-1">${d.delivery_id || 'N/A'}</td>
-      <td class="px-2 py-1">${userId}</td>
-      <td class="px-2 py-1">${orderDetails}</td>
+      <td class="px-2 py-1 user-id-cell">${userId}</td>
+      <td class="px-2 py-1">${d.order_details || d.order_info || `Order #${d.order_id}` || 'N/A'}</td>
       <td class="px-2 py-1">${formatDateTime(d.scheduled_time)}</td>
       <td class="px-2 py-1">
         <span class="status-badge status-${d.delivery_status}">
@@ -292,44 +290,22 @@ function loadPage(page = 1) {
   console.log('Fetching deliveries with params:', params.toString());
   
   fetch(`../../backend/deliveries/fetch_deliveries.php?${params}`)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      return res.text();
-    })
-    .then(text => {
-      console.log('Raw response:', text);
+    .then(res => res.json())
+    .then(data => {
+      console.log('Deliveries response:', data);
       
-      // Try to parse as JSON
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch (e) {
-        console.error('JSON parse error:', e);
-        console.error('Response text:', text);
-        throw new Error('Invalid JSON response from server');
+      // Debug: Log the first delivery's user_id
+      if (data.data && data.data.length > 0) {
+        console.log('First delivery user_id:', data.data[0].user_id);
       }
       
-      console.log('Parsed deliveries response:', data);
-      
-      if (!data.success) {
-        throw new Error(data.error || data.message || 'Failed to load deliveries');
-      }
-      
-      // Debug: Check data structure
-      console.log('Sample delivery data:', data.data[0]);
-      
+      if (!data.success) return alert(data.error || 'Failed to load deliveries');
       populateTable(data.data, page, data.total);
       currentPage = page;
     })
     .catch(err => {
       console.error('Error loading deliveries:', err);
-      alert(`Error loading deliveries: ${err.message}`);
-      
-      // Show empty table on error
-      const tbody = document.querySelector('tbody');
-      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-gray-500">Failed to load deliveries. Please try again.</td></tr>';
+      alert('Error loading deliveries. Please check the console.');
     });
 }
 
