@@ -161,7 +161,7 @@
   </main>
 
   <script>
-    let currentPage = 1, limit = 15;
+    let currentPage = 1, limit = 25;
     let currentStatus = '';
     let searchQuery = '';
 
