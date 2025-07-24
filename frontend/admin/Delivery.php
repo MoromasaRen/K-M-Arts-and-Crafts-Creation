@@ -100,7 +100,7 @@
   <thead>
     <tr>
       <th class="text-left font-extrabold px-2 py-1 rounded-tl-md">Delivery ID</th>
-      <th class="text-left font-extrabold px-2 py-1">User Info</th>
+      <th class="text-left font-extrabold px-2 py-1">User ID</th>
       <th class="text-left font-extrabold px-2 py-1">Order Details</th>
       <th class="text-left font-extrabold px-2 py-1">Scheduled Time</th>
       <th class="text-left font-extrabold px-2 py-1">Status</th>
@@ -207,16 +207,6 @@
           console.log('Deliveries response:', data);
           if (!data.success) return alert(data.error || 'Failed to load deliveries');
           
-          // Debug: Check if any deliveries have null user_info
-          data.data.forEach(delivery => {
-            if (!delivery.user_info || delivery.user_info === 'null') {
-              console.warn('Delivery with null user_info:', delivery);
-            }
-            if (!delivery.order_details || delivery.order_details === 'null') {
-              console.warn('Delivery with null order_details:', delivery);
-            }
-          });
-          
           populateTable(data.data, page, data.total);
           currentPage = page;
         })
@@ -226,41 +216,120 @@
         });
     }
 
-    function populateTable(data, page, total) {
-      const tbody = document.querySelector('tbody');
-      tbody.innerHTML = '';
-      data.forEach(d => {
-        const row = document.createElement('tr');
-        row.className = 'border-t border-gray-200';
-        
-        // Safely handle user info and order details
-        const userInfo = d.user_info || (d.user_name ? `#${d.user_id} - ${d.user_name}` : `User #${d.user_id}`);
-        const orderDetails = d.order_info || d.order_details || `Order #${d.order_id}`;
-        
-        row.innerHTML = `
-          <td class="px-2 py-1">${d.delivery_id}</td>
-          <td class="px-2 py-1">${userInfo}</td>
-          <td class="px-2 py-1">${orderDetails}</td>
-          <td class="px-2 py-1">${formatDateTime(d.scheduled_time)}</td>
-<td class="px-2 py-1">
-    <span class="status-badge status-${d.delivery_status}">
-        ${d.delivery_status.replace('_', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-    </span>
-</td>
-          <td class="px-2 py-1">${d.courier_type}</td>
-          <td class="px-2 py-1">${d.plate_number}</td>
-          <td class="px-2 py-1 text-right">
-            <button class="editBtn text-blue-600 text-xs mr-2 hover:underline" data-delivery='${JSON.stringify(d)}'>Edit</button>
-            <form method="POST" action="../../backend/deliveries/delete_delivery.php" class="inline" onsubmit="return confirm('Are you sure you want to delete this delivery?')">
-              <input type="hidden" name="delivery_id" value="${d.delivery_id}">
-              <button type="submit" class="deleteBtn text-red-600 text-xs hover:underline">Delete</button>
-            </form>
-          </td>`;
-        tbody.appendChild(row);
-      });
-      renderPagination(total, page);
-      attachEditButtons();
+// Updated populateTable function - simplified to show only User ID
+function populateTable(data, page, total) {
+  const tbody = document.querySelector('tbody');
+  tbody.innerHTML = '';
+  
+  data.forEach(d => {
+    const row = document.createElement('tr');
+    row.className = 'border-t border-gray-200';
+    
+    // ✅ SIMPLIFIED: Only show User ID
+    let userId = 'N/A';
+    if (d.user_id && d.user_id !== 'null') {
+      userId = d.user_id;
     }
+    
+    // ✅ Keep order details handling as before
+    let orderDetails = 'Unknown Order';
+    
+    if (d.order_info && d.order_info !== 'null' && d.order_info.trim() !== '') {
+      orderDetails = d.order_info;
+    } else if (d.order_details && d.order_details !== 'null' && d.order_details.trim() !== '') {
+      orderDetails = d.order_details;
+    } else if (d.order_id) {
+      orderDetails = `Order #${d.order_id}`;
+      // Add total amount if available
+      if (d.total_amount) {
+        orderDetails += ` (₱${d.total_amount})`;
+      }
+    }
+    
+    row.innerHTML = `
+      <td class="px-2 py-1">${d.delivery_id || 'N/A'}</td>
+      <td class="px-2 py-1">${userId}</td>
+      <td class="px-2 py-1">${orderDetails}</td>
+      <td class="px-2 py-1">${formatDateTime(d.scheduled_time)}</td>
+      <td class="px-2 py-1">
+        <span class="status-badge status-${d.delivery_status}">
+          ${d.delivery_status.replace('_', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+        </span>
+      </td>
+      <td class="px-2 py-1">${d.courier_type || 'N/A'}</td>
+      <td class="px-2 py-1">${d.plate_number || 'N/A'}</td>
+      <td class="px-2 py-1 text-right">
+        <button class="editBtn text-blue-600 text-xs mr-2 hover:underline" data-delivery='${JSON.stringify(d)}'>Edit</button>
+        <form method="POST" action="../../backend/deliveries/delete_delivery.php" class="inline" onsubmit="return confirm('Are you sure you want to delete this delivery?')">
+          <input type="hidden" name="delivery_id" value="${d.delivery_id}">
+          <button type="submit" class="deleteBtn text-red-600 text-xs hover:underline">Delete</button>
+        </form>
+      </td>`;
+    tbody.appendChild(row);
+  });
+  
+  renderPagination(total, page);
+  attachEditButtons();
+}
+
+// Enhanced loadPage function with better error handling
+function loadPage(page = 1) {
+  const params = new URLSearchParams({
+    page: page,
+    limit: limit
+  });
+  
+  if (currentStatus) {
+    params.append('status', currentStatus);
+  }
+  
+  if (searchQuery) {
+    params.append('search', searchQuery);
+  }
+
+  console.log('Fetching deliveries with params:', params.toString());
+  
+  fetch(`../../backend/deliveries/fetch_deliveries.php?${params}`)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.text();
+    })
+    .then(text => {
+      console.log('Raw response:', text);
+      
+      // Try to parse as JSON
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.error('JSON parse error:', e);
+        console.error('Response text:', text);
+        throw new Error('Invalid JSON response from server');
+      }
+      
+      console.log('Parsed deliveries response:', data);
+      
+      if (!data.success) {
+        throw new Error(data.error || data.message || 'Failed to load deliveries');
+      }
+      
+      // Debug: Check data structure
+      console.log('Sample delivery data:', data.data[0]);
+      
+      populateTable(data.data, page, data.total);
+      currentPage = page;
+    })
+    .catch(err => {
+      console.error('Error loading deliveries:', err);
+      alert(`Error loading deliveries: ${err.message}`);
+      
+      // Show empty table on error
+      const tbody = document.querySelector('tbody');
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4 text-gray-500">Failed to load deliveries. Please try again.</td></tr>';
+    });
+}
 
     function formatDateTime(dateTimeStr) {
       if (!dateTimeStr) return 'N/A';
@@ -341,10 +410,9 @@
         document.getElementById('delivery_id').value = data.delivery_id || '';
         document.getElementById('user_id').value = data.user_id || '';
         
-        // Set order info display
-        const userInfo = data.user_info || (data.user_name ? `#${data.user_id} - ${data.user_name}` : `User #${data.user_id}`);
+        // Set order info display - simplified to show just order details
         const orderDetails = data.order_info || data.order_details || `Order #${data.order_id}`;
-        document.getElementById('orderInfoText').textContent = `${orderDetails} - ${userInfo}`;
+        document.getElementById('orderInfoText').textContent = orderDetails;
         
         // Create a hidden input for order_id in edit mode
         let orderIdInput = document.getElementById('order_id_hidden');
@@ -524,7 +592,7 @@
     // Add event listener for scheduled time changes
     document.getElementById('scheduled_time').addEventListener('change', updateDeliveryStatus);
 
-// Updated form submission handler in your Delivery.php
+// Updated form submission handler
 form.addEventListener('submit', async function(e) {
   e.preventDefault();
   
@@ -601,7 +669,7 @@ form.addEventListener('submit', async function(e) {
     
     console.log('Delivery saved successfully');
     
-    // ✅ UPDATED: If delivery status is "delivered", update order status to "completed"
+    // If delivery status is "delivered", update order status to "completed"
     if (status === 'delivered') {
       try {
         console.log('Updating order status to completed for order:', orderId);
