@@ -642,30 +642,46 @@
   buttons.forEach((button) => {
   button.addEventListener("click", () => {
     if (!isLoggedIn) {
-      alert("Please log in to add items to your cart.");
-      window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
+      // Remove any existing modal
+      const existingModal = document.getElementById("loginModal");
+      if (existingModal) existingModal.remove();
+
+      // Create modal wrapper
+      const modalWrapper = document.createElement("div");
+      modalWrapper.id = "loginModal";
+      modalWrapper.className = "fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50";
+
+      // Modal content
+      modalWrapper.innerHTML = `
+        <div class="bg-white text-[#1f2d47] rounded-lg p-6 w-80 text-center shadow-lg animate-fadeIn">
+          <h3 class="text-xl font-semibold mb-2">Login Required</h3>
+          <p class="text-sm mb-4">Please log in to add items to your cart.</p>
+          <button class="mt-2 bg-[#1f2d47] text-white px-4 py-2 rounded hover:bg-[#324d6e] transition duration-300">
+            Login
+          </button>
+        </div>
+      `;
+
+      // Append modal to body
+      document.body.appendChild(modalWrapper);
+
+      // Close button handler
+      modalWrapper.querySelector("button").addEventListener("click", () => {
+        modalWrapper.remove();
+        window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
+      });
+
+      // Optional: Close on clicking outside
+      modalWrapper.addEventListener("click", (event) => {
+        if (event.target === modalWrapper) {
+          modalWrapper.remove();
+        }
+      });
+
       return;
     }
-
-    const name = button.getAttribute("data-name");
-    const price = button.getAttribute("data-price");
-    const img = button.getAttribute("data-img");
-    const id = parseInt(button.getAttribute("data-id"));
-
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const existing = cart.find(item => item.id === id);
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      cart.push({ id, name, price, img, quantity: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    showAddToCartModal(name); // only called when user is logged in
   });
 });
-
 
 function showAddToCartModal(itemName) {
   // Remove any existing modal
