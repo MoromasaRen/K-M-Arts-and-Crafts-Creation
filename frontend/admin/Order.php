@@ -122,7 +122,7 @@ function countOrders(PDO $pdo, ?string $search = '', ?string $status = '', ?stri
 }
 
 // Pagination and filtering settings
-$limit = 20;
+$limit = 17;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
@@ -170,16 +170,51 @@ function getSortIcon($column, $currentSort, $currentOrder) {
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
     body {
-      font-family: "Roboto Mono", monospace;
+        font-family: "Roboto Mono", monospace;
     }
     .sortable {
-      cursor: pointer;
-      user-select: none;
+        cursor: pointer;
+        user-select: none;
     }
     .sortable:hover {
-      background-color: #f3f4f6;
+        background-color: #f3f4f6;
     }
-  </style>
+    /* Add these new status badge styles */
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        text-align: center;
+        display: inline-block;
+        font-size: 0.875rem;
+    }
+    /* Original order status styles */
+    .status-pending {
+        background-color: #FEF3C7;
+        color: #92400E;
+    }
+    .status-confirmed {
+        background-color: #DCFCE7;
+        color: #166534;
+    }
+    .status-completed {
+        background-color: #E0E7FF;
+        color: #3730A3;
+    }
+    /* New inventory stock status styles */
+    .status-instock {
+        background-color: #DCFCE7;  /* Green background */
+        color: #166534;  /* Dark green text */
+    }
+    .status-lowstock {
+        background-color: #FEF3C7;  /* Yellow background */
+        color: #92400E;  /* Dark amber text */
+    }
+    .status-nostock {
+        background-color: #FEE2E2;  /* Red background */
+        color: #991B1B;  /* Dark red text */
+    }
+</style>
 </head>
 <body class="bg-[#d3e1f9] min-h-screen flex">
 
@@ -274,7 +309,11 @@ function getSortIcon($column, $currentSort, $currentOrder) {
             <td class="px-2 py-1"><?= htmlspecialchars($order['order_details']) ?></td>
             <td class="px-2 py-1"><?= htmlspecialchars($order['order_date']) ?></td>
             <td class="px-2 py-1">₱<?= number_format($order['total_amount'], 2) ?></td>
-            <td class="px-2 py-1 capitalize"><?= htmlspecialchars($order['status']) ?></td>
+            <td class="px-2 py-1">
+    <span class="status-badge status-<?= strtolower($order['status']) ?>">
+        <?= htmlspecialchars(ucfirst($order['status'])) ?>
+    </span>
+</td>
             <td class="px-2 py-1 text-center space-x-2">
               <button 
                 class="text-blue-600 hover:underline text-xs edit-btn" 

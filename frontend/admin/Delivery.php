@@ -9,9 +9,30 @@
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
     body {
-      font-family: "Roboto Mono", monospace;
+        font-family: "Roboto Mono", monospace;
     }
-  </style>
+    /* Add these status badge styles */
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        text-align: center;
+        display: inline-block;
+        font-size: 0.875rem;
+    }
+    .status-scheduled {
+        background-color: #FEF3C7;
+        color: #92400E;
+    }
+    .status-in_transit {
+        background-color: #E0E7FF;
+        color: #3730A3;
+    }
+    .status-delivered {
+        background-color: #DCFCE7;
+        color: #166534;
+    }
+</style>
 </head>
 <body class="bg-[#d3e1f9] min-h-screen flex">
 <!-- Sidebar -->
@@ -161,7 +182,7 @@
   </main>
 
   <script>
-    let currentPage = 1, limit = 25;
+    let currentPage = 1, limit = 18;
     let currentStatus = '';
     let searchQuery = '';
 
@@ -221,8 +242,11 @@
           <td class="px-2 py-1">${userInfo}</td>
           <td class="px-2 py-1">${orderDetails}</td>
           <td class="px-2 py-1">${formatDateTime(d.scheduled_time)}</td>
-          <td class="px-2 py-1">${d.delivery_status}
-          </td>
+<td class="px-2 py-1">
+    <span class="status-badge status-${d.delivery_status}">
+        ${d.delivery_status.replace('_', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+    </span>
+</td>
           <td class="px-2 py-1">${d.courier_type}</td>
           <td class="px-2 py-1">${d.plate_number}</td>
           <td class="px-2 py-1 text-right">
