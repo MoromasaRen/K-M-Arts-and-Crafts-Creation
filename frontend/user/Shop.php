@@ -639,8 +639,14 @@
 
   const buttons = document.querySelectorAll(".add-to-cart");
 
-buttons.forEach((button) => {
+  buttons.forEach((button) => {
   button.addEventListener("click", () => {
+    if (!isLoggedIn) {
+      alert("Please log in to add items to your cart.");
+      window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
+      return;
+    }
+
     const name = button.getAttribute("data-name");
     const price = button.getAttribute("data-price");
     const img = button.getAttribute("data-img");
@@ -656,9 +662,11 @@ buttons.forEach((button) => {
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
-    showAddToCartModal(name); // Show modal via JS
+    showAddToCartModal(name); // only called when user is logged in
   });
 });
+
+
 function showAddToCartModal(itemName) {
   // Remove any existing modal
   const existingModal = document.getElementById("addToCartModal");
@@ -701,15 +709,14 @@ const goToCartBtn = document.getElementById('go-to-cart-btn');
 
 
 // If you want to display user info in the Shop page:
-// const profileDiv = document.createElement('div');
-// profileDiv.style.margin = "16px";
+const profileDiv = document.createElement('div');
+profileDiv.style.margin = "16px";
 // if (userId) {
 //   // profileDiv.textContent = `Logged in as User ID: ${userId}`;
 // } else {
 //   // profileDiv.textContent = `Not logged in`;
 // }
-document.body.insertBefore(profileDiv, document.body.firstChild);
-  showAddToCartModal(name);
+// document.body.insertBefore(profileDiv, document.body.firstChild);
 </script>
 
 
