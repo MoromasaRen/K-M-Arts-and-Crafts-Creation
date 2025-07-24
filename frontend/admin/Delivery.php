@@ -221,10 +221,7 @@
           <td class="px-2 py-1">${userInfo}</td>
           <td class="px-2 py-1">${orderDetails}</td>
           <td class="px-2 py-1">${formatDateTime(d.scheduled_time)}</td>
-          <td class="px-2 py-1">
-            <span class="px-2 py-1 rounded text-xs ${getStatusColor(d.delivery_status)}">
-              ${d.delivery_status}
-            </span>
+          <td class="px-2 py-1">${d.delivery_status}
           </td>
           <td class="px-2 py-1">${d.courier_type}</td>
           <td class="px-2 py-1">${d.plate_number}</td>
@@ -248,15 +245,6 @@
         return date.toLocaleString();
       } catch (e) {
         return dateTimeStr;
-      }
-    }
-
-    function getStatusColor(status) {
-      switch (status) {
-        case 'scheduled': return 'bg-yellow-100 text-yellow-800';
-        case 'in_transit': return 'bg-blue-100 text-blue-800';
-        case 'delivered': return 'bg-green-100 text-green-800';
-        default: return 'bg-gray-100 text-gray-800';
       }
     }
 
