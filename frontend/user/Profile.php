@@ -497,6 +497,39 @@
     .catch(err => alert("Something went wrong while updating address info."));
   }
 
+  // NEW FUNCTION: Cancel Order
+  function cancelOrder(orderId) {
+    // Show confirmation dialog
+    if (!confirm("Are you sure you want to cancel this order? This action cannot be undone.")) {
+      return;
+    }
+
+    // Create form data to match admin delete structure
+    const formData = new FormData();
+    formData.append('order_id', orderId);
+
+    // Send cancellation request to backend
+    fetch("http://localhost/K-M-Arts-and-Crafts-Creation/backend/orders/cancel_order.php", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(response => {
+      if (response.success) {
+        alert("Order cancelled successfully!");
+        // Reload the orders to reflect the change
+        const userId = localStorage.getItem("user_id");
+        loadAllOrders(userId);
+      } else {
+        alert("Failed to cancel order: " + (response.error || "Unknown error"));
+      }
+    })
+    .catch(err => {
+      console.error("Error cancelling order:", err);
+      alert("Something went wrong while cancelling the order. Please try again.");
+    });
+  }
+
   // Events
   document.getElementById("edit-personal-info").addEventListener("click", () => toggleEdit("personal-info", true));
   document.getElementById("save-personal-info").addEventListener("click", () => saveChanges("personal-info"));
@@ -569,72 +602,100 @@
   loadAllOrders(userId);
   });
 
+  // UPDATED FUNCTION: Load All Orders with Cancel Button
   function loadAllOrders(userId) {
-  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/orders/get_user_orders.php?user_id=${userId}`)
-    .then(response => response.json())
-    .then(data => {
-      const previousOrdersList = document.getElementById("previous-orders-list");
-      const ordersToPayList = document.getElementById("orders-to-pay-list");
-      const confirmedOrdersList = document.getElementById("confirmed-orders-list");
+    fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/orders/get_user_orders.php?user_id=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        const previousOrdersList = document.getElementById("previous-orders-list");
+        const ordersToPayList = document.getElementById("orders-to-pay-list");
+        const confirmedOrdersList = document.getElementById("confirmed-orders-list");
 
-      // Clear existing content
-      previousOrdersList.innerHTML = "";
-      ordersToPayList.innerHTML = "";
-      confirmedOrdersList.innerHTML = "";
+        // Clear existing content
+        previousOrdersList.innerHTML = "";
+        ordersToPayList.innerHTML = "";
+        confirmedOrdersList.innerHTML = "";
 
-      if (!data.success || data.orders.length === 0) {
-        previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
-        ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
-        confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
-        return;
-      }
-
-      data.orders.forEach(order => {
-        const li = document.createElement("li");
-        li.className = "border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-sm text-sm text-gray-800 font-medium";
-
-        // Create a list of items
-        const items = order.order_details.split(",").map(item => {
-          const [name, qty] = item.trim().split(" x");
-          return `<div><span class="font-semibold">${name.trim()}</span><br><span class="text-gray-600">Quantity: ${qty || 1}</span></div>`;
-        }).join("<br>");
-
-        li.innerHTML = `
-          <div class="space-y-2">
-            ${items}
-            <div class="text-sm text-gray-800 font-semibold">Total: ₱${parseFloat(order.total_amount).toFixed(2)}</div>
-            <div class="text-xs text-gray-500 mt-1">Order Date: ${new Date(order.order_date).toLocaleDateString()}</div>
-          </div>
-        `;
-
-        // Sort based on order_status
-        if (order.order_status === "completed") {
-          previousOrdersList.appendChild(li);
-        } else if (order.order_status === "confirmed") {
-          confirmedOrdersList.appendChild(li);
-        } else if (order.order_status === "pending") {
-          ordersToPayList.appendChild(li);
+        if (!data.success || data.orders.length === 0) {
+          previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
+          ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
+          confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
+          return;
         }
-      });
 
-      // Empty states
-      if (previousOrdersList.innerHTML === "") {
-        previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
-      }
-      if (ordersToPayList.innerHTML === "") {
-        ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
-      }
-      if (confirmedOrdersList.innerHTML === "") {
-        confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
-      }
-    })
-    .catch(error => {
-      console.error("Error loading orders:", error);
-      document.getElementById("previous-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
-      document.getElementById("orders-to-pay-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
-      document.getElementById("confirmed-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
-    });
-}
+        data.orders.forEach(order => {
+          const li = document.createElement("li");
+          
+          // Create a list of items
+          const items = order.order_details.split(",").map(item => {
+            const [name, qty] = item.trim().split(" x");
+            return `<div><span class="font-semibold">${name.trim()}</span><br><span class="text-gray-600">Quantity: ${qty || 1}</span></div>`;
+          }).join("<br>");
+
+          // Sort based on order_status
+          if (order.order_status === "completed") {
+            li.className = "border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-sm text-sm text-gray-800 font-medium";
+            li.innerHTML = `
+              <div class="space-y-2">
+                ${items}
+                <div class="text-sm text-gray-800 font-semibold">Total: ₱${parseFloat(order.total_amount).toFixed(2)}</div>
+                <div class="text-xs text-gray-500 mt-1">Order Date: ${new Date(order.order_date).toLocaleDateString()}</div>
+              </div>
+            `;
+            previousOrdersList.appendChild(li);
+            
+          } else if (order.order_status === "confirmed") {
+            li.className = "border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-sm text-sm text-gray-800 font-medium";
+            li.innerHTML = `
+              <div class="space-y-2">
+                ${items}
+                <div class="text-sm text-gray-800 font-semibold">Total: ₱${parseFloat(order.total_amount).toFixed(2)}</div>
+                <div class="text-xs text-gray-500 mt-1">Order Date: ${new Date(order.order_date).toLocaleDateString()}</div>
+              </div>
+            `;
+            confirmedOrdersList.appendChild(li);
+            
+          } else if (order.order_status === "pending") {
+            // Special styling for pending orders with cancel button
+            li.className = "border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-sm text-sm text-gray-800 font-medium";
+            li.innerHTML = `
+              <div class="flex justify-between items-start">
+                <div class="flex-1 space-y-2">
+                  ${items}
+                  <div class="text-sm text-gray-800 font-semibold">Total: ₱${parseFloat(order.total_amount).toFixed(2)}</div>
+                  <div class="text-xs text-gray-500 mt-1">Order Date: ${new Date(order.order_date).toLocaleDateString()}</div>
+                </div>
+                <button 
+                  onclick="cancelOrder(${order.order_id})" 
+                  class="ml-4 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-md transition-colors duration-200 flex-shrink-0"
+                  title="Cancel Order"
+                >
+                  Cancel
+                </button>
+              </div>
+            `;
+            ordersToPayList.appendChild(li);
+          }
+        });
+
+        // Empty states
+        if (previousOrdersList.innerHTML === "") {
+          previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
+        }
+        if (ordersToPayList.innerHTML === "") {
+          ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
+        }
+        if (confirmedOrdersList.innerHTML === "") {
+          confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
+        }
+      })
+      .catch(error => {
+        console.error("Error loading orders:", error);
+        document.getElementById("previous-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
+        document.getElementById("orders-to-pay-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
+        document.getElementById("confirmed-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
+      });
+  }
 </script>
 
 </body>

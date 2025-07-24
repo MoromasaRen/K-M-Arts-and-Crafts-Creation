@@ -639,33 +639,133 @@
 
   const buttons = document.querySelectorAll(".add-to-cart");
 
-  buttons.forEach((button) => {
+buttons.forEach((button) => {
   button.addEventListener("click", () => {
     if (!isLoggedIn) {
-      alert("Please log in to add items to your cart.");
-      window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
+      // Remove any existing modal
+      const existingModal = document.getElementById("loginModal");
+      if (existingModal) existingModal.remove();
+
+      // Create modal wrapper
+      const modalWrapper = document.createElement("div");
+      modalWrapper.id = "loginModal";
+      modalWrapper.className = "fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50";
+
+      // Modal content
+      modalWrapper.innerHTML = `
+        <div class="bg-white text-[#1f2d47] rounded-lg p-6 w-80 text-center shadow-lg animate-fadeIn">
+          <h3 class="text-xl font-semibold mb-2">Login Required</h3>
+          <p class="text-sm mb-4">Please log in to add items to your cart.</p>
+          <button class="mt-2 bg-[#1f2d47] text-white px-4 py-2 rounded hover:bg-[#324d6e] transition duration-300">
+            Login
+          </button>
+        </div>
+      `;
+
+      // Append modal to body
+      document.body.appendChild(modalWrapper);
+
+      // Close button handler
+      modalWrapper.querySelector("button").addEventListener("click", () => {
+        modalWrapper.remove();
+        window.location.href = "/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html";
+      });
+
+      // Optional: Close on clicking outside
+      modalWrapper.addEventListener("click", (event) => {
+        if (event.target === modalWrapper) {
+          modalWrapper.remove();
+        }
+      });
+
       return;
     }
 
-    const name = button.getAttribute("data-name");
-    const price = button.getAttribute("data-price");
-    const img = button.getAttribute("data-img");
-    const id = parseInt(button.getAttribute("data-id"));
+    // Get product details from button data attributes
+    const productId = button.getAttribute("data-id");
+    const productName = button.getAttribute("data-name");
+    const productPrice = button.getAttribute("data-price");
+    const productImg = button.getAttribute("data-img");
 
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // Call addToCart function
+    addToCart(
+      parseInt(productId),
+      productName,
+      productPrice,
+      productImg
+    );
 
-    const existing = cart.find(item => item.id === id);
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      cart.push({ id, name, price, img, quantity: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    showAddToCartModal(name); // only called when user is logged in
+    // Show the "Added to Cart" modal
+    showAddToCartModal(productName);
   });
 });
 
+// Function to show "Added to Cart" modal
+function showAddToCartModal(itemName) {
+  const existingModal = document.getElementById("addToCartModal");
+  if (existingModal) existingModal.remove();
+
+  const modalWrapper = document.createElement("div");
+  modalWrapper.id = "addToCartModal";
+  modalWrapper.className = "fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50";
+
+  modalWrapper.innerHTML = `
+    <div class="bg-white text-[#1f2d47] rounded-lg p-6 w-80 text-center shadow-lg animate-fadeIn">
+      <h3 class="text-xl font-semibold mb-2">Added to Cart</h3>
+      <p class="text-sm mb-4">${itemName} has been added to your cart.</p>
+      <button class="mt-2 bg-[#1f2d47] text-white px-4 py-2 rounded hover:bg-[#324d6e] transition duration-300">
+        OK
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(modalWrapper);
+
+  modalWrapper.querySelector("button").addEventListener("click", () => {
+    modalWrapper.remove();
+  });
+
+  setTimeout(() => {
+    if (modalWrapper.parentNode) modalWrapper.remove();
+  }, 2500);
+}
+
+// Add the addToCart function to Shop.php
+function addToCart(productId, productName, productPrice, productImg) {
+  const userId = localStorage.getItem('user_id');
+
+  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_product_quantity.php?product_id=${productId}`)
+    .then(response => response.json())
+    .then(data => {
+      const availableStock = data.quantity;
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const existingItem = cart.find(item => item.id === productId);
+
+      let currentQuantity = existingItem ? existingItem.quantity : 0;
+
+      if (currentQuantity < availableStock) {
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            img: productImg,
+            quantity: 1
+          });
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+      } else {
+        alert("Sorry, not enough stock available!");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching product quantity:", error);
+      alert("Error checking stock.");
+    });
+}
 
 function showAddToCartModal(itemName) {
   // Remove any existing modal
