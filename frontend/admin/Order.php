@@ -2,78 +2,81 @@
 require_once '../../backend/config/database.php';
 
 function fetchOrders(PDO $pdo, int $limit, int $offset, ?string $search = '', ?string $status = '', ?string $startDate = '', ?string $endDate = '', ?string $sortBy = 'order_date', ?string $sortOrder = 'DESC'): array {
-    try {
-        // Whitelist allowed sort columns to prevent SQL injection
-        $allowedSortColumns = ['order_date', 'total_amount', 'status', 'user_name', 'order_id'];
-        $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'order_date';
-        $sortOrder = strtoupper($sortOrder) === 'ASC' ? 'ASC' : 'DESC';
+  try {
+      // Whitelist allowed sort columns to prevent SQL injection
+      $allowedSortColumns = ['order_date', 'total_amount', 'status', 'user_name', 'order_id'];
+      $sortBy = in_array($sortBy, $allowedSortColumns) ? $sortBy : 'order_date';
+      $sortOrder = strtoupper($sortOrder) === 'ASC' ? 'ASC' : 'DESC';
 
-        $query = "
-            SELECT 
-    o.order_id, 
-    o.user_id,
-    CONCAT(u.first_name, ' ', u.last_name) AS user_name,
-    CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) AS user_display,
-    o.order_details, -- ✅ bring this back
-    GROUP_CONCAT(CONCAT(p.product_name, ' x', oi.quantity) SEPARATOR ', ') AS order_items,
-    o.order_date, 
-    o.total_amount, 
-    o.status
-FROM orders o
-LEFT JOIN order_items oi ON o.order_id = oi.order_id
-LEFT JOIN products p ON oi.product_id = p.product_id
-LEFT JOIN users u ON o.user_id = u.user_id
-GROUP BY o.order_id
-ORDER BY o.order_date DESC;
+      // Base query
+      $query = "
+          SELECT 
+              o.order_id, 
+              o.user_id,
+              CONCAT(u.first_name, ' ', u.last_name) AS user_name,
+              CONCAT('#', o.user_id, ' - ', u.first_name, ' ', u.last_name) AS user_display,
+              o.order_details,
+              GROUP_CONCAT(CONCAT(p.product_name, ' x', oi.quantity) SEPARATOR ', ') AS order_items,
+              o.order_date, 
+              o.total_amount, 
+              o.status
+          FROM orders o
+          LEFT JOIN order_items oi ON o.order_id = oi.order_id
+          LEFT JOIN products p ON oi.product_id = p.product_id
+          LEFT JOIN users u ON o.user_id = u.user_id
+          WHERE 1 = 1
+      ";
 
-        ";
-        
-        if ($search) {
-            $query .= " AND (u.first_name LIKE :search OR u.last_name LIKE :search OR CONCAT(u.first_name, ' ', u.last_name) LIKE :search)";
-        }
-        
-        if ($status) {
-            $query .= " AND o.status = :status";
-        }
-        
-        if ($startDate && $endDate) {
-            $query .= " AND o.order_date BETWEEN :startDate AND :endDate";
-        }
+      // Filters
+      if ($search) {
+          $query .= " AND (u.first_name LIKE :search OR u.last_name LIKE :search OR CONCAT(u.first_name, ' ', u.last_name) LIKE :search)";
+      }
 
-        // Handle sorting for user_name (which is a computed column)
-        if ($sortBy === 'user_name') {
-            $query .= " ORDER BY CONCAT(u.first_name, ' ', u.last_name) {$sortOrder}";
-        } else {
-            $query .= " ORDER BY o.{$sortBy} {$sortOrder}";
-        }
-        
-        $query .= " LIMIT :limit OFFSET :offset";
+      if ($status) {
+          $query .= " AND o.status = :status";
+      }
 
-        $stmt = $pdo->prepare($query);
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-        
-        if ($search) {
-            $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
-        }
-        
-        if ($status) {
-            $stmt->bindValue(':status', $status, PDO::PARAM_STR);
-        }
-        
-        if ($startDate && $endDate) {
-            $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
-            $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
-        }
+      if ($startDate && $endDate) {
+          $query .= " AND o.order_date BETWEEN :startDate AND :endDate";
+      }
 
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        echo "❌ Error fetching orders: " . $e->getMessage();
-        return [];
-    }
+      // Grouping and Sorting
+      $query .= " GROUP BY o.order_id";
+
+      if ($sortBy === 'user_name') {
+          $query .= " ORDER BY user_name $sortOrder";
+      } else {
+          $query .= " ORDER BY o.$sortBy $sortOrder";
+      }
+
+      // Pagination
+      $query .= " LIMIT :limit OFFSET :offset";
+
+      $stmt = $pdo->prepare($query);
+      $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+      $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+      if ($search) {
+          $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+      }
+
+      if ($status) {
+          $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+      }
+
+      if ($startDate && $endDate) {
+          $stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+          $stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+      }
+
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  } catch (PDOException $e) {
+      echo "❌ Error fetching orders: " . $e->getMessage();
+      return [];
+  }
 }
-
 function countOrders(PDO $pdo, ?string $search = '', ?string $status = '', ?string $startDate = '', ?string $endDate = ''): int {
     try {
         $query = "
