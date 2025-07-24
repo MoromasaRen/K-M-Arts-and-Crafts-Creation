@@ -639,7 +639,7 @@
 
   const buttons = document.querySelectorAll(".add-to-cart");
 
-  buttons.forEach((button) => {
+buttons.forEach((button) => {
   button.addEventListener("click", () => {
     if (!isLoggedIn) {
       // Remove any existing modal
@@ -680,8 +680,92 @@
 
       return;
     }
+
+    // Get product details from button data attributes
+    const productId = button.getAttribute("data-id");
+    const productName = button.getAttribute("data-name");
+    const productPrice = button.getAttribute("data-price");
+    const productImg = button.getAttribute("data-img");
+
+    // Call addToCart function
+    addToCart(
+      parseInt(productId),
+      productName,
+      productPrice,
+      productImg
+    );
+
+    // Show the "Added to Cart" modal
+    showAddToCartModal(productName);
   });
 });
+
+// Function to show "Added to Cart" modal
+function showAddToCartModal(itemName) {
+  const existingModal = document.getElementById("addToCartModal");
+  if (existingModal) existingModal.remove();
+
+  const modalWrapper = document.createElement("div");
+  modalWrapper.id = "addToCartModal";
+  modalWrapper.className = "fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50";
+
+  modalWrapper.innerHTML = `
+    <div class="bg-white text-[#1f2d47] rounded-lg p-6 w-80 text-center shadow-lg animate-fadeIn">
+      <h3 class="text-xl font-semibold mb-2">Added to Cart</h3>
+      <p class="text-sm mb-4">${itemName} has been added to your cart.</p>
+      <button class="mt-2 bg-[#1f2d47] text-white px-4 py-2 rounded hover:bg-[#324d6e] transition duration-300">
+        OK
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(modalWrapper);
+
+  modalWrapper.querySelector("button").addEventListener("click", () => {
+    modalWrapper.remove();
+  });
+
+  setTimeout(() => {
+    if (modalWrapper.parentNode) modalWrapper.remove();
+  }, 2500);
+}
+
+// Add the addToCart function to Shop.php
+function addToCart(productId, productName, productPrice, productImg) {
+  const userId = localStorage.getItem('user_id');
+
+  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/users/get_product_quantity.php?product_id=${productId}`)
+    .then(response => response.json())
+    .then(data => {
+      const availableStock = data.quantity;
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const existingItem = cart.find(item => item.id === productId);
+
+      let currentQuantity = existingItem ? existingItem.quantity : 0;
+
+      if (currentQuantity < availableStock) {
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            img: productImg,
+            quantity: 1
+          });
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+      } else {
+        alert("Sorry, not enough stock available!");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching product quantity:", error);
+      alert("Error checking stock.");
+    });
+}
 
 function showAddToCartModal(itemName) {
   // Remove any existing modal

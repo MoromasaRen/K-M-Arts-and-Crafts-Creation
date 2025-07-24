@@ -52,11 +52,11 @@ $products = fetchProducts($searchTerm, $statusFilter, $sortOrder, $limit, $offse
 
     <nav class="flex flex-col space-y-3 text-lg font-bold text-[#0f2e4d] tracking-wide">
       <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
-      <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Dashboard.html">Dashboard</a>
+      <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Dashboard.php">Dashboard</a>
       <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Order.php">Orders</a>
       <a class="pl-4 py-1 px-2 rounded hover:bg-blue-100" href="Delivery.php">Deliveries</a>
       <a class="pl-4 py-1 px-2 rounded bg-blue-100" href="Inventory.php">Inventory</a>
-      <a class="mt-6 py-1 px-2 rounded hover:bg-blue-100" href="Profile.html">Profile</a>
+      <a class="mt-6 py-1 px-2 rounded hover:bg-blue-100" href="Profile.php">Profile</a>
     </nav>
   </aside>
 

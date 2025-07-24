@@ -1,3 +1,28 @@
+<?php
+session_start();
+
+// Optional: set timeout (15 minutes)
+$timeout_duration = 900;
+
+if (!isset($_SESSION['user_id'])) {
+    // User not logged in
+    header("Location: /K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html");
+    exit;
+}
+
+// Handle timeout
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY']) > $timeout_duration) {
+    session_unset();
+    session_destroy();
+    header("Location: /K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html?timeout=1");
+    exit;
+}
+
+// Update activity timestamp
+$_SESSION['LAST_ACTIVITY'] = time();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -93,7 +118,7 @@
         <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
 
         <a
-          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Dashboard.html"
+          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Dashboard.php"
           class="pl-4 py-1 px-2 rounded bg-blue-100"
           >Dashboard</a
         >
@@ -113,7 +138,7 @@
           >Inventory</a
         >
         <a
-          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Profile.html"
+          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Profile.php"
           class="mt-6 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
           >Profile</a
         >

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -60,7 +61,7 @@
         <div class="pl-1 py-1 px-2 rounded text-[#0f2e4d]">Menu</div>
         <a
           class="pl-4 py-1 px-2 rounded hover:bg-blue-100 transition duration-150"
-          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Dashboard.html"
+          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Dashboard.php"
           >Dashboard</a
         >
         <a
@@ -80,7 +81,7 @@
         >
         <a
           class="pl-4 py-1 px-2 rounded bg-blue-100"
-          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Profile.html"
+          href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Profile.php"
           >Profile</a
         >
         <a
