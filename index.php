@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -52,7 +57,31 @@
       </button>
     </a> -->
 
-    <div id="auth-button" class="ml-auto flex-shrink-0"></div>
+    <div class="ml-auto flex-shrink-0">
+  <?php
+  if (isset($_SESSION['user_id'])) {
+    echo '
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Profile.php">
+        <img
+          src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
+          alt="Profile"
+          class="w-10 h-10 rounded-full object-cover border-2 border-[#1a3550]"
+          title="My Profile"
+        />
+      </a>
+    ';
+  } else {
+    echo '
+      <a href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html">
+        <button class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap">
+          Login/Register
+        </button>
+      </a>
+    ';
+  }
+  ?>
+</div>
+
   </header>
 
     <!-- Responsive divider under header -->
@@ -191,33 +220,33 @@
 
 
 
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const authButton = document.getElementById('auth-button');
+  // const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  // const authButton = document.getElementById('auth-button');
 
-  if (isLoggedIn) {
-    // Show profile icon
-    authButton.innerHTML = `
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Profile.php">
-        <img
-          src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
-          alt="Profile"
-          class="w-10 h-10 rounded-full object-cover border-2 border-[#1a3550]"
-          title="My Profile"
-        />
-      </a>
-    `;
-  } else {
-    // Show Login/Register
-    authButton.innerHTML = `
-      <a href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html">
-        <button
-          class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
-        >
-          Login/Register
-        </button>
-      </a>
-    `;
-  }
+  // if (isLoggedIn) {
+  //   // Show profile icon
+  //   authButton.innerHTML = `
+  //     <a href="/K-M-Arts-and-Crafts-Creation/frontend/user/Profile.php">
+  //       <img
+  //         src="/K-M-Arts-and-Crafts-Creation/assets/pfp.jpg"
+  //         alt="Profile"
+  //         class="w-10 h-10 rounded-full object-cover border-2 border-[#1a3550]"a
+  //         title="My Profile"
+  //       />
+  //     </a>
+  //   `;
+  // } else {
+  //   // Show Login/Register
+  //   authButton.innerHTML = `
+  //     <a href="/K-M-Arts-and-Crafts-Creation/frontend/admin/Login.html">
+  //       <button
+  //         class="border border-[#1a2e4a] rounded-full px-5 py-1 text-[13px] font-semibold text-[#1a2e4a] hover:bg-[#c7d9f9] whitespace-nowrap"
+  //       >
+  //         Login/Register
+  //       </button>
+  //     </a>
+  //   `;
+  // }
 
   function addToCart(product) {
     let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
