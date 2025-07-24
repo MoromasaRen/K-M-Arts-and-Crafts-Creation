@@ -225,12 +225,12 @@ function getSortIcon($column, $currentSort, $currentOrder) {
     <input type="hidden" name="sort_order" value="<?= htmlspecialchars($sortOrder) ?>">
     
     <input type="text" name="search" value="<?= htmlspecialchars($search) ?>" placeholder="Search by User Name" class="px-3 py-2 border rounded-md w-1/3">
-    <select name="status" class="px-3 py-2 border rounded-md w-1/3">
-      <option value="">All Statuses</option>
-      <option value="pending" <?= $status === 'pending' ? 'selected' : '' ?>>Pending</option>
-      <option value="confirmed" <?= $status === 'confirmed' ? 'selected' : '' ?>>Confirmed</option>
-      <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Completed</option>
-    </select>
+ <select name="status" class="px-3 py-2 border rounded-md w-1/3">
+  <option value="">All Statuses</option>
+  <option value="pending" <?= $status === 'pending' ? 'selected' : '' ?>>Pending</option>
+  <option value="confirmed" <?= $status === 'confirmed' ? 'selected' : '' ?>>Confirmed</option>
+  <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Completed</option>
+</select>
     <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" class="px-3 py-2 border rounded-md">
     <input type="date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" class="px-3 py-2 border rounded-md">
     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Filter</button>
@@ -313,12 +313,13 @@ function getSortIcon($column, $currentSort, $currentOrder) {
 
       <label class="flex flex-col gap-1">
         Status
-        <select name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal w-full">
-          <option value="pending">Pending</option>
-          <option value="confirmed">Confirmed</option>
-        </select>
+  <select name="status" id="status" class="rounded-md border px-2 py-1 text-[13px] font-normal w-full">
+  <option value="pending">Pending</option>
+  <option value="confirmed">Confirmed</option>
+  <!-- <option value="completed">Completed</option> -->
+</select>
       </label>
-      <p class="text-xs text-gray-600 mt-1">Note: Order status can only be set to Pending or Confirmed</p>
+<p class="text-xs text-gray-600 mt-1">Note: Orders can be Pending or Confirmed</p>
     </div>
 
     <div class="mt-4 text-center space-x-3">

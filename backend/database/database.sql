@@ -280,3 +280,13 @@ INSERT INTO deliveries (
 (18, '2025-07-14 21:09:18', '2025-07-15 00:09:18', 'delivered',  'Motor',   'KLM741'),
 (19, '2025-07-09 09:12:31', '2025-07-09 11:12:31', 'scheduled',  'Move It', 'TRE963'),
 (20, '2025-07-11 06:05:27', '2025-07-11 08:05:27', 'delivered',  'Maxim',   'DFG147');
+
+-- Update the orders table to include 'completed' status if using ENUM
+-- If your status column is ENUM, update it:
+ALTER TABLE orders MODIFY COLUMN status ENUM('pending', 'confirmed', 'completed') NOT NULL DEFAULT 'pending';
+
+-- If your status column is VARCHAR, this should already work:
+-- ALTER TABLE orders MODIFY COLUMN status VARCHAR(20) NOT NULL DEFAULT 'pending';
+
+-- Optional: Check current status values in your orders table
+SELECT DISTINCT status FROM orders;

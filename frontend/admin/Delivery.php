@@ -512,135 +512,138 @@
     // Add event listener for scheduled time changes
     document.getElementById('scheduled_time').addEventListener('change', updateDeliveryStatus);
 
-    // Handle form submission
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
+// Updated form submission handler in your Delivery.php
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  // Disable the submit button to prevent double submission
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Saving...';
+  
+  try {
+    const formData = new FormData(form);
+    const status = formData.get('delivery_status');
+    const deliveryId = formData.get('delivery_id');
+    const isEdit = !!deliveryId;
+    
+    console.log('Form submission data:', Object.fromEntries(formData));
+    
+    // Get order_id from the right source
+    let orderId;
+    if (isEdit) {
+      // In edit mode, get from hidden input
+      const hiddenOrderInput = document.getElementById('order_id_hidden');
+      orderId = hiddenOrderInput ? hiddenOrderInput.value : formData.get('order_id');
       
-      // Disable the submit button to prevent double submission
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Saving...';
+      // Ensure order_id is in the FormData for backend
+      if (orderId) {
+        formData.set('order_id', orderId);
+      }
+    } else {
+      orderId = formData.get('order_id');
+    }
+    
+    console.log('Order ID:', orderId, 'Is Edit:', isEdit);
+    
+    if (!orderId) {
+      throw new Error('Order ID is required');
+    }
+    
+    // Validate required fields
+    if (!formData.get('scheduled_time')) throw new Error('Scheduled time is required');
+    if (!formData.get('delivery_status')) throw new Error('Status is required');
+    if (!formData.get('courier_type')) throw new Error('Courier is required');
+    if (!formData.get('plate_number')) throw new Error('Plate number is required');
+    
+    console.log('Submitting delivery update/create to:', form.action);
+    console.log('Final FormData:', Object.fromEntries(formData));
+    
+    // Submit delivery form
+    const deliveryResponse = await fetch(form.action, {
+      method: 'POST',
+      body: formData
+    });
+    
+    let deliveryResult;
+    try {
+      const responseText = await deliveryResponse.text();
+      console.log('Raw response:', responseText);
       
+      // Try to parse as JSON
+      if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
+        deliveryResult = JSON.parse(responseText);
+      } else {
+        // If not JSON, treat as error
+        throw new Error('Server returned non-JSON response: ' + responseText.substring(0, 100));
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      throw new Error('Invalid response from server. Check backend logs.');
+    }
+    
+    if (!deliveryResult.success) {
+      throw new Error(deliveryResult.error || deliveryResult.message || 'Failed to save delivery');
+    }
+    
+    console.log('Delivery saved successfully');
+    
+    // ✅ UPDATED: If delivery status is "delivered", update order status to "completed"
+    if (status === 'delivered') {
       try {
-        const formData = new FormData(form);
-        const status = formData.get('delivery_status');
-        const deliveryId = formData.get('delivery_id');
-        const isEdit = !!deliveryId;
+        console.log('Updating order status to completed for order:', orderId);
         
-        console.log('Form submission data:', Object.fromEntries(formData));
+        // Create a proper form data for the order update
+        const orderUpdateData = new FormData();
+        orderUpdateData.append('order_id', orderId);
+        orderUpdateData.append('status', 'completed');
         
-        // Get order_id from the right source
-        let orderId;
-        if (isEdit) {
-          // In edit mode, get from hidden input
-          const hiddenOrderInput = document.getElementById('order_id_hidden');
-          orderId = hiddenOrderInput ? hiddenOrderInput.value : formData.get('order_id');
-          
-          // Ensure order_id is in the FormData for backend
-          if (orderId) {
-            formData.set('order_id', orderId);
-          }
-        } else {
-          orderId = formData.get('order_id');
-        }
-        
-        console.log('Order ID:', orderId, 'Is Edit:', isEdit);
-        
-        if (!orderId) {
-          throw new Error('Order ID is required');
-        }
-        
-        // Validate required fields - but skip order_id validation for edit mode since it's hidden
-        if (!formData.get('scheduled_time')) throw new Error('Scheduled time is required');
-        if (!formData.get('delivery_status')) throw new Error('Status is required');
-        if (!formData.get('courier_type')) throw new Error('Courier is required');
-        if (!formData.get('plate_number')) throw new Error('Plate number is required');
-        
-        console.log('Submitting delivery update/create to:', form.action);
-        console.log('Final FormData:', Object.fromEntries(formData));
-        
-        // Submit delivery form
-        const deliveryResponse = await fetch(form.action, {
+        const orderResponse = await fetch('../../backend/orders/update_order.php', {
           method: 'POST',
-          body: formData
+          body: orderUpdateData
         });
         
-        let deliveryResult;
+        const orderResponseText = await orderResponse.text();
+        console.log('Order update response:', orderResponseText);
+        
+        let orderResult;
         try {
-          const responseText = await deliveryResponse.text();
-          console.log('Raw response:', responseText);
-          
-          // Try to parse as JSON
-          if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
-            deliveryResult = JSON.parse(responseText);
-          } else {
-            // If not JSON, treat as error
-            throw new Error('Server returned non-JSON response: ' + responseText.substring(0, 100));
-          }
-        } catch (parseError) {
-          console.error('JSON parse error:', parseError);
-          throw new Error('Invalid response from server. Check backend logs.');
+          orderResult = JSON.parse(orderResponseText);
+        } catch (e) {
+          console.warn('Could not parse order response as JSON:', orderResponseText);
+          // Continue anyway, the delivery was saved successfully
         }
         
-        if (!deliveryResult.success) {
-          throw new Error(deliveryResult.error || deliveryResult.message || 'Failed to save delivery');
+        if (orderResult && !orderResult.success) {
+          console.warn('Order status update failed:', orderResult.error);
+          // Don't throw error here, delivery was successful
+          alert(`Delivery ${isEdit ? 'updated' : 'created'} successfully! However, there was an issue updating the order status: ${orderResult.error}`);
+        } else {
+          console.log('Order status updated successfully');
+          alert(`Delivery ${isEdit ? 'updated' : 'created'} successfully! Order status updated to completed.`);
         }
-        
-        console.log('Delivery saved successfully');
-        
-        // If delivery status is "delivered", update order status to "completed"
-        if (status === 'delivered') {
-          try {
-            console.log('Updating order status to completed for order:', orderId);
-            const orderUpdateData = new URLSearchParams();
-            orderUpdateData.append('order_id', orderId);
-            orderUpdateData.append('status', 'completed');
-            
-            const orderResponse = await fetch('../../backend/orders/update_order.php', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: orderUpdateData
-            });
-            
-            const orderResponseText = await orderResponse.text();
-            console.log('Order update response:', orderResponseText);
-            
-            let orderResult;
-            try {
-              orderResult = JSON.parse(orderResponseText);
-            } catch (e) {
-              console.warn('Could not parse order response as JSON:', orderResponseText);
-              // Continue anyway, the delivery was saved successfully
-            }
-            
-            if (orderResult && !orderResult.success) {
-              console.warn('Order status update failed:', orderResult.error);
-              // Don't throw error here, delivery was successful
-            } else {
-              console.log('Order status updated successfully');
-            }
-          } catch (orderError) {
-            console.warn('Error updating order status:', orderError);
-            // Don't throw error here, delivery was successful
-          }
-        }
-        
-        alert(`Delivery ${isEdit ? 'updated' : 'created'} successfully!` + (status === 'delivered' ? ' Order status updated to completed.' : ''));
-        modal.classList.add('hidden');
-        loadPage(currentPage);
-        
-      } catch (err) {
-        console.error('Form submission error:', err);
-        alert(err.message || 'An error occurred while saving');
-      } finally {
-        // Re-enable the submit button
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+      } catch (orderError) {
+        console.warn('Error updating order status:', orderError);
+        alert(`Delivery ${isEdit ? 'updated' : 'created'} successfully! However, there was an issue updating the order status.`);
       }
-    });
+    } else {
+      // Normal success message for non-delivered status
+      alert(`Delivery ${isEdit ? 'updated' : 'created'} successfully!`);
+    }
+    
+    modal.classList.add('hidden');
+    loadPage(currentPage);
+    
+  } catch (err) {
+    console.error('Form submission error:', err);
+    alert(err.message || 'An error occurred while saving');
+  } finally {
+    // Re-enable the submit button
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+  }
+});
 
     // Add click event listener to submit button as backup
     document.addEventListener('DOMContentLoaded', function() {
