@@ -570,66 +570,71 @@
   });
 
   function loadAllOrders(userId) {
-    fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/orders/get_user_orders.php?user_id=${userId}`)
-      .then(response => response.json())
-      .then(data => {
-        const previousOrdersList = document.getElementById("previous-orders-list");
-        const ordersToPayList = document.getElementById("orders-to-pay-list");
-        const confirmedOrdersList = document.getElementById("confirmed-orders-list");
+  fetch(`http://localhost/K-M-Arts-and-Crafts-Creation/backend/orders/get_user_orders.php?user_id=${userId}`)
+    .then(response => response.json())
+    .then(data => {
+      const previousOrdersList = document.getElementById("previous-orders-list");
+      const ordersToPayList = document.getElementById("orders-to-pay-list");
+      const confirmedOrdersList = document.getElementById("confirmed-orders-list");
 
-        // Clear existing content
-        previousOrdersList.innerHTML = "";
-        ordersToPayList.innerHTML = "";
-        confirmedOrdersList.innerHTML = "";
+      // Clear existing content
+      previousOrdersList.innerHTML = "";
+      ordersToPayList.innerHTML = "";
+      confirmedOrdersList.innerHTML = "";
 
-        if (!data.success || data.orders.length === 0) {
-          previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
-          ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
-          confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
-          return;
-        }
+      if (!data.success || data.orders.length === 0) {
+        previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
+        ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
+        confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
+        return;
+      }
 
-        data.orders.forEach(order => {
-          const [name, quantity] = order.order_details.split(" x");
+      data.orders.forEach(order => {
+        const li = document.createElement("li");
+        li.className = "border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-sm text-sm text-gray-800 font-medium";
 
-          const li = document.createElement("li");
-          li.className = "border border-gray-300 p-4 rounded-lg bg-gray-50 shadow-sm text-sm text-gray-800 font-medium";
+        // Create a list of items
+        const items = order.order_details.split(",").map(item => {
+          const [name, qty] = item.trim().split(" x");
+          return `<div><span class="font-semibold">${name.trim()}</span><br><span class="text-gray-600">Quantity: ${qty || 1}</span></div>`;
+        }).join("<br>");
 
-          li.innerHTML = `
-            <div class="font-medium">${name?.trim() || "Unknown Item"}</div>
-            <div class="text-sm text-gray-600">Quantity: ${quantity || 1}</div>
+        li.innerHTML = `
+          <div class="space-y-2">
+            ${items}
             <div class="text-sm text-gray-800 font-semibold">Total: ₱${parseFloat(order.total_amount).toFixed(2)}</div>
             <div class="text-xs text-gray-500 mt-1">Order Date: ${new Date(order.order_date).toLocaleDateString()}</div>
-          `;
+          </div>
+        `;
 
-          // Sort orders based on status
-          if (order.order_status === "completed") {
-            previousOrdersList.appendChild(li);
-          } else if (order.order_status === "confirmed") {
-            confirmedOrdersList.appendChild(li);
-          } else if (order.order_status === "pending") {
-            ordersToPayList.appendChild(li);
-          }
-        });
-
-        // Show "No orders" message if specific categories are empty
-        if (previousOrdersList.innerHTML === "") {
-          previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
+        // Sort based on order_status
+        if (order.order_status === "completed") {
+          previousOrdersList.appendChild(li);
+        } else if (order.order_status === "confirmed") {
+          confirmedOrdersList.appendChild(li);
+        } else if (order.order_status === "pending") {
+          ordersToPayList.appendChild(li);
         }
-        if (ordersToPayList.innerHTML === "") {
-          ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
-        }
-        if (confirmedOrdersList.innerHTML === "") {
-          confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
-        }
-      })
-      .catch(error => {
-        console.error("Error loading orders:", error);
-        document.getElementById("previous-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
-        document.getElementById("orders-to-pay-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
-        document.getElementById("confirmed-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
       });
-  }
+
+      // Empty states
+      if (previousOrdersList.innerHTML === "") {
+        previousOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No completed orders yet.</li>";
+      }
+      if (ordersToPayList.innerHTML === "") {
+        ordersToPayList.innerHTML = "<li class='text-gray-500 text-sm'>No pending orders yet.</li>";
+      }
+      if (confirmedOrdersList.innerHTML === "") {
+        confirmedOrdersList.innerHTML = "<li class='text-gray-500 text-sm'>No confirmed orders yet.</li>";
+      }
+    })
+    .catch(error => {
+      console.error("Error loading orders:", error);
+      document.getElementById("previous-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
+      document.getElementById("orders-to-pay-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
+      document.getElementById("confirmed-orders-list").innerHTML = "<li class='text-red-500 text-sm'>Error loading orders.</li>";
+    });
+}
 </script>
 
 </body>
